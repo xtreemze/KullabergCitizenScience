@@ -6,7 +6,6 @@ const site = {
   regionSkane: require("./img/regionSkane.svg"),
   asterisk: require("./img/asterisk.svg"),
   github: "https://xtreemze.github.io/KullabergCitizenScience/"
-
 }
 %>
   <!DOCTYPE html>
@@ -32,19 +31,9 @@ const site = {
         </div>
       </nav>
     </header>
-<section id="missions"></section>
+    <main class="container">
       <div class="">
-        <div class="col s12 m6">
-          <div class="card">
-            <div class="card-content">
-              <span class="card-title">Your Position</span>
-              <span id="coordinates">
-                You have not granted permission for us to locate your position.
-              </span>
-            </div>
-          </div>
-        </div>
-        <div id="sendButton" class="col s12 center"> </div>
+        <section id="missions"></section>
       </div>
     </main>
     <footer class="blue darken-4 white-text page-footer">
@@ -85,7 +74,6 @@ const site = {
         </div> -->
       </div>
     </footer>
-
     <div id="skane" class="modal">
       <div class="modal-content row center-align">
         <img src="${ site.regionSkane }" alt="Region Skane" class="responsive-img" /> </div>

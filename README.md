@@ -66,18 +66,25 @@ Javascript ES6 style is preferred.Note that jquery code is possible but jquery w
 
 ## Development
 VS Code is recommended but you can use your own development environment. You are free to work in the app folder to add and improve features. 
+
+### Production Export
+
+Use
 ```javascript
 npm run exportp
 ```
-will export the files to the “public” directory as a static progressive web-app with offline support. To include new js files, make sure to add the 
+to export the files to the “public” directory as a static progressive web-app with offline support. To include new js files, make sure to add the 
 ```javascript
 require(‘./app/js/yourFilename.js’)
 ```
-to the 
+to  
 ```
 ./app/entry.js
 ```
- file so it can be processed and compiled by webpack. You are motivated to use 
+ so it can be processed and compiled by webpack. 
+ 
+ ### Live Development Server
+ You are motivated to use 
  ```javascript
  npm run dev
  ```
