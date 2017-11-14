@@ -108,6 +108,11 @@ to
  to run a localhost test and ensure there are no errors before publishing.
 
 ## Feature Requests
+See
+https://github.com/xtreemze/KullabergCitizenScience/projects/2
+Take ownership of any of the cards in the To Do section. Feel free to split them into smaller tasks or add your own task. Make sure to move it to the adecuate zone when the task is in progress or done.
+
+
 #### Interface
 - Complete a Mission or View Data Add two sections to the front end interface, one to view and select missions and a second to view the results of a mission.
     - Completing Missions will gather data from the phone and user to send to the database.
