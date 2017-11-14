@@ -1,0 +1,108 @@
+<%
+const site = {
+  name: 'Data gathering and analysis tool.',
+  description: 'Data gathering and analysis tool.',
+  lansstyrelsen: require("./img/lansstyrelsen.svg"),
+  regionSkane: require("./img/regionSkane.svg"),
+  asterisk: require("./img/asterisk.svg"),
+  github: "https://xtreemze.github.io/KullabergCitizenScience/"
+}
+%>
+  <!DOCTYPE html>
+  <html lang="en">
+
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>${ site.name }</title>
+    <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0, minimum-scale=0.0, maximum-scale=10.0">
+    <link rel="canonical" href="${ site.github }" />
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#0d47a1">
+  </head>
+
+  <body id="loadContent" class="grey lighten-3">
+    <header class="navbar z-depth-2">
+      <nav class="blue darken-4" role="navigation">
+        <div class="nav-wrapper">
+          <a class="brand-logo">
+            <span class="kullaberg">
+              <img class="left logoImg responsive-img turn" src="${ site.asterisk}" alt="${ site.name }" />${ site.name }</span>
+          </a>
+        </div>
+      </nav>
+    </header>
+    <main class="main row">
+      <div class="">
+        <div class="col s12 m6">
+          <div class="card">
+            <div class="card-content">
+              <span class="card-title">Report an Issue</span> After you press 'Send' your prefered email application will start and you can continue
+              to write up your report in detail. We encourage you to attach image and/or video that might aid in the evaluation
+              of your report. Thank you for keeping Kullaberg beautiful!</div>
+          </div>
+        </div>
+      </div>
+      <div class="">
+        <div class="col s12 m6">
+          <div class="card">
+            <div class="card-content">
+              <span class="card-title">Your Position</span>
+              <span id="coordinates">
+                You have not granted permission for us to locate your position.
+              </span>
+            </div>
+          </div>
+        </div>
+        <div id="sendButton" class="col s12 center"> </div>
+      </div>
+    </main>
+    <footer class="blue darken-4 white-text page-footer">
+      <section id="contact" class="row">
+        <div class="col s12 m12 l6 contactButtons">
+          <a href="mailto:naturum.kullaberg@lansstyrelsen.se?cc=carlos.velasco@lansstyrelsen.se" class="tooltipped" data-position="bottom"
+            data-delay="50" data-tooltip="Email: naturum.kullaberg@lansstyrelsen.se">
+            <i class="mdi mdi-email medium grey-text text-lighten-4 contactIcon"></i>
+          </a>
+          <a href="tel:46042347056" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Tel: +46 (0)42 347 056">
+            <i class="mdi mdi-phone-classic medium grey-text text-lighten-4 contactIcon"></i>
+          </a>
+          <a href="http://www.kullabergsnatur.se/" class="tooltipped onlineOnly" data-position="bottom" data-delay="50" data-tooltip="Website: KullabergsNatur.se">
+            <i class="mdi mdi-web medium grey-text text-lighten-4 contactIcon"></i>
+          </a>
+          <a href="https://www.facebook.com/kullabergsnaturreservat/" class="tooltipped onlineOnly" data-position="bottom" data-delay="50"
+            data-tooltip="Facebook: Kullabergs Naturreservat">
+            <i class="mdi mdi-facebook-box medium grey-text text-lighten-4 contactIcon"></i>
+          </a>
+          <a href="https://www.instagram.com/kullabergsnaturreservat/" class="tooltipped onlineOnly" data-position="bottom" data-delay="50"
+            data-tooltip="Instagram: naturum Kullaberg">
+            <i class="mdi mdi-instagram medium grey-text text-lighten-4 contactIcon"></i>
+          </a>
+        </div>
+      </section>
+      <div class="row">
+        <div class="col s6 m4 l2">Sponsors
+          <br>
+          <a class="orange-text text-lighten-3 modal-trigger" href="#skane">Region Skåne</a>
+          <br>
+          <a class="orange-text text-lighten-3 modal-trigger" href="#lansstyrelsen">Lansstyrelsen Skåne</a>
+        </div>
+        <!-- <div class="col s6 m4 l2">Language
+          <br>
+          <a class="orange-text text-lighten-3" href="#">Svenska</a>
+          <br>
+          <a class="orange-text text-lighten-3">English</a>
+        </div> -->
+      </div>
+    </footer>
+
+    <div id="skane" class="modal">
+      <div class="modal-content row center-align">
+        <img src="${ site.regionSkane }" alt="Region Skane" class="responsive-img" /> </div>
+    </div>
+    <div id="lansstyrelsen" class="modal">
+      <div class="modal-content row center-align">
+        <img src="${ site.lansstyrelsen }" alt="Lansstyrelsen Skane" class="responsive-img" /> </div>
+    </div>
+  </body>
+
+  </html>
