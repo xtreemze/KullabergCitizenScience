@@ -44,13 +44,30 @@ New dependencies can be added if necessary, particularly with regard to database
 - "webpack-dev-server": "^2.9.4"
 
 ## Target Environment
-Modern browsers are targeted, primarily on the mobile end. Because target browsers have acceptable support for ES6, we will not be using Babel in Webpack.
+Modern browsers are targeted, primarily on the mobile end. Because target browsers have acceptable support for ES6, we will not be using Babel in Webpack. This app should be a single page app with javascript driving changes in the DOM. Use ES6 template strings to make html templates within javascript. For example:
+```javascript
+this.card = `<div class="cardContainer" id="${this.title}">
+<div class="col s12 m6">
+  <div class="card">
+    <div class="card-content">
+      <span class="card-title">${this.title}</span>${this.description}</div>
+  </div>
+</div>
+</div>
+`;
+```
+from
+
+``
+./app/js/missions.js
+``
 
 ## Front-End Framework
 Materialize-CSS is chosen for the front end http://materializecss.com/getting-started.html
 
 ## Graphic Design Guidelines
 Material Design https://material.io/guidelines/
+Use icons to replace text whenever possible.
 
 ## Design Philosophy
 Design should be mobile first and should generally adhere to the Progressive Web App philosophy when possible. https://developers.google.com/web/progressive-web-apps/
@@ -91,22 +108,23 @@ to
  to run a localhost test and ensure there are no errors before publishing.
 
 ## Feature Requests
+#### Interface
 - Complete a Mission or View Data Add two sections to the front end interface, one to view and select missions and a second to view the results of a mission.
     - Completing Missions will gather data from the phone and user to send to the database.
     - View Data will retrieve information from the server. It should be able to display results on a map, sort by date.
-- Data Collection Create a server to host a MongoDB database for the app and create one collection for each “Mission” that will contain the results of the data being gathered by users.
+#### Data Collection
+- Create a server to host a MongoDB database for the app and create one collection for each “Mission” that will contain the results of the data being gathered by users.
     - Data will be gathered while in remote areas so assume offline use. Use localstorage or IndexedDB to store the data
     - Upload the data when the user is online.
-- Missions Develop the “Mission” class in javascript using es6 syntax.
+#### Missions
+- Extend the “Mission” class to include parameters and generate forms from es6 templates.
     - Create new “Mission”: Trail Condition
-Trail Condition parameters:
     - Create new “Mission”:  Porpoise Spotting
-Porpoise Spotting Mission parameters:
-- Gamification
-    - Gamify the submission of data to motivate users to participate in the long term. For instance: Use SVG / CSS animation to throw confetti upon submission of 10 mission data sets, thereby reaching level 1.
-    - Add 20 additional levels and raise difficulty gradually.
-- Rewards
-    - Add a random reward spinner/dice roll after completion of each level offering free coffee, free naturum water bottle, free towel and other potential rewards to be determined.
-     - Rewards are to be collected in Naturum by showing the rewards display to Kullaberg staff.
-    - Kullaberg staff should be able to validate the reward and then report the reward as collected.
+#### Gamification
+- Gamify the submission of data to motivate users to participate in the long term. For instance: Use SVG / CSS animation to throw confetti upon submission of 10 mission data sets, thereby reaching level 1.
+- Add 20 additional levels and raise difficulty gradually.
+#### Rewards
+- Add a random reward spinner/dice roll after completion of each level offering free coffee, free naturum water bottle, free towel and other potential rewards to be determined.
+    - Rewards are to be collected in Naturum by showing the rewards display to Kullaberg staff.
+- Kullaberg staff should be able to validate the reward and then report the reward as collected.
 
