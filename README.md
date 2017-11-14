@@ -1,9 +1,7 @@
 ## Kullaberg Citizen Science
 [![Build Status](https://travis-ci.org/xtreemze/KullabergCitizenScience.svg?branch=master)](https://travis-ci.org/xtreemze/KullabergCitizenScience) ![Dependency Status](https://david-dm.org/xtreemze/KullabergCitizenScience/status.svg?branch=master) ![Dev Dependency Status](https://david-dm.org/xtreemze/KullabergCitizenScience/dev-status.svg?branch=master)
 
-## Hosting
-The example project is hosted on a public github repository. https://xtreemze.github.io/KullabergCitizenScience/
-
+## Get Started!
 You can get started using:
 ```javascript
 git clone https://github.com/xtreemze/KullabergCitizenScience.git
@@ -15,6 +13,10 @@ npm i -D
 ```
 
 You are asked to collaborate on the existing project or generate your own repository that adheres to the guidelines specified in this document, preferably by forking. The project is then to be merged with the master branch in the repository and will be maintained by Kullaberg Staff. Your future contributions would always be welcome.
+
+## Hosting
+The example project is hosted on a public github repository. https://xtreemze.github.io/KullabergCitizenScience/
+
 
 ## License
 The app is to be open source according to the GNU GENERAL PUBLIC LICENSE 3. 
