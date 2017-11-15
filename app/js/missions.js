@@ -3,10 +3,26 @@ const missionsElement = document.getElementById("missions");
 missionsElement.innerHTML += `<h4 class="blue-text text-darken-3">Choose Your Mission</h3>`;
 
 class Mission {
-  constructor({ title = "", description = "", parameters = {} }) {
+  /**
+   * Creates an instance of Mission.
+   * @param {object} {
+   *     title = "Title",
+   *     description = "Description",
+   *     parameters = { monitor: function() {}, analyze: function() {} },
+   *     image = require("../img/trail.jpg")
+   *   } 
+   * @memberof Mission
+   */
+  constructor({
+    title = "Title",
+    description = "Description",
+    parameters = { monitor: function() {}, analyze: function() {} },
+    image = require("../img/trail.jpg")
+  }) {
     this.title = title;
     this.description = description;
     this.parameters = parameters;
+    this.image = image;
     this.getPosition = `<div class="col s12 m6">
   <div class="card">
     <div class="card-content">
@@ -20,10 +36,19 @@ class Mission {
 <div id="sendButton" class="col s12 center"> </div>
 `;
     this.card = `<div class="cardContainer" id="${this.title}">
-  <div class="col s12 m6">
-    <div class="card">
+  <div class="col s12 m6 l4">
+    <div class="card medium">
+      <div class="card-image">
+        <img src="${this.image}">
+        <span class="card-title">${this.title}</span>
+      </div>
       <div class="card-content">
-        <span class="card-title">${this.title}</span>${this.description}</div>
+        <p>${this.description}</p>
+      </div>
+      <div class="card-action">
+        <a class="pointer" onclick="${this.parameters.monitor()}">Monitor</a>
+        <a class="pointer" onclick="${this.parameters.analyze()}">Analyze</a>
+      </div>
     </div>
   </div>
 </div>
@@ -36,10 +61,14 @@ class Mission {
 
 trails = new Mission({
   title: "Trail Conditions",
-  description: "Help to gather data on trail conditions in Kullaberg."
+  description: "Participate in monitoring trail conditions in Kullaberg.",
+  image: require("../img/trail.jpg")
 });
 
 tumlare = new Mission({
-  title: "Porpoise Spotting",
-  description: "Gather data on porpoises in Kullaberg."
+  title: "Porpoise Activity",
+  description: "Participate in monitoring porpoise activity in Kullaberg.",
+  image: require("../img/tumlare.jpg")
 });
+
+// test = new Mission({});

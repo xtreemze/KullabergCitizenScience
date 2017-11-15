@@ -55,3 +55,7 @@ img.logoImg:hover {
   /* -webkit-transform: rotate(0.5turn); */
   transform: rotate(0.5turn);
 }
+
+.pointer {
+  cursor: pointer;
+}
