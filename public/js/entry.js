@@ -39,6 +39,9 @@ __webpack_require__(14);
 /***/ (function(module, exports) {
 
 $(".modal").modal();
+window.addEventListener("load", function() {
+  document.getElementById("loading").remove();
+});
 
 
 /***/ }),
@@ -47,7 +50,7 @@ $(".modal").modal();
 
 let Missions = new Set();
 const missionsElement = document.getElementById("missions");
-missionsElement.innerHTML += `<h4 class="blue-text text-darken-3">Choose Your Mission</h3>`;
+// missionsElement.innerHTML += `<h5 class="blue-text text-darken-3">Choose Your Mission</h3>`;
 
 class Mission {
   /**
@@ -129,4 +132,4 @@ module.exports = __webpack_require__.p + "./img/tumlare.jpg?a0b7d3b21f32536b83f0
 
 /***/ })
 ],[11]);
-//# sourceMappingURL=entry.js.map?42b2bb4e37adb6d0d39c
+//# sourceMappingURL=entry.js.map?7564d5088aba772759e7

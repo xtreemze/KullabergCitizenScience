@@ -1,6 +1,6 @@
 let Missions = new Set();
 const missionsElement = document.getElementById("missions");
-missionsElement.innerHTML += `<h4 class="blue-text text-darken-3">Choose Your Mission</h3>`;
+// missionsElement.innerHTML += `<h5 class="blue-text text-darken-3">Choose Your Mission</h3>`;
 
 class Mission {
   /**
