@@ -35,24 +35,17 @@ nav .brand-logo {
 }
 
 .logoImg {
-  /* -webkit-transition: transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
-  -webkit-transition: -webkit-transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1); */
-  /* transition: -webkit-transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1); */
   transition: transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
-  /* transition: transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1); */
-  /* -webkit-transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1); */
   margin-top: 0.9rem;
   margin-right: 9px;
   width: 32px;
 }
 
 img.logoImg:hover {
-  /* -webkit-transform: rotate(1turn); */
   transform: rotate(1turn);
 }
 
 .turn {
-  /* -webkit-transform: rotate(0.5turn); */
   transform: rotate(0.5turn);
 }
 

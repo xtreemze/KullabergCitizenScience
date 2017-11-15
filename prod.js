@@ -11,9 +11,10 @@ module.exports = function e(env) {
       vendor: [
         "./node_modules/materialize-css/dist/js/materialize",
         "./node_modules/materialize-css/dist/css/materialize.css",
+        "./node_modules/mdi/css/materialdesignicons.css",
         "./app/js/offlineRuntimeInstall"
       ],
-      entry: "./app/entry.js"
+      entry: "./entry.js"
     },
     output: {
       path: __dirname + "/public",
@@ -27,6 +28,10 @@ module.exports = function e(env) {
     devtool: "cheap-module-source-map",
     module: {
       rules: [
+        {
+          test: /\.(eot|ttf|woff|woff2|svg)$/,
+          loader: "url-loader?limit=100000000"
+        },
         {
           test: /\.css$/,
           use: ExtractTextPlugin.extract({
@@ -46,7 +51,7 @@ module.exports = function e(env) {
           })
         },
         {
-          test: /\.(gif|png|jpe?g|svg)$/i,
+          test: /\.(gif|png|jpe?g)$/i,
           loaders: [
             "file-loader?name=./img/[name].[ext]?[hash]",
             {
@@ -73,10 +78,6 @@ module.exports = function e(env) {
               }
             }
           ]
-        },
-        {
-          test: /\.(eot|ttf|woff|woff2)$/,
-          loader: "url-loader?limit=1000000"
         },
         {
           test: /\.js$/,

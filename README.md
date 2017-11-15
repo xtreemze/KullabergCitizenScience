@@ -32,7 +32,7 @@ require(‘./app/js/yourFilename.js’)
 ```
 to  
 ```
-./app/entry.js
+./entry.js
 ```
  so it can be processed and compiled by webpack. 
  

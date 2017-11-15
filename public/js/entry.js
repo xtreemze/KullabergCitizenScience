@@ -3,44 +3,46 @@ webpackJsonp([1],[
 /* 1 */,
 /* 2 */,
 /* 3 */,
-/* 4 */
+/* 4 */,
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "./img/trail.jpg?e5ae226dede12f864004ec83d0addd44";
 
 /***/ }),
-/* 5 */,
 /* 6 */,
 /* 7 */,
 /* 8 */,
 /* 9 */,
-/* 10 */
+/* 10 */,
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(2);
 __webpack_require__(1);
-__webpack_require__(11);
 __webpack_require__(3);
 __webpack_require__(12);
+__webpack_require__(4);
 __webpack_require__(13);
-// require("./js/geolocation");
+__webpack_require__(14);
+// require("./app/js/geolocation");
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports) {
 
 $(".modal").modal();
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 let Missions = new Set();
@@ -62,7 +64,7 @@ class Mission {
     title = "Title",
     description = "Description",
     parameters = { monitor: function() {}, analyze: function() {} },
-    image = __webpack_require__(4)
+    image = __webpack_require__(5)
   }) {
     this.title = title;
     this.description = description;
@@ -107,24 +109,24 @@ class Mission {
 trails = new Mission({
   title: "Trail Conditions",
   description: "Participate in monitoring trail conditions in Kullaberg.",
-  image: __webpack_require__(4)
+  image: __webpack_require__(5)
 });
 
 tumlare = new Mission({
   title: "Porpoise Activity",
   description: "Participate in monitoring porpoise activity in Kullaberg.",
-  image: __webpack_require__(14)
+  image: __webpack_require__(15)
 });
 
 // test = new Mission({});
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "./img/tumlare.jpg?a0b7d3b21f32536b83f0e5192c541a22";
 
 /***/ })
-],[10]);
-//# sourceMappingURL=entry.js.map?dd06ea83f581afefc005
+],[11]);
+//# sourceMappingURL=entry.js.map?42b2bb4e37adb6d0d39c
