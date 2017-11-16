@@ -12,6 +12,4 @@ MongoClient.connect(uri, function(err, db) {
 // CitizenScienceApp
 // CitizenScience2017
 
-// mongodb://CitizenScienceApp:CitizenScience2017@citizenscience-shard-00-00-ztgdx.mongodb.net:27017,citizenscience-shard-00-01-ztgdx.mongodb.net:27017,citizenscience-shard-00-02-ztgdx.mongodb.net:27017/admin?replicaSet=CitizenScience-shard-0&ssl=true
-
 // mongodb://Kullaberg:BA1LHo6AZsqdesqs@citizenscience-shard-00-00-ztgdx.mongodb.net:27017,citizenscience-shard-00-01-ztgdx.mongodb.net:27017,citizenscience-shard-00-02-ztgdx.mongodb.net:27017/citizenScience?ssl=true&replicaSet=CitizenScience-shard-0&authSource=admin

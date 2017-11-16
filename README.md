@@ -103,15 +103,20 @@ Use icons to replace text whenever possible.
 Design should be mobile first and should generally adhere to the Progressive Web App philosophy when possible. https://developers.google.com/web/progressive-web-apps/
 
 ## Database Server
-A MongoDB is available with 512 MB storage. See
+A free tier MongoDB is available with 512 MB storage. See
 ```javascript
 ./app/js/mongo.js
 ```
-for the conection.
+for the conection. https://docs.atlas.mongodb.com/driver-connection/#node-js-driver-example
+https://www.npmjs.com/package/mongodb
+
+Alternatively you can connect using MongoDB Compass.
 
 Connect to the citizenScience database and use the collections for each mission:
--Tumlare
--TrailCondition
+- Tumlare
+- TrailCondition
+
+A different database could be used along with its respective nodeJS instance.
 
 ## Continuous Integration
 Configured for automatic Travis CI deployment to gh-pages branch if webpack compiles without errors.
