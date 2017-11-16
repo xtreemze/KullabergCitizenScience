@@ -12,7 +12,8 @@ module.exports = function e(env) {
         "./node_modules/materialize-css/dist/js/materialize",
         "./node_modules/materialize-css/dist/css/materialize.css",
         "./node_modules/mdi/css/materialdesignicons.css",
-        "./app/js/offlineRuntimeInstall"
+        "./app/js/offlineRuntimeInstall",
+        "mongodb-stitch"
       ],
       entry: "./entry.js"
     },

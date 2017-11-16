@@ -118,6 +118,14 @@ Connect to the citizenScience database and use the collections for each mission:
 
 A different database could be used along with its respective nodeJS instance.
 
+The nodeJS instance is powered by Stitch. https://www.npmjs.com/package/mongodb-stitch
+
+See
+```
+./app/js/stitch.js
+```
+for operations. The connection to the database has been succesful.
+
 ## Continuous Integration
 Configured for automatic Travis CI deployment to gh-pages branch if webpack compiles without errors.
 
