@@ -109,6 +109,10 @@ A MongoDB is available with 512 MB storage. See
 ```
 for the conection.
 
+Connect to the citizenScience database and use the collections for each mission:
+-Tumlare
+-TrailCondition
+
 ## Continuous Integration
 Configured for automatic Travis CI deployment to gh-pages branch if webpack compiles without errors.
 
