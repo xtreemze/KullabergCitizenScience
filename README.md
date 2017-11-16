@@ -103,7 +103,11 @@ Use icons to replace text whenever possible.
 Design should be mobile first and should generally adhere to the Progressive Web App philosophy when possible. https://developers.google.com/web/progressive-web-apps/
 
 ## Database Server
-A NoSQL database such as the community version of MongoDB would be preferred to allow for the most flexibility and so javascript and node can be used to interact with the server and database.
+A MongoDB is available with 512 MB storage. See
+```javascript
+./app/js/mongo.js
+```
+for the conection.
 
 ## Continuous Integration
 Configured for automatic Travis CI deployment to gh-pages branch if webpack compiles without errors.
@@ -112,26 +116,8 @@ Configured for automatic Travis CI deployment to gh-pages branch if webpack comp
 The app is to be open source according to the GNU GENERAL PUBLIC LICENSE 3. 
 
 ## NPM Dependencies
-New dependencies can be added if necessary, particularly with regard to database interaction through sockets. Currently the project has the following dependencies:
-- "autoprefixer": "^7.1.6",
-- "browserslist": "^2.8.0",
-- "css-loader": "^0.28.7",
-- "extract-loader": "^1.0.1",
-- "extract-text-webpack-plugin": "^3.0.2",
-- "file-loader": "^1.1.5",
-- "html-loader": "^0.5.1",
-- "html-minifier-webpack-plugin": "^1.1.1",
-- "html-webpack-plugin": "^2.30.1",
-- "image-webpack-loader": "^3.4.2",
-- "jquery": "^3.2.1",
-- "materialize-css": "^0.100.2",
-- "offline-plugin": "^4.8.4",
-- "postcss": "^6.0.14",
-- "postcss-loader": "^2.0.8",
-- "rimraf": "^2.6.2",
-- "style-loader": "^0.19.0",
-- "uglifyjs-webpack-plugin": "^1.0.1",
-- "url-loader": "^0.6.2",
-- "webpack": "^3.8.1",
-- "webpack-dev-server": "^2.9.4"
-
+New dependencies can be added if necessary. Add them as vendor to the entries in the webpack config files here:
+```javascript
+./prod.js
+./dev.js
+```
