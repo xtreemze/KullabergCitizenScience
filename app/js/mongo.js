@@ -1,10 +1,17 @@
-var MongoClient = require("mongodb").MongoClient;
-, assert = require('assert');
+var MongoClient = require("mongodb").MongoClient,
+  assert = require("assert");
 
 var uri =
-  "mongodb://kay:myRealPassword@mycluster0-shard-00-00-wpeiv.mongodb.net:27017,mycluster0-shard-00-01-wpeiv.mongodb.net:27017,mycluster0-shard-00-02-wpeiv.mongodb.net:27017/admin?ssl=true&replicaSet=Mycluster0-shard-0&authSource=admin";
+  "mongodb://Kullaberg:BA1LHo6AZsqdesqs@citizenscience-shard-00-00-ztgdx.mongodb.net:27017,citizenscience-shard-00-01-ztgdx.mongodb.net:27017,citizenscience-shard-00-02-ztgdx.mongodb.net:27017/citizenScience?ssl=true&replicaSet=CitizenScience-shard-0&authSource=admin";
 MongoClient.connect(uri, function(err, db) {
-    assert.equal(null, err);
-    console.log("Connected correctly to server");
-    db.close();
+  assert.equal(null, err);
+  console.log("Connected correctly to server");
+  db.close();
 });
+
+// CitizenScienceApp
+// CitizenScience2017
+
+// mongodb://CitizenScienceApp:CitizenScience2017@citizenscience-shard-00-00-ztgdx.mongodb.net:27017,citizenscience-shard-00-01-ztgdx.mongodb.net:27017,citizenscience-shard-00-02-ztgdx.mongodb.net:27017/admin?replicaSet=CitizenScience-shard-0&ssl=true
+
+// mongodb://Kullaberg:BA1LHo6AZsqdesqs@citizenscience-shard-00-00-ztgdx.mongodb.net:27017,citizenscience-shard-00-01-ztgdx.mongodb.net:27017,citizenscience-shard-00-02-ztgdx.mongodb.net:27017/citizenScience?ssl=true&replicaSet=CitizenScience-shard-0&authSource=admin
