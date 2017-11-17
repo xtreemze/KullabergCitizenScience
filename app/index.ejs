@@ -16,6 +16,30 @@ const site = {
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <title>${ site.name }</title>
     <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0, minimum-scale=0.0, maximum-scale=10.0">
+    <script type='application/ld+json'>
+{
+	"@context": "http://schema.org/",
+	"@type": "SoftwareApplication",
+	"applicationCategory": "Research",
+	"downloadUrl": "${ site.github }",
+	"installUrl": "${ site.github }",
+	"operatingSystem": "All",
+	"softwareVersion": "1.0.0",
+	"datePublished": "2017",
+	"fileFormat": "HTML5",
+	"isAccessibleForFree": "True",
+	"isFamilyFriendly": "True",
+	"keywords": "citizen science, research, pmt, monitoring",
+	"license": "GPL 3.0",
+	"offers": {
+		"@type": "Offer",
+		"price": "0",
+		"priceCurrency": "$"
+	},
+	"mainEntityOfPage": "${ site.github }",
+	"name": "${ site.name }"
+}
+</script>
     <link rel="canonical" href="${ site.github }" />
     <link rel="manifest" href="${ site.github }manifest.json">
     <meta name="theme-color" content="#0d47a1">
@@ -86,7 +110,7 @@ const site = {
         <div class="nav-wrapper">
           <a class="brand-logo">
             <span class="kullaberg">
-              <img class="left logoImg responsive-img turn" src="${ site.asterisk}" alt="${ site.name }" />${ site.name }</span>
+              <img class="left logoImg responsive-img turn" src="${ site.asterisk }" alt="${ site.name }" />${ site.name }</span>
           </a>
         </div>
       </nav>

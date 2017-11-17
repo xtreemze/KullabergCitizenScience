@@ -137,21 +137,38 @@ module.exports = __webpack_require__.p + "./img/tumlare.jpg?a0b7d3b21f32536b83f0
 
 // import { StitchClient } from "mongodb-stitch";
 const stitch = __webpack_require__(10);
-const client = new stitch.StitchClient("citizensciencestitch-oakmw");
+const appId = "citizensciencestitch-oakmw";
+const stitchClient = new stitch.StitchClient(appId);
 
-const db = client.service("mongodb", "mongodb-atlas").db("citizenScience");
-client
+// Mongodb-stitch documentation https://mongodb.github.io/stitch-js-sdk/
+
+// Anonymous Authentication
+stitchClient
+  .anonymousAuth()
+  .then(() => console.log("logged in as: " + stitchClient.authedId()))
+  .catch(e => console.log("error: ", e));
+
+const db = stitchClient
+  .service("mongodb", "mongodb-atlas")
+  .db("citizenScience");
+
+const trails = db.collection("TrailCondition");
+const tumlare = db.collection("Tumlare");
+
+stitchClient
   .login()
   .then(() =>
     db
       .collection("stitch")
       .updateOne(
-        { owner_id: client.authedId() },
+        { owner_id: stitchClient.authedId() },
         { $set: { number: 42 } },
         { upsert: true }
       )
   )
-  .then(() => db.collection("stitch").find({ owner_id: client.authedId() }))
+  .then(() =>
+    db.collection("stitch").find({ owner_id: stitchClient.authedId() })
+  )
   .then(docs => {
     console.log("Found docs", docs);
     console.log("[MongoDB Stitch] Connected to Stitch");
@@ -164,4 +181,4 @@ client
 /***/ })
 
 },[65]);
-//# sourceMappingURL=entry.js.map?6d97b85dd1c7ea85bb18
+//# sourceMappingURL=entry.js.map?aab1185dce5761ddfb67

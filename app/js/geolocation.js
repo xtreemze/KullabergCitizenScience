@@ -1,3 +1,5 @@
+// Sample geolocation, currently not in use
+
 navigator.geolocation.getCurrentPosition(
   position => {
     const lat = position.coords.latitude;

@@ -1,6 +1,20 @@
-let Missions = new Set();
+import { Timestamp } from "../../../../../AppData/Local/Microsoft/TypeScript/2.6/node_modules/@types/bson";
+
+// Required for MongoDB database interfacing https://mongodb.github.io/stitch-js-sdk/Collection.html#updateOne
+require("./app/js/stitch");
+
+// Empty template string to gather and hold html for mission cards in memory
+let missionCardsHTML = ``;
+
+// The object that holds the parameters for missions and html for the forms
+let forms = {};
+
+// The DOM element that holds the mission cards
 const missionsElement = document.getElementById("missions");
 // missionsElement.innerHTML += `<h5 class="blue-text text-darken-3">Choose Your Mission</h3>`;
+
+// Collecting all Missions in a Set
+let Missions = new Set();
 
 class Mission {
   /**
@@ -16,6 +30,7 @@ class Mission {
   constructor({
     title = "Title",
     description = "Description",
+    // Data for form submission goes inside the monitor function and data retrieval sorting goes in the analyze function
     parameters = { monitor: function() {}, analyze: function() {} },
     image = require("../img/trail.jpg")
   }) {
@@ -23,6 +38,7 @@ class Mission {
     this.description = description;
     this.parameters = parameters;
     this.image = image;
+    // Currently unused positioning example
     this.getPosition = `<div class="col s12 m6">
   <div class="card">
     <div class="card-content">
@@ -54,21 +70,75 @@ class Mission {
 </div>
 `;
     Missions.add(this);
-
-    missionsElement.innerHTML += this.card;
+    missionCardsHTML += this.card;
   }
 }
 
+// Create the Missions
 trails = new Mission({
   title: "Trail Conditions",
   description: "Participate in monitoring trail conditions in Kullaberg.",
-  image: require("../img/trail.jpg")
+  image: require("../img/trail.jpg"),
+  parameters: {
+    monitor: function() {
+      let parameters = `<form>
+        <label>Georeference: ["North", "East", "Altitude"]</label>
+        <label>Date:
+                <input id="Date" type="date">
+        </label>
+        <label>
+                RootsExposed:
+                <input type="radio">
+        </label>
+        <label>
+                Flooded:
+                <input type="radio"> </label>
+        <label>
+                FallenTreesOnTrail:
+                <input type="radio"> </label>
+        <label>
+                Risk from fallen trees or branches:
+                <input type="radio"> </label>
+        <label>
+                Slippery:
+                <input type="radio"> </label>
+        <label>
+                Sharp Stones:
+                <input type="radio">
+        </label>
+        <label>
+                Thorny vegetation at the edge of the path:
+                <input type="radio">
+        </label>
+        <label>
+                Bifurcation - widening (i):
+                <input type="radio">
+        </label>
+        <label>
+                Erosion (i): ["Low", "Medium", "High"] A. Support infrastructure (handrails, ropes, steps)":
+                <input type="text">
+        </label>
+        <label>
+                B. Perception about the use (many people, conflicts betwen hikers, horeses, bicycles) Please describe:
+                <input type="text">
+        </label>
+</form>
+`;
+
+      let form = {};
+    },
+    analyze: function() {}
+  }
 });
 
 tumlare = new Mission({
-  title: "Porpoise Activity",
-  description: "Participate in monitoring porpoise activity in Kullaberg.",
+  title: "Porpoise Observation",
+  description:
+    "Participate in monitoring porpoise whale activity around Kullaberg.",
   image: require("../img/tumlare.jpg")
 });
 
-// test = new Mission({});
+// Additional missions go here! test = new Mission({});
+
+// Add HTML Mission Cards to the DOM
+missionsElement.innerHTML = missionCardsHTML;
