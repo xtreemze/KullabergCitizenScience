@@ -10,7 +10,7 @@
     "debug": "webpack-dev-server --host localhost --port 8080 --env=dev --profile",
     "net2": "webpack-dev-server --host 192.168.0.130 --port 80 --env=dev --profile --open",
     "watch": "webpack --progress --colors --env=dev --profile --watch",
-    "exportp": "node ./rmDir.js && webpack --env=prod --profile --progress",
+    "exportp": "node ./rmDir.js && webpack --env=prod --profile --progress --colors",
     "rm": "node ./rmDir.js",
     "clean": "node ./clean.js && npm i -D && npm up -D"
   },

@@ -17,7 +17,7 @@ __webpack_require__(66);
 __webpack_require__(9);
 __webpack_require__(67);
 __webpack_require__(68);
-__webpack_require__(70);
+
 // require("./app/js/mongo");
 // require("./app/js/geolocation");
 
@@ -45,9 +45,21 @@ window.addEventListener("load", function() {
 /***/ 68:
 /***/ (function(module, exports, __webpack_require__) {
 
-let Missions = new Set();
+// Required for MongoDB database interfacing https://mongodb.github.io/stitch-js-sdk/Collection.html#updateOne
+__webpack_require__(69);
+
+// Empty template string to gather and hold html for mission cards in memory
+let missionCardsHTML = ``;
+
+// The object that holds the parameters for missions and html for the forms
+let forms = {};
+
+// The DOM element that holds the mission cards
 const missionsElement = document.getElementById("missions");
 // missionsElement.innerHTML += `<h5 class="blue-text text-darken-3">Choose Your Mission</h3>`;
+
+// Collecting all Missions in a Set
+let Missions = new Set();
 
 class Mission {
   /**
@@ -63,6 +75,7 @@ class Mission {
   constructor({
     title = "Title",
     description = "Description",
+    // Data for form submission goes inside the monitor function and data retrieval sorting goes in the analyze function
     parameters = { monitor: function() {}, analyze: function() {} },
     image = __webpack_require__(17)
   }) {
@@ -70,6 +83,7 @@ class Mission {
     this.description = description;
     this.parameters = parameters;
     this.image = image;
+    // Currently unused positioning example
     this.getPosition = `<div class="col s12 m6">
   <div class="card">
     <div class="card-content">
@@ -101,36 +115,83 @@ class Mission {
 </div>
 `;
     Missions.add(this);
-
-    missionsElement.innerHTML += this.card;
+    missionCardsHTML += this.card;
   }
 }
 
+// Create the Missions
 trails = new Mission({
   title: "Trail Conditions",
   description: "Participate in monitoring trail conditions in Kullaberg.",
-  image: __webpack_require__(17)
+  image: __webpack_require__(17),
+  parameters: {
+    monitor: function() {
+      let parameters = `<form>
+        <label>Georeference: ["North", "East", "Altitude"]</label>
+        <label>Date:
+                <input id="Date" type="date">
+        </label>
+        <label>
+                RootsExposed:
+                <input type="radio">
+        </label>
+        <label>
+                Flooded:
+                <input type="radio"> </label>
+        <label>
+                FallenTreesOnTrail:
+                <input type="radio"> </label>
+        <label>
+                Risk from fallen trees or branches:
+                <input type="radio"> </label>
+        <label>
+                Slippery:
+                <input type="radio"> </label>
+        <label>
+                Sharp Stones:
+                <input type="radio">
+        </label>
+        <label>
+                Thorny vegetation at the edge of the path:
+                <input type="radio">
+        </label>
+        <label>
+                Bifurcation - widening (i):
+                <input type="radio">
+        </label>
+        <label>
+                Erosion (i): ["Low", "Medium", "High"] A. Support infrastructure (handrails, ropes, steps)":
+                <input type="text">
+        </label>
+        <label>
+                B. Perception about the use (many people, conflicts betwen hikers, horeses, bicycles) Please describe:
+                <input type="text">
+        </label>
+</form>
+`;
+
+      let form = {};
+    },
+    analyze: function() {}
+  }
 });
 
 tumlare = new Mission({
-  title: "Porpoise Activity",
-  description: "Participate in monitoring porpoise activity in Kullaberg.",
-  image: __webpack_require__(69)
+  title: "Porpoise Observation",
+  description:
+    "Participate in monitoring porpoise whale activity around Kullaberg.",
+  image: __webpack_require__(70)
 });
 
-// test = new Mission({});
+// Additional missions go here! test = new Mission({});
+
+// Add HTML Mission Cards to the DOM
+missionsElement.innerHTML = missionCardsHTML;
 
 
 /***/ }),
 
 /***/ 69:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "./img/tumlare.jpg?a0b7d3b21f32536b83f0e5192c541a22";
-
-/***/ }),
-
-/***/ 70:
 /***/ (function(module, exports, __webpack_require__) {
 
 // require("https://s3.amazonaws.com/stitch-sdks/js/library/stable/stitch.min.js");
@@ -148,13 +209,16 @@ stitchClient
   .then(() => console.log("logged in as: " + stitchClient.authedId()))
   .catch(e => console.log("error: ", e));
 
+// MongoDB Conect to citizenScience Database, free M0 tier 512MB storage
 const db = stitchClient
   .service("mongodb", "mongodb-atlas")
   .db("citizenScience");
 
+// Mission Collections within the MongoDB ddatabase
 const trails = db.collection("TrailCondition");
 const tumlare = db.collection("Tumlare");
 
+// Test MongoDB conectivity
 stitchClient
   .login()
   .then(() =>
@@ -178,7 +242,14 @@ stitchClient
   });
 
 
+/***/ }),
+
+/***/ 70:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "./img/tumlare.jpg?a0b7d3b21f32536b83f0e5192c541a22";
+
 /***/ })
 
 },[65]);
-//# sourceMappingURL=entry.js.map?aab1185dce5761ddfb67
+//# sourceMappingURL=entry.js.map?c4cbcb150ae2bf3e1f8b

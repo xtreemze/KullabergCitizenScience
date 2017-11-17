@@ -1,7 +1,5 @@
-import { Timestamp } from "../../../../../AppData/Local/Microsoft/TypeScript/2.6/node_modules/@types/bson";
-
 // Required for MongoDB database interfacing https://mongodb.github.io/stitch-js-sdk/Collection.html#updateOne
-require("./app/js/stitch");
+require("./stitch");
 
 // Empty template string to gather and hold html for mission cards in memory
 let missionCardsHTML = ``;
