@@ -1,9 +1,13 @@
 const OfflinePlugin = require("offline-plugin");
 const webpack = require("webpack");
+
+const path = require("path");
+const glob = require("glob");
 const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HtmlMinifierPlugin = require("html-minifier-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const PurifyCSSPlugin = require("purifycss-webpack");
 //
 module.exports = function e(env) {
   return {
@@ -11,7 +15,8 @@ module.exports = function e(env) {
       vendor: [
         "./node_modules/materialize-css/dist/js/materialize",
         "./node_modules/materialize-css/dist/css/materialize.css",
-        "./node_modules/mdi/css/materialdesignicons.css",
+        // "./node_modules/mdi/css/materialdesignicons.css",
+        "./node_modules/material-design-icons/iconfont/material-icons.css",
         "./app/js/offlineRuntimeInstall",
         "mongodb-stitch"
       ],
@@ -26,7 +31,7 @@ module.exports = function e(env) {
     stats: {
       warnings: false
     },
-    devtool: "cheap-module-source-map",
+    // devtool: "cheap-module-source-map",
     module: {
       rules: [
         {
@@ -43,7 +48,7 @@ module.exports = function e(env) {
                 options: {
                   autoprefixer: false,
                   minimize: true,
-                  sourceMap: true,
+                  sourceMap: false,
                   importLoaders: 1
                 }
               },
@@ -92,6 +97,9 @@ module.exports = function e(env) {
         template: "./app/index.ejs"
       }),
       new ExtractTextPlugin("./css/[name].css?[chunkhash]"),
+      new PurifyCSSPlugin({
+        paths: glob.sync(path.join(__dirname, "css/*.css"))
+      }),
       new webpack.optimize.CommonsChunkPlugin({
         name: "vendor",
 
@@ -104,7 +112,7 @@ module.exports = function e(env) {
       new UglifyJSPlugin({
         cache: true,
         parallel: true,
-        sourceMap: true,
+        sourceMap: false,
         uglifyOptions: {
           ecma: 8,
           output: {

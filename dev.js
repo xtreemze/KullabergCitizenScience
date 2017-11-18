@@ -8,7 +8,8 @@ module.exports = function e(env) {
       vendor: [
         "./node_modules/materialize-css/dist/js/materialize",
         "./node_modules/materialize-css/dist/css/materialize.css",
-        "./node_modules/mdi/css/materialdesignicons.css",
+        // "./node_modules/mdi/css/materialdesignicons.css",
+        "./node_modules/material-design-icons/iconfont/material-icons.css",
         "./app/js/offlineRuntimeInstall",
         "mongodb-stitch"
       ],
