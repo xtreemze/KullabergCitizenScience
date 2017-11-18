@@ -1,13 +1,9 @@
 const OfflinePlugin = require("offline-plugin");
 const webpack = require("webpack");
-
-const path = require("path");
-const glob = require("glob");
 const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HtmlMinifierPlugin = require("html-minifier-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const PurifyCSSPlugin = require("purifycss-webpack");
 //
 module.exports = function e(env) {
   return {
@@ -29,7 +25,7 @@ module.exports = function e(env) {
       chunkFilename: "./js/[id].js?[chunkhash]"
     },
     stats: {
-      warnings: false
+      warnings: true
     },
     // devtool: "cheap-module-source-map",
     module: {
@@ -46,8 +42,7 @@ module.exports = function e(env) {
               {
                 loader: "css-loader",
                 options: {
-                  autoprefixer: false,
-                  minimize: true,
+                  minimize: false,
                   sourceMap: false,
                   importLoaders: 1
                 }
@@ -97,9 +92,6 @@ module.exports = function e(env) {
         template: "./app/index.ejs"
       }),
       new ExtractTextPlugin("./css/[name].css?[chunkhash]"),
-      new PurifyCSSPlugin({
-        paths: glob.sync(path.join(__dirname, "css/*.css"))
-      }),
       new webpack.optimize.CommonsChunkPlugin({
         name: "vendor",
 

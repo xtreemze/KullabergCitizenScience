@@ -22,13 +22,13 @@ var __wpo = {
     "368da24dc59918c3d2f7de329757bb3612f51105": "./js/vendor.js?f13d416e49e6a275ea75",
     "ca6e41594c2a92e69226ca7729d06a484631d306": "./js/entry.js?fd0fb9f77c2b61efeecc",
     "7dadd6f06958337a751a83247765cc9013a986f1": "./js/manifest.js?9bfd9c8d786ba059446a",
-    "6870f9f2cb9b1e938669231d92a060e0f2ea8427": "./css/vendor.css?f13d416e49e6a275ea75",
-    "da39a3ee5e6b4b0d3255bfef95601890afd80709": "./css/entry.css?fd0fb9f77c2b61efeecc",
+    "489f2323cb823ea2ebe9003afc398e6288b045ca": "./css/vendor.css?f13d416e49e6a275ea75",
+    "819065b01abbc8d12df4972972e434cf41625104": "./css/entry.css?fd0fb9f77c2b61efeecc",
     "69f6e5efa4cae73581df86aa7cdc630cff1143cb": "./"
   },
   "strategy": "changed",
   "responseStrategy": "cache-first",
-  "version": "2017-11-18 22:17:12",
+  "version": "2017-11-19 00:17:33",
   "name": "webpack-offline",
   "pluginVersion": "4.8.4",
   "relativePaths": true
