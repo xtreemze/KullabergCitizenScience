@@ -142,7 +142,7 @@ class Mission {
     this.monitor = monitor;
     this.analyze = analyze;
     this.card = `<div class="cardContainer" id="${this.title}">
-  <div class="col s12 m6 l4">
+  <div class="col s12 m6 l6">
     <div class="card medium">
       <div class="card-image">
         <img src="${this.image}">
@@ -193,22 +193,22 @@ trails = new Mission({
           enableHighAccuracy: true
         };
       content += `<div class="row">
-  <form>
+  <form class="container">
     <h4 class="col s12">${this.title}</h4>
     <h5 class="col s12">Georeference</h5>
-    <p class="input-text col s12 m3">
+    <p class="input-text col s6 m3">
       <label for="Latitude">Latitude</label>
       <input id="Latitude" type="number" value="${window.geoReference.lat}">
     </p>
-    <p class="input-text col s12 m3">
+    <p class="input-text col s6 m3">
       <label for="Longitude">Longitude</label>
       <input id="Longitude" type="number" value="${window.geoReference.long}">
     </p>
-    <p class="input-text col s12 m3">
+    <p class="input-text col s6 m3">
       <label for="Altitude">Altitude</label>
       <input id="Altitude" type="number" value="${window.geoReference.alt}">
     </p>
-    <div class="input-field col s12 m3">
+    <div class="input-field col s6 m3">
       <label class="" for="Date">Date</label>
       <input id="Date" type="text" class="datepicker" data-value="${window.Date.now()}">
     </div>
@@ -269,14 +269,14 @@ trails = new Mission({
         <input id="Photos" accept="image/*;capture=camera" type="file" multiple>
       </div>
       <div class="file-path-wrapper">
-        <input accept="image/*" class="file-path validate" type="text" placeholder="Upload one or more photographs of the trail.">
+        <input accept="image/*" class="file-path validate" type="text" placeholder="Upload one or more photos of the trail.">
       </div>
     </div>
-    </form>
     <button class="section col s12 btn btn-large waves-effect waves-light green darken-2 white-text" type="submit" name="action" onclick="collectInputs('${this
       .database}')">Submit
       <i class="material-icons right">send</i>
     </button>
+    </form>
 </div>
 `;
       missionsElement.innerHTML = content;
@@ -298,6 +298,28 @@ trails = new Mission({
         Materialize.updateTextFields();
       }
     });
+  },
+  analyze: function() {
+    let content = ``;
+
+    content += `<div class="row">
+  <div class="container">
+    <h4 class="col s12">${this.title}</h4>
+    <h5 class="col s12">Database Results</h5>
+    
+    </div>
+</div>
+`;
+    missionsElement.innerHTML = content;
+    navigationBreadcrumbs.innerHTML = `
+<a onclick="showMissions()" class="pointer breadcrumb">Missions</a>
+<a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
+<a class="pointer breadcrumb">Analyze</a>
+`;
+
+    if (!Materialize == false) {
+      Materialize.updateTextFields();
+    }
   }
 });
 
@@ -330,30 +352,30 @@ tumlare = new Mission({
           enableHighAccuracy: true
         };
       content += `<div class="row">
-  <form>
+  <form class="container">
     <h4 class="col s12">${this.title}</h4>
     <h5 class="col s12">Location of Sighting</h5>
-    <p class="input-text col s12 m4">
+    <p class="input-text col s6 m4">
       <label for="Latitude">Latitude</label>
       <input id="Latitude" type="number" value="${window.geoReference.lat}">
     </p>
-    <p class="input-text col s12 m4">
+    <p class="input-text col s6 m4">
       <label for="Longitude">Longitude</label>
       <input id="Longitude" type="number" value="${window.geoReference.long}">
     </p>
 
-    <div class="input-field col s12 m4">
+    <div class="input-field col s6 m4">
         <label class="" for="Date">Date</label>
       <input id="Date" type="text" class="datepicker" data-value="${window.Date.now()}">
     </div>
+    <p class="col s6 m4">
+        <input id="Binoculars Used" type="checkbox">
+        <label for="Binoculars Used">Observation Made with Binoculars</label>
+      </p>
     <p class="input-text col s12 m8">
       <label for="Species">Species</label>
       <input id="Species" type="text" value="Porpoise">
     </p>
-    <p class="col s12 m4">
-        <input id="Binoculars Used" type="checkbox">
-        <label for="Binoculars Used">Observation Made with Binoculars</label>
-      </p>
       <h5 class="col s12">Quantity</h5>
     <p class="col s8 range-field">
       <input id="Quantity" type="range" min="1" max="10">
@@ -414,11 +436,11 @@ tumlare = new Mission({
         <input class="file-path validate" type="text" placeholder="Upload one or more photographs of the sighting.">
       </div>
     </div>
-    </form>
     <button class="section col s12 btn btn-large waves-effect waves-light green darken-2 white-text" type="submit" onclick="window.collectInputs('${this
       .database}')" name="action">Submit
       <i class="material-icons right">send</i>
     </button>
+    </form>
 </div>
 `;
       missionsElement.innerHTML = content;
@@ -440,6 +462,28 @@ tumlare = new Mission({
         Materialize.updateTextFields();
       }
     });
+  },
+  analyze: function() {
+    let content = ``;
+
+    content += `<div class="row">
+  <div class="container">
+    <h4 class="col s12">${this.title}</h4>
+    <h5 class="col s12">Database Results</h5>
+    
+    </div>
+</div>
+`;
+    missionsElement.innerHTML = content;
+    navigationBreadcrumbs.innerHTML = `
+<a onclick="showMissions()" class="pointer breadcrumb">Missions</a>
+<a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
+<a class="pointer breadcrumb">Analyze</a>
+`;
+
+    if (!Materialize == false) {
+      Materialize.updateTextFields();
+    }
   }
 });
 

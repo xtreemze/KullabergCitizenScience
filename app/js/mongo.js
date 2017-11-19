@@ -1,3 +1,5 @@
+// File used for reference only
+
 var MongoClient = require("mongodb").MongoClient,
   assert = require("assert");
 

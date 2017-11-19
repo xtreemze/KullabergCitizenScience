@@ -10,6 +10,10 @@
   color: #df622b;
 }
 
+.breadcrumb {
+  font-size: 1.2rem;
+}
+
 .contactButtons {
   padding-top: 1em;
 }
