@@ -59,7 +59,6 @@ const stitchClient = new stitch.StitchClient(appId);
 const db = stitchClient
   .service("mongodb", "mongodb-atlas")
   .db("citizenScience");
-  
 
 // Function to Upload data to DB
 const updateDB = function(database, set) {
@@ -69,20 +68,17 @@ const updateDB = function(database, set) {
   // variables.setc = JSON.parse(set);
   // variables.setc = set;
   variables.set = set;
-  variables.set['owner_id'] = stitchClient.authedId();
-    stitchClient
-      .login()
-      .then(() =>
-      db.collection(database).insertOne(
-         variables.set
-        )
-      ).catch(err => { 
-              Materialize.toast(
-                "[MongoDB Stitch]" + err,
-                12000,
-                "blue darken-3 white-text"
-              );
-      });
+  variables.set["owner_id"] = stitchClient.authedId();
+  stitchClient
+    .login()
+    .then(() => db.collection(database).insertOne(variables.set))
+    .catch(err => {
+      Materialize.toast(
+        "[MongoDB Stitch]" + err,
+        12000,
+        "blue darken-3 white-text"
+      );
+    });
 };
 
 window.collectInputs = function(database) {
@@ -96,14 +92,13 @@ window.collectInputs = function(database) {
       if (elements[e].type == "checkbox") {
         // window.data.push(`"${elements[e].id}": ${elements[e].checked}`);
         window.data[elements[e].id] = elements[e].checked;
-      } else if (elements[e].type == "number"){
+      } else if (elements[e].type == "number") {
         window.data[elements[e].id] = elements[e].value;
         // window.data.push(`"${elements[e].id}": ${elements[e].value}`);
-      } else if (elements[e].value.length > 0){
+      } else if (elements[e].value.length > 0) {
         window.data[elements[e].id] = elements[e].value;
         // window.data.push(`"${elements[e].id}": "${elements[e].value}"`);
       }
-
     }
   }
   // let stringData = `{ ${data.join(`, `)} }`;
@@ -157,7 +152,7 @@ class Mission {
         <p>${this.description}</p>
       </div>
       <div class="card-action">
-        <a class="pointer" onclick="${this.shortName}.monitor()"}">Monitor</a>
+        <a class="pointer" onclick="${this.shortName}.monitor()">Monitor</a>
         <a class="pointer" onclick="${this.shortName}.analyze()">Analyze</a>
       </div>
     </div>
@@ -278,7 +273,8 @@ trails = new Mission({
       </div>
     </div>
     </form>
-    <button class="section col s12 btn btn-large waves-effect waves-light green darken-2 white-text" type="submit" name="action" onclick="collectInputs('${this.database}')">Submit
+    <button class="section col s12 btn btn-large waves-effect waves-light green darken-2 white-text" type="submit" name="action" onclick="collectInputs('${this
+      .database}')">Submit
       <i class="material-icons right">send</i>
     </button>
 </div>
