@@ -271,7 +271,7 @@ trails = new Mission({
     <div class="file-field input-field col s12">
       <div class="btn blue darken-3 white-text">
         <span>Photos</span>
-        <input id="Photos" accept="image/*" type="file" multiple>
+        <input id="Photos" accept="image/*;capture=camera" type="file" multiple>
       </div>
       <div class="file-path-wrapper">
         <input accept="image/*" class="file-path validate" type="text" placeholder="Upload one or more photographs of the trail.">
@@ -412,7 +412,7 @@ tumlare = new Mission({
     <div class="file-field input-field col s12">
       <div class="btn blue darken-3 white-text">
         <span>Photos</span>
-        <input id="Photos" accept="image/*" type="file" multiple>
+        <input id="Photos" accept="image/*;capture=camera" type="file" multiple>
       </div>
       <div class="file-path-wrapper">
         <input class="file-path validate" type="text" placeholder="Upload one or more photographs of the sighting.">
