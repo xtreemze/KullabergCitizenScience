@@ -1,14 +1,14 @@
 var __wpo = {
   "assets": {
     "main": [
-      "./img/android-chrome-512x512.png?56b780e03c9d859dce0e4e6c55439ed5",
+      "./img/android-chrome-192x192.png?ac103b4e3f117df160efb2b53dca661d",
       "./img/trail.jpg?e5ae226dede12f864004ec83d0addd44",
       "./img/tumlare.jpg?a0b7d3b21f32536b83f0e5192c541a22",
-      "./js/vendor.js?03f7fd95bb41e09cddd0",
-      "./js/entry.js?24dd709bb5fd6fc5ff9c",
-      "./js/manifest.js?e8da72b765923ddd554a",
-      "./css/vendor.css?03f7fd95bb41e09cddd0",
-      "./css/entry.css?24dd709bb5fd6fc5ff9c",
+      "./js/vendor.js?af8ba8cf016da1117153",
+      "./js/entry.js?3bf4c796db249d863326",
+      "./js/manifest.js?be36e7da269a0b4e1bd4",
+      "./css/vendor.css?af8ba8cf016da1117153",
+      "./css/entry.css?3bf4c796db249d863326",
       "./"
     ],
     "additional": [],
@@ -16,19 +16,19 @@ var __wpo = {
   },
   "externals": [],
   "hashesMap": {
-    "efff603aa06c9c9d135ce4e6574d3b91caf9b25a": "./img/android-chrome-512x512.png?56b780e03c9d859dce0e4e6c55439ed5",
+    "06c72983d21b30caf8cc0dfaf67fad91497c65db": "./img/android-chrome-192x192.png?ac103b4e3f117df160efb2b53dca661d",
     "019d67e4438029e309762b66b7fbed61122ce6f7": "./img/trail.jpg?e5ae226dede12f864004ec83d0addd44",
     "d232c3a7861f9152aad45d28d354be946fa937f9": "./img/tumlare.jpg?a0b7d3b21f32536b83f0e5192c541a22",
-    "917e568e5538043c202580996474e94edd2c1171": "./js/vendor.js?03f7fd95bb41e09cddd0",
-    "34c26bc989d9aa194deb0f4e371591f10e33651e": "./js/entry.js?24dd709bb5fd6fc5ff9c",
-    "693328eed4895f427783eef33e1cbf2627d20701": "./js/manifest.js?e8da72b765923ddd554a",
-    "489f2323cb823ea2ebe9003afc398e6288b045ca": "./css/vendor.css?03f7fd95bb41e09cddd0",
-    "a99be62f258d01f72f1a54f16e1ca2adab290d54": "./css/entry.css?24dd709bb5fd6fc5ff9c",
-    "e4f6a1c9bfc109988e640223db8e332849e8a305": "./"
+    "702c2640e7f1c38bce54a096334b54f3243e95d6": "./js/vendor.js?af8ba8cf016da1117153",
+    "11be2e031f9adddb0c3cf3ad78e40af3de960108": "./js/entry.js?3bf4c796db249d863326",
+    "c6ad29520ed2881c5f6def422f56f8ec62d1b01e": "./js/manifest.js?be36e7da269a0b4e1bd4",
+    "489f2323cb823ea2ebe9003afc398e6288b045ca": "./css/vendor.css?af8ba8cf016da1117153",
+    "133a27fbfa3ec3a3397348f63d9371197f2e56ca": "./css/entry.css?3bf4c796db249d863326",
+    "6c70f1555f143a6e7cfe914940c5904ecaab1d39": "./"
   },
   "strategy": "changed",
   "responseStrategy": "cache-first",
-  "version": "2017-11-20 11:12:09",
+  "version": "2017-11-20 15:33:31",
   "name": "webpack-offline",
   "pluginVersion": "4.8.4",
   "relativePaths": true

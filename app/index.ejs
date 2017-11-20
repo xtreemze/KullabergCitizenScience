@@ -6,7 +6,7 @@ const site = {
   regionSkane: require("./img/regionSkane.svg"),
   asterisk: require("./img/asterisk.svg"),
   github: "https://xtreemze.github.io/KullabergCitizenScience/",
-  logo: require('../public/android-chrome-512x512.png')
+  logo: require('../public/android-chrome-192x192.png')
 }
 %>
   <!DOCTYPE html>
@@ -95,8 +95,8 @@ const site = {
       }
 
       .loaderImg {
-        max-width: 52vw;
-        max-height: 40vh;
+        max-width: 192px;
+        max-height: 192px;
       }
 
     </style>
@@ -122,62 +122,12 @@ const site = {
       </div>
     </main>
     <footer class="blue darken-4 white-text page-footer">
-      <nav>
-        <div class="nav-wrapper blue darken-4">
-          <section class="container">
-            <div class="col s12" id="navigationBreadcrumbs">
-              <a class="pointer breadcrumb">Missions</a>
-            </div>
-          </section>
+      <nav class="container transparent">
+        <div class="col s12" id="navigationBreadcrumbs">
+          <a class="pointer breadcrumb">Missions</a>
         </div>
       </nav>
-      <!--<div class="row container">
-        <section id="contact" class="">
-          <div class="col s12 m6 l6 contactButtons">
-            <a href="mailto:naturum.kullaberg@lansstyrelsen.se?cc=carlos.velasco@lansstyrelsen.se" class="tooltipped" data-position="top"
-              data-delay="50" data-tooltip="Email: naturum.kullaberg@lansstyrelsen.se">
-              <i class="mdi mdi-email medium grey-text text-lighten-4 contactIcon"></i>
-            </a>
-            <a href="tel:46042347056" class="tooltipped" data-position="top" data-delay="50" data-tooltip="Tel: +46 (0)42 347 056">
-              <i class="mdi mdi-phone-classic medium grey-text text-lighten-4 contactIcon"></i>
-            </a>
-            <a href="http://www.kullabergsnatur.se/" class="tooltipped onlineOnly" data-position="top" data-delay="50" data-tooltip="Website: KullabergsNatur.se">
-              <i class="mdi mdi-web medium grey-text text-lighten-4 contactIcon"></i>
-            </a>
-            <a href="https://www.facebook.com/kullabergsnaturreservat/" class="tooltipped onlineOnly" data-position="top" data-delay="50"
-              data-tooltip="Facebook: Kullabergs Naturreservat">
-              <i class="mdi mdi-facebook-box medium grey-text text-lighten-4 contactIcon"></i>
-            </a>
-            <a href="https://www.instagram.com/kullabergsnaturreservat/" class="tooltipped onlineOnly" data-position="top" data-delay="50"
-              data-tooltip="Instagram: naturum Kullaberg">
-              <i class="mdi mdi-instagram medium grey-text text-lighten-4 contactIcon"></i>
-            </a>
-          </div>
-        </section>
-        <div class="">
-          <div class="col s6 m6 l6">Sponsors
-            <br>
-            <a class="orange-text text-lighten-3 modal-trigger" href="#skane">Region Skåne</a>
-            <br>
-            <a class="orange-text text-lighten-3 modal-trigger" href="#lansstyrelsen">Lansstyrelsen Skåne</a>
-          </div>
-           <div class="col s6 m4 l2">Language
-          <br>
-          <a class="orange-text text-lighten-3" href="#">Svenska</a>
-          <br>
-          <a class="orange-text text-lighten-3">English</a>
-        </div> 
-        </div>
-      </div>-->
     </footer>
-    <!-- <div id="skane" class="modal">
-      <div class="modal-content row center-align">
-        <img src="${ site.regionSkane }" alt="Region Skane" class="responsive-img" /> </div>
-    </div>
-    <div id="lansstyrelsen" class="modal">
-      <div class="modal-content row center-align">
-        <img src="${ site.lansstyrelsen }" alt="Lansstyrelsen Skane" class="responsive-img" /> </div>
-    </div> -->
   </body>
 
   </html>

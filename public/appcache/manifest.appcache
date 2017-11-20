@@ -1,16 +1,16 @@
 CACHE MANIFEST
-#ver:2017-11-20 11:12:09
+#ver:2017-11-20 15:33:31
 #plugin:4.8.4
 
 CACHE:
-../img/android-chrome-512x512.png?56b780e03c9d859dce0e4e6c55439ed5
+../img/android-chrome-192x192.png?ac103b4e3f117df160efb2b53dca661d
 ../img/trail.jpg?e5ae226dede12f864004ec83d0addd44
 ../img/tumlare.jpg?a0b7d3b21f32536b83f0e5192c541a22
-../js/vendor.js?03f7fd95bb41e09cddd0
-../js/entry.js?24dd709bb5fd6fc5ff9c
-../js/manifest.js?e8da72b765923ddd554a
-../css/vendor.css?03f7fd95bb41e09cddd0
-../css/entry.css?24dd709bb5fd6fc5ff9c
+../js/vendor.js?af8ba8cf016da1117153
+../js/entry.js?3bf4c796db249d863326
+../js/manifest.js?be36e7da269a0b4e1bd4
+../css/vendor.css?af8ba8cf016da1117153
+../css/entry.css?3bf4c796db249d863326
 ../
 
 NETWORK:

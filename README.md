@@ -130,5 +130,4 @@ The app is to be open source according to the GNU GENERAL PUBLIC LICENSE 3.
 New dependencies can be added if necessary. Add them as vendor to the entries in the webpack config files here:
 ```javascript
 ./prod.js
-./dev.js
 ```

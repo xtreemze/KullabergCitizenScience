@@ -11,7 +11,7 @@ module.exports = __webpack_require__.p + "./img/trail.jpg?e5ae226dede12f864004ec
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(7);
-__webpack_require__(6);
+__webpack_require__(3);
 // require("./node_modules/mdi/css/materialdesignicons.css");
 // require("./node_modules/material-icons/css/material-icons.css");
 __webpack_require__(8);
@@ -36,7 +36,10 @@ __webpack_require__(68);
 /***/ 67:
 /***/ (function(module, exports) {
 
-$(".modal").modal();
+window.addEventListener("DOMContentLoaded", function() {
+  // Add HTML Mission Cards to the DOM
+  window.showMissions();
+});
 window.addEventListener("load", function() {
   document.getElementById("loading").remove();
 });
@@ -46,9 +49,6 @@ window.addEventListener("load", function() {
 
 /***/ 68:
 /***/ (function(module, exports, __webpack_require__) {
-
-// Required for MongoDB database interfacing https://mongodb.github.io/stitch-js-sdk/Collection.html#updateOne
-// require("./stitch");
 
 const stitch = __webpack_require__(10);
 const appId = "citizensciencestitch-oakmw";
@@ -61,50 +61,78 @@ const db = stitchClient
 
 // Function to Upload data to DB
 const updateDB = function(database, set) {
-  window.variables = {};
-  variables.database = database;
-  variables.set = set;
+  window.variables = {
+    database: database,
+    set: set
+  };
   variables.set["owner_id"] = stitchClient.authedId();
   stitchClient
     .login()
-    .then(() => db.collection(database).insertOne(variables.set))
-    .catch(err => {
-      Materialize.toast(
-        "[MongoDB Stitch]" + err,
-        12000,
-        "blue darken-3 white-text"
-      );
+    .then(() => db.collection(variables.database).insertOne(variables.set))
+    .then(result => {
+      console.log("[MongoDB Stitch] Updated: ", result),
+        Materialize.toast(
+          "Database Updated",
+          8000,
+          "green darken-2 white-text"
+        );
+    })
+    .catch(error => {
+      console.error("[MongoDB Stitch] Error: ", error),
+        Materialize.toast("Unable to Connect", 8000, "red darken-3 white-text");
     });
 };
 
-// Function to gather information from the Form
-window.collectInputs = function(database) {
+/**
+ * Function to Collect Data, send to Database and Congratulate User
+ * 
+ * @param {any} database 
+ */
+window.collectInputs = function(databaseCollection, congratulatoryMessage) {
   window.form = parent.document.getElementsByTagName("form")[0];
-  window.data = {};
-  // window.data.push(`"_id": "${new Date(Date.now()).toISOString()}"`);
-  // window.data["_id"] = new Date(Date.now()).toISOString();
+  window.data = {
+    location: {
+      type: "Point",
+      coordinates: []
+    }
+  };
   window.elements = form.elements;
   for (e = 0; e < elements.length; e++) {
     if (elements[e].id.length > 0) {
       if (elements[e].type == "checkbox") {
         window.data[elements[e].id] = elements[e].checked;
+      } else if (elements[e].id === "Longitude") {
+        window.data.location.coordinates[0] = {
+          $numberDecimal: elements[e].value
+        };
+      } else if (elements[e].id === "Latitude") {
+        window.data.location.coordinates[1] = {
+          $numberDecimal: elements[e].value
+        };
+      } else if (elements[e].id === "Altitude") {
+        window.data.location.coordinates[2] = {
+          $numberDecimal: elements[e].value
+        };
       } else if (elements[e].type == "number") {
-        window.data[elements[e].id] = elements[e].value;
+        window.data[elements[e].id] = parseInt(elements[e].value, 10);
+      } else if (elements[e].value.id === "Date") {
+        window.data[elements[e].id] = { $date: elements[e].value };
       } else if (elements[e].value.length > 0) {
         window.data[elements[e].id] = elements[e].value;
+      } else {
+        console.warn("[Form] Did not include: " + elements[e].id);
       }
     }
   }
-  // let stringData = `{ ${data.join(`, `)} }`;
-  let stringData = window.data;
-  // console.log(stringData);
 
-  updateDB(database, stringData);
-    // Materialize.toast(stringData, 8000, "blue white-text darken-3");
-  
-  window.showMissions();
+  updateDB(databaseCollection, window.data);
+  // Materialize.toast(stringData, 8000, "blue white-text darken-3");
+
+  setTimeout(() => {
+    window.showMissions();
+  }, 4000);
   // Congratulatory Message
-  Materialize.toast("Tack!", 8000, "green white-text darken-2");
+  Materialize.toast(congratulatoryMessage, 8000, "green white-text darken-2");
 };
 
 // Empty variable to gather and hold html for mission cards in memory
@@ -127,7 +155,8 @@ class Mission {
     title = "Title",
     description = "Description",
     // Each Mission should specify its collection in the MongoDB database
-    database = "mongoDbCollection",
+    databaseCollection = "mongoDbCollection",
+    congratulatoryMessage = "Congratulations!",
     // Data for form submission
     monitor = ``,
     // Data retrieval and display
@@ -139,13 +168,14 @@ class Mission {
     this.title = title;
     this.description = description;
     this.image = image;
-    this.database = database;
+    this.databaseCollection = databaseCollection;
+    this.congratulatoryMessage = congratulatoryMessage;
     this.monitor = monitor;
     this.analyze = analyze;
     // Displays on Front Page
     this.card = `<div class="cardContainer" id="${this.title}">
   <div class="col s12 m6 l6">
-    <div class="card medium">
+    <div class="card large">
       <div class="card-image">
         <img src="${this.image}">
         <span class="card-title">${this.title}</span>
@@ -171,8 +201,10 @@ class Mission {
 trails = new Mission({
   shortName: "trails",
   title: "Trail Condition",
-  database: "TrailCondition",
-  description: "Participate in monitoring trail conditions in Kullaberg.",
+  databaseCollection: "TrailCondition",
+  congratulatoryMessage: "Thanks for completing the Trail Conditions Mission!",
+  description:
+    "Engage in the monitoring of Trail Conditions and participate in adaptive management by reporting incidents while walking in the trails system. The Kullaberg Management Team will analyze measures to execute to resolve the incidents you report.",
   image: __webpack_require__(17),
   monitor: function() {
     let content = ``;
@@ -196,7 +228,7 @@ trails = new Mission({
           enableHighAccuracy: true
         };
       content += `<div class="row">
-  <form class="container">
+  <form class="container" onsubmit="return false">
     <h4 class="col s12">${this.title}</h4>
     <h5 class="col s12">Georeference</h5>
     <p class="input-text col s6 m3">
@@ -207,13 +239,13 @@ trails = new Mission({
       <label for="Longitude">Longitude</label>
       <input id="Longitude" type="number" value="${window.geoReference.long}">
     </p>
-    <p class="input-text col s6 m3">
+    <p class="input-text col s6 m2">
       <label for="Altitude">Altitude</label>
       <input id="Altitude" type="number" value="${window.geoReference.alt}">
     </p>
-    <div class="input-field col s6 m3">
+    <div class="input-field col s6 m4">
       <label class="" for="Date">Date</label>
-      <input id="Date" type="text" class="datepicker" data-value="${window.Date.now()}">
+      <input id="Date" type="date" class="datepicker" data-value="${window.Date.now()}">
     </div>
     <h5 class="col s12">Select All that Apply</h5>
     <p class="col s12 m4">
@@ -275,11 +307,11 @@ trails = new Mission({
         <input accept="image/*" class="file-path validate" type="text" placeholder="Upload one or more photos of the trail.">
       </div>
     </div>
-    <button class="section col s12 btn btn-large waves-effect waves-light green darken-2 white-text" name="action" onclick="collectInputs('${this
-      .database}')">Submit
+    <div class="section col s12 btn btn-large waves-effect waves-light green darken-2 white-text" type="submit" onClick="collectInputs('${this
+      .databaseCollection}', '${this.congratulatoryMessage}')">Submit
       <i class="material-icons right">send</i>
-    </button>
-    </form>
+    </div>
+  </form>
 </div>
 `;
       missionsElement.innerHTML = content;
@@ -332,9 +364,11 @@ trails = new Mission({
 tumlare = new Mission({
   shortName: "tumlare",
   title: "Porpoise Observation",
-  database: "Tumlare",
+  databaseCollection: "Tumlare",
+  congratulatoryMessage:
+    "Thank you for your participation! Your contribution helps us to develop an adaptive management in the Kullaberg Nature.",
   description:
-    "Participate in monitoring porpoise whale activity around Kullaberg.",
+    "Engage in the collection of visual harbor porpoise observations (both living and dead) in the north-western parts of Scania. Observations are used in scientific research to help increase the knowledge about this threatened species.",
   image: __webpack_require__(69),
   monitor: function() {
     let content = ``;
@@ -358,7 +392,7 @@ tumlare = new Mission({
           enableHighAccuracy: true
         };
       content += `<div class="row">
-  <form class="container">
+  <form class="container" onsubmit="return false">
     <h4 class="col s12">${this.title}</h4>
     <h5 class="col s12">Location of Sighting</h5>
     <p class="input-text col s6 m4">
@@ -371,7 +405,7 @@ tumlare = new Mission({
     </p>
     <div class="input-field col s6 m4">
       <label class="" for="Date">Date</label>
-      <input id="Date" type="text" class="datepicker" data-value="${window.Date.now()}">
+      <input id="Date" type="date" class="datepicker" data-value="${window.Date.now()}">
     </div>
     <p class="col s6 m4">
       <input id="Binoculars Used" type="checkbox">
@@ -392,14 +426,14 @@ tumlare = new Mission({
     </p>
     <h5 class="col s12">Behavior</h5>
     <p class="input-field col s12 m6">
-      <select id="behavior">
+      <select id="Behavior">
         <option value="Constant Heading, Regular Diving">Constant Heading, Regular Diving</option>
         <option value="Varied Heading, Irregular Diving">Varied Heading, Irregular Diving</option>
         <option value="Slow Movement, Long Time at Surface">Slow Movement, Long Time at Surface</option>
         <option value="Jumping">Jumping</option>
         <option value="Found Dead / Injured">Found Dead / Injured</option>
       </select>
-      <label for="behavior">Behavior</label>
+      <label for="Behavior">Behavior</label>
     </p>
     <p class="input-field col s12 m6">
       <input id="Other Behavior" class="" type="text"></input>
@@ -440,8 +474,8 @@ tumlare = new Mission({
         <input class="file-path validate" type="text" placeholder="Upload one or more photographs of the sighting.">
       </div>
     </div>
-    <button class="section col s12 btn btn-large waves-effect waves-light green darken-2 white-text" onclick="window.collectInputs('${this
-      .database}')" name="action">Submit
+    <button class="section col s12 btn btn-large waves-effect waves-light green darken-2 white-text" type="submit" onClick="window.collectInputs('${this
+      .databaseCollection}', '${this.congratulatoryMessage}')">Submit
       <i class="material-icons right">send</i>
     </button>
   </form>
@@ -499,9 +533,6 @@ window.showMissions = function() {
   <a class="pointer breadcrumb">Missions</a>
   `;
 };
-
-// Add HTML Mission Cards to the DOM
-window.showMissions();
 
 
 /***/ }),
