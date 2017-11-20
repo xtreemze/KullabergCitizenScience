@@ -50,12 +50,11 @@ window.addEventListener("load", function() {
 // Required for MongoDB database interfacing https://mongodb.github.io/stitch-js-sdk/Collection.html#updateOne
 // require("./stitch");
 
-// import { StitchClient } from "mongodb-stitch";
 const stitch = __webpack_require__(10);
 const appId = "citizensciencestitch-oakmw";
 const stitchClient = new stitch.StitchClient(appId);
 
-// MongoDB Conect to citizenScience Database, free M0 tier 512MB storage
+// MongoDB Conect to citizenScience Database, M0 tier 512MB storage
 const db = stitchClient
   .service("mongodb", "mongodb-atlas")
   .db("citizenScience");
@@ -64,9 +63,6 @@ const db = stitchClient
 const updateDB = function(database, set) {
   window.variables = {};
   variables.database = database;
-  // variables.setp = JSON.stringify(set);
-  // variables.setc = JSON.parse(set);
-  // variables.setc = set;
   variables.set = set;
   variables.set["owner_id"] = stitchClient.authedId();
   stitchClient
@@ -90,14 +86,11 @@ window.collectInputs = function(database) {
   for (e = 0; e < elements.length; e++) {
     if (elements[e].id.length > 0) {
       if (elements[e].type == "checkbox") {
-        // window.data.push(`"${elements[e].id}": ${elements[e].checked}`);
         window.data[elements[e].id] = elements[e].checked;
       } else if (elements[e].type == "number") {
         window.data[elements[e].id] = elements[e].value;
-        // window.data.push(`"${elements[e].id}": ${elements[e].value}`);
       } else if (elements[e].value.length > 0) {
         window.data[elements[e].id] = elements[e].value;
-        // window.data.push(`"${elements[e].id}": "${elements[e].value}"`);
       }
     }
   }
@@ -108,12 +101,11 @@ window.collectInputs = function(database) {
   // Materialize.toast(stringData, 8000, "blue white-text darken-3");
 };
 
-// Empty template string to gather and hold html for mission cards in memory
+// Empty variable to gather and hold html for mission cards in memory
 let missionCardsHTML = ``;
-window.geoReference = {};
 
-// The object that holds the parameters for missions and html for the forms
-let forms = {};
+// Empty variable to gather and hold geographical references
+window.geoReference = {};
 
 // The DOM element that holds the mission cards
 const missionsElement = document.getElementById("missions");
@@ -128,10 +120,13 @@ class Mission {
     shortName = "shortName",
     title = "Title",
     description = "Description",
-    // Data for form submission goes inside the monitor function and data retrieval sorting goes in the analyze function
-    monitor = ``,
-    analyze = ``,
+    // Each Mission should specify its collection in the MongoDB database
     database = "mongoDbCollection",
+    // Data for form submission
+    monitor = ``,
+    // Data retrieval and display
+    analyze = ``,
+    // Each mission should have a representative image
     image = __webpack_require__(17)
   }) {
     this.shortName = shortName;
@@ -141,6 +136,7 @@ class Mission {
     this.database = database;
     this.monitor = monitor;
     this.analyze = analyze;
+    // Displays on Front Page
     this.card = `<div class="cardContainer" id="${this.title}">
   <div class="col s12 m6 l6">
     <div class="card medium">
@@ -160,6 +156,7 @@ class Mission {
 </div>
 `;
     Missions.add(this);
+    // Add Mission Cards to DOM
     missionCardsHTML += this.card;
   }
 }
@@ -281,7 +278,7 @@ trails = new Mission({
 `;
       missionsElement.innerHTML = content;
       navigationBreadcrumbs.innerHTML = `
-<a onclick="showMissions()" class="pointer breadcrumb">Missions</a>
+
 <a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
 <a class="pointer breadcrumb">Monitor</a>
 `;
@@ -299,6 +296,11 @@ trails = new Mission({
       }
     });
   },
+  //
+  /**
+   * Function to retrieve display Database Results
+   * 
+   */
   analyze: function() {
     let content = ``;
 
@@ -306,13 +308,11 @@ trails = new Mission({
   <div class="container">
     <h4 class="col s12">${this.title}</h4>
     <h5 class="col s12">Database Results</h5>
-    
-    </div>
+  </div>
 </div>
 `;
     missionsElement.innerHTML = content;
     navigationBreadcrumbs.innerHTML = `
-<a onclick="showMissions()" class="pointer breadcrumb">Missions</a>
 <a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
 <a class="pointer breadcrumb">Analyze</a>
 `;
@@ -363,20 +363,19 @@ tumlare = new Mission({
       <label for="Longitude">Longitude</label>
       <input id="Longitude" type="number" value="${window.geoReference.long}">
     </p>
-
     <div class="input-field col s6 m4">
-        <label class="" for="Date">Date</label>
+      <label class="" for="Date">Date</label>
       <input id="Date" type="text" class="datepicker" data-value="${window.Date.now()}">
     </div>
     <p class="col s6 m4">
-        <input id="Binoculars Used" type="checkbox">
-        <label for="Binoculars Used">Observation Made with Binoculars</label>
-      </p>
+      <input id="Binoculars Used" type="checkbox">
+      <label for="Binoculars Used">Observation Made with Binoculars</label>
+    </p>
     <p class="input-text col s12 m8">
       <label for="Species">Species</label>
       <input id="Species" type="text" value="Porpoise">
     </p>
-      <h5 class="col s12">Quantity</h5>
+    <h5 class="col s12">Quantity</h5>
     <p class="col s8 range-field">
       <input id="Quantity" type="range" min="1" max="10">
       <label for="Quantity">Quantity</label>
@@ -421,7 +420,6 @@ tumlare = new Mission({
       </select>
       <label for="Weather">Weather Conditions</label>
     </p>
-
     <h5 class="col s12">Comments</h5>
     <p class="input-field col s12">
       <textarea id="Comments" class="materialize-textarea"></textarea>
@@ -440,12 +438,11 @@ tumlare = new Mission({
       .database}')" name="action">Submit
       <i class="material-icons right">send</i>
     </button>
-    </form>
+  </form>
 </div>
 `;
       missionsElement.innerHTML = content;
       navigationBreadcrumbs.innerHTML = `
-      <a onclick="showMissions()" class="pointer breadcrumb">Missions</a>
       <a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
       <a class="pointer breadcrumb">Monitor</a>
       `;
@@ -470,13 +467,12 @@ tumlare = new Mission({
   <div class="container">
     <h4 class="col s12">${this.title}</h4>
     <h5 class="col s12">Database Results</h5>
-    
-    </div>
+  </div>
 </div>
 `;
     missionsElement.innerHTML = content;
     navigationBreadcrumbs.innerHTML = `
-<a onclick="showMissions()" class="pointer breadcrumb">Missions</a>
+
 <a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
 <a class="pointer breadcrumb">Analyze</a>
 `;

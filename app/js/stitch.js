@@ -1,3 +1,5 @@
+// This file is currently unused
+
 // require("https://s3.amazonaws.com/stitch-sdks/js/library/stable/stitch.min.js");
 
 // import { StitchClient } from "mongodb-stitch";
