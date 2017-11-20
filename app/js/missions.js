@@ -27,12 +27,12 @@ const updateDB = function(database, set) {
         Materialize.toast(
           "Database Updated",
           8000,
-          "green darken-2 white-text"
+          "green darken-2"
         );
     })
     .catch(error => {
       console.error("[MongoDB Stitch] Error: ", error),
-        Materialize.toast("Unable to Connect", 8000, "red darken-3 white-text");
+        Materialize.toast("Unable to Connect", 8000, "red darken-2");
     });
 };
 /**
@@ -87,7 +87,7 @@ window.collectInputs = function(
     window.showMissions();
   }, 4000);
   // Congratulatory Message
-  Materialize.toast(congratulatoryMessage, 8000, "green white-text darken-2");
+  Materialize.toast(congratulatoryMessage, 8000, "blue darken-2");
 };
 
 // Empty variable to gather and hold html for mission cards in memory
@@ -99,7 +99,7 @@ window.geoReference = {};
 // The DOM element that holds the mission cards
 const missionsElement = document.getElementById("missions");
 window.missionsElement = missionsElement;
-// missionsElement.innerHTML += `<h5 class="blue-text text-darken-3">Choose Your Mission</h3>`;
+// missionsElement.innerHTML += `<h5 class=" ">Choose Your Mission</h3>`;
 
 // Collecting all Missions in a Set
 let Missions = new Set();
@@ -254,7 +254,7 @@ trails = new Mission({
         Trail Usage: many people, conflicts betwen hikers, horses, bicycles</label>
     </p>
     <div class="file-field input-field col s12">
-      <div class="btn blue darken-3 white-text">
+      <div class="btn ">
         <span>Photos</span>
         <input id="Photos" accept="image/*;capture=camera" type="file" multiple>
       </div>
@@ -262,7 +262,7 @@ trails = new Mission({
         <input accept="image/*" class="file-path validate" type="text" placeholder="Upload one or more photos of the trail.">
       </div>
     </div>
-    <div class="section col s12 btn btn-large waves-effect waves-light green darken-2 white-text" type="submit" onClick="collectInputs('${this
+    <div class="section col s12 btn btn-large waves-effect waves-light  " type="submit" onClick="collectInputs('${this
       .databaseCollection}', '${this.congratulatoryMessage}')">Submit
       <i class="material-icons right">send</i>
     </div>
@@ -421,7 +421,7 @@ tumlare = new Mission({
       <label for="Comments">Additional Comments (optional)</label>
     </p>
     <div class="file-field input-field col s12">
-      <div class="btn blue darken-3 white-text">
+      <div class="btn ">
         <span>Photos</span>
         <input id="Photos" accept="image/*;capture=camera" type="file" multiple>
       </div>
@@ -429,7 +429,7 @@ tumlare = new Mission({
         <input class="file-path validate" type="text" placeholder="Upload one or more photographs of the sighting.">
       </div>
     </div>
-    <button class="section col s12 btn btn-large waves-effect waves-light green darken-2 white-text" type="submit" onClick="window.collectInputs('${this
+    <button class="section col s12 btn btn-large waves-effect waves-light  " type="submit" onClick="window.collectInputs('${this
       .databaseCollection}', '${this.congratulatoryMessage}')">Submit
       <i class="material-icons right">send</i>
     </button>

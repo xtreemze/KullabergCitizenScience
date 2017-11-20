@@ -1,14 +1,17 @@
 var __wpo = {
   "assets": {
     "main": [
+      "./img/lansstyrelsen.svg?14ac55e5c7c2e4abafc011efa7a6818e",
+      "./img/regionSkane.svg?88f194c8700e676371cb8344b6e215b7",
+      "./img/asterisk.svg?591c26a4e965acf3b232cc966801e0ca",
       "./img/android-chrome-192x192.png?ac103b4e3f117df160efb2b53dca661d",
       "./img/trail.jpg?e5ae226dede12f864004ec83d0addd44",
       "./img/tumlare.jpg?a0b7d3b21f32536b83f0e5192c541a22",
-      "./js/vendor.js?af8ba8cf016da1117153",
-      "./js/entry.js?3bf4c796db249d863326",
-      "./js/manifest.js?be36e7da269a0b4e1bd4",
-      "./css/vendor.css?af8ba8cf016da1117153",
-      "./css/entry.css?3bf4c796db249d863326",
+      "./js/vendor.js?05bff73a537831d69a05",
+      "./js/entry.js?c2e7747c979f4bb37422",
+      "./js/manifest.js?a608f8b08a29d379228d",
+      "./css/vendor.css?05bff73a537831d69a05",
+      "./css/entry.css?c2e7747c979f4bb37422",
       "./"
     ],
     "additional": [],
@@ -16,19 +19,22 @@ var __wpo = {
   },
   "externals": [],
   "hashesMap": {
+    "198f591c1f8640cde2abf40fe49d445650089498": "./img/lansstyrelsen.svg?14ac55e5c7c2e4abafc011efa7a6818e",
+    "6704b83793b0f7692c98e616873e05e9a4c3e9d7": "./img/regionSkane.svg?88f194c8700e676371cb8344b6e215b7",
+    "805db6e929e98fd3deb05cdb2935fc5a33183c15": "./img/asterisk.svg?591c26a4e965acf3b232cc966801e0ca",
     "06c72983d21b30caf8cc0dfaf67fad91497c65db": "./img/android-chrome-192x192.png?ac103b4e3f117df160efb2b53dca661d",
     "019d67e4438029e309762b66b7fbed61122ce6f7": "./img/trail.jpg?e5ae226dede12f864004ec83d0addd44",
     "d232c3a7861f9152aad45d28d354be946fa937f9": "./img/tumlare.jpg?a0b7d3b21f32536b83f0e5192c541a22",
-    "702c2640e7f1c38bce54a096334b54f3243e95d6": "./js/vendor.js?af8ba8cf016da1117153",
-    "11be2e031f9adddb0c3cf3ad78e40af3de960108": "./js/entry.js?3bf4c796db249d863326",
-    "c6ad29520ed2881c5f6def422f56f8ec62d1b01e": "./js/manifest.js?be36e7da269a0b4e1bd4",
-    "489f2323cb823ea2ebe9003afc398e6288b045ca": "./css/vendor.css?af8ba8cf016da1117153",
-    "133a27fbfa3ec3a3397348f63d9371197f2e56ca": "./css/entry.css?3bf4c796db249d863326",
-    "6c70f1555f143a6e7cfe914940c5904ecaab1d39": "./"
+    "a27fdc09bec1fa65fff87e6ed1f9da11dfadbe59": "./js/vendor.js?05bff73a537831d69a05",
+    "a62a55aea2f84734c9ab5a1495a1de603438c1b8": "./js/entry.js?c2e7747c979f4bb37422",
+    "b47f353d2f8f172392af52ea52f0e1f4d6cd1604": "./js/manifest.js?a608f8b08a29d379228d",
+    "884fd6987437861ba1743e2320dc57463bfb29f8": "./css/vendor.css?05bff73a537831d69a05",
+    "0ec5f1d666adb31fbac66565ebff32c2ea60dbd1": "./css/entry.css?c2e7747c979f4bb37422",
+    "f0c6431b347f636cd7faf5b9b26c4743dcc8dc86": "./"
   },
   "strategy": "changed",
   "responseStrategy": "cache-first",
-  "version": "2017-11-20 15:33:31",
+  "version": "2017-11-21 00:31:55",
   "name": "webpack-offline",
   "pluginVersion": "4.8.4",
   "relativePaths": true

@@ -20,16 +20,39 @@ module.exports = function e(env) {
     module: {
       rules: [
         {
-          test: /\.(eot|ttf|woff|woff2|svg)$/,
-          loader: "url-loader?limit=100"
+          test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+          loader:
+            "url-loader?limit=10000000&mimetype=application/font-woff"
         },
         {
-          test: /\.css$/,
-          use: ["style-loader", "css-loader"]
+          test: /\.svg(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+          loader: "file-loader?name=./img/[name].[ext]?[hash]"
+        },
+        {
+          test: /\.(ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+          loader: "file-loader?name=./img/[name].[ext]?[hash]"
+        },
+        {
+          test: /\.(scss|sass|css)$/,
+          use: ExtractTextPlugin.extract({
+            fallback: "style-loader",
+            use: [
+              {
+                loader: "css-loader",
+                options: {
+                  minimize: false,
+                  sourceMap: true,
+                  importLoaders: 1
+                }
+              },
+              // "postcss-loader"
+              "sass-loader"
+            ]
+          })
         },
         {
           test: /\.(gif|png|jpe?g)$/i,
-          loaders: ["file-loader"]
+          loaders: ["file-loader?name=./img/[name].[ext]?[hash]"]
         },
 
         {
@@ -42,7 +65,8 @@ module.exports = function e(env) {
       new HtmlWebpackPlugin({
         title: "Kullaberg Citizen Science",
         template: "./app/index.ejs"
-      })
+      }),
+      new ExtractTextPlugin("./css/[name].css?[chunkhash]")
     ]
   };
 };

@@ -1,12 +1,17 @@
-require("./node_modules/materialize-css/dist/css/materialize.css");
-require("./node_modules/materialize-css/dist/js/materialize");
+// require("./node_modules/materialize-css/dist/css/materialize.css");
+// require("./node_modules/materialize-css/dist/js/materialize");
+// require("materialize-css/dist/js/materialize");
 // require("./node_modules/mdi/css/materialdesignicons.css");
-// require("./node_modules/material-icons/css/material-icons.css");
-require("./node_modules/material-design-icons/iconfont/material-icons.css");
-require("./app/css/master.css");
+// require("./node_modules/material-design-icons/iconfont/material-icons.css");
 require("./app/js/offlineRuntimeInstall");
+// require("./node_modules/material-design-icons/iconfont/material-icons.css");
+// require("./node_modules/material-icons/css/material-icons.css");
+require("materialize-loader!./app/materialize.config.js");
+// require("./node_modules/material-icons/css/material-icons.css");
+// require("./node_modules/material-icons/css/material-icons.css");
 require("./app/js/master");
 require("./app/js/missions");
-
-// require("./app/js/mongo");
-// require("./app/js/geolocation");
+// require("./node_modules/materialize-css/sass/materialize.scss");
+// require("materialize-css/sass/materialize.scss");
+// require("./app/css/variables.scss");
+require("./app/css/master.css");

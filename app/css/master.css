@@ -1,26 +1,22 @@
-.orangeBack {
-  background: #df622b;
-}
-
 .transparent {
   background-color: rgba(0, 0, 0, 0);
 }
 
-.navbar {
-  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
-.trail1 {
-  color: #df622b;
-}
-
 .breadcrumb {
   font-size: 1.2rem;
+  line-height: 2.8rem;
 }
 
-.contactButtons {
-  padding-top: 1em;
+.strong {
+  font-weight: 800;
 }
+
+.brand-logo {
+  font-size: 1.2rem !important;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
 
 img.logoImg:hover {
   transform: rotate(1turn);
@@ -32,32 +28,4 @@ img.logoImg:hover {
 
 .pointer {
   cursor: pointer;
-}
-
-/* label color */
-.input-field label {
-  color: #444444;
-}
-/* label focus color */
-.input-field input[type="text"]:focus + label {
-  color: #444444;
-}
-/* label underline focus color */
-.input-field input[type="text"]:focus {
-  border-bottom: 1px solid #444444;
-  box-shadow: 0 1px 0 0 #444444;
-}
-/* valid color */
-.input-field input[type="text"].valid {
-  border-bottom: 1px solid #444444;
-  box-shadow: 0 1px 0 0 #444444;
-}
-/* invalid color */
-.input-field input[type="text"].invalid {
-  border-bottom: 1px solid #444444;
-  box-shadow: 0 1px 0 0 #444444;
-}
-/* icon prefix focus color */
-.input-field .prefix.active {
-  color: #444444;
 }

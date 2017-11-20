@@ -1,16 +1,19 @@
 CACHE MANIFEST
-#ver:2017-11-20 15:33:31
+#ver:2017-11-21 00:31:55
 #plugin:4.8.4
 
 CACHE:
+../img/lansstyrelsen.svg?14ac55e5c7c2e4abafc011efa7a6818e
+../img/regionSkane.svg?88f194c8700e676371cb8344b6e215b7
+../img/asterisk.svg?591c26a4e965acf3b232cc966801e0ca
 ../img/android-chrome-192x192.png?ac103b4e3f117df160efb2b53dca661d
 ../img/trail.jpg?e5ae226dede12f864004ec83d0addd44
 ../img/tumlare.jpg?a0b7d3b21f32536b83f0e5192c541a22
-../js/vendor.js?af8ba8cf016da1117153
-../js/entry.js?3bf4c796db249d863326
-../js/manifest.js?be36e7da269a0b4e1bd4
-../css/vendor.css?af8ba8cf016da1117153
-../css/entry.css?3bf4c796db249d863326
+../js/vendor.js?05bff73a537831d69a05
+../js/entry.js?c2e7747c979f4bb37422
+../js/manifest.js?a608f8b08a29d379228d
+../css/vendor.css?05bff73a537831d69a05
+../css/entry.css?c2e7747c979f4bb37422
 ../
 
 NETWORK:

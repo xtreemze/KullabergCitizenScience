@@ -1,5 +1,7 @@
 module.exports = {
   plugins: [
+    require("precss"),
+    // require("postcss-node-sass"),
     require("cssnano")({
       autoprefixer: false,
       discardComments: { removeAll: true },
