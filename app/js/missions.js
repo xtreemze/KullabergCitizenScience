@@ -61,10 +61,10 @@ window.collectInputs = function(databaseCollection, congratulatoryMessage) {
         window.data.location.coordinates[2] = {
           $numberDecimal: elements[e].value
         };
+      } else if (elements[e].value.id === "Date") {
+        window.data[elements[e].id] = { $date: new Date(elements[e].value) };
       } else if (elements[e].type == "number") {
         window.data[elements[e].id] = parseInt(elements[e].value, 10);
-      } else if (elements[e].value.id === "Date") {
-        window.data[elements[e].id] = { $date: elements[e].value };
       } else if (elements[e].value.length > 0) {
         window.data[elements[e].id] = elements[e].value;
       } else {
@@ -74,7 +74,6 @@ window.collectInputs = function(databaseCollection, congratulatoryMessage) {
   }
 
   updateDB(databaseCollection, window.data);
-  // Materialize.toast(stringData, 8000, "blue white-text darken-3");
 
   setTimeout(() => {
     window.showMissions();
