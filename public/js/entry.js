@@ -77,6 +77,7 @@ const updateDB = function(database, set) {
     });
 };
 
+// Function to gather information from the Form
 window.collectInputs = function(database) {
   window.form = parent.document.getElementsByTagName("form")[0];
   window.data = {};
@@ -97,8 +98,13 @@ window.collectInputs = function(database) {
   // let stringData = `{ ${data.join(`, `)} }`;
   let stringData = window.data;
   // console.log(stringData);
+
   updateDB(database, stringData);
-  // Materialize.toast(stringData, 8000, "blue white-text darken-3");
+    // Materialize.toast(stringData, 8000, "blue white-text darken-3");
+  
+  window.showMissions();
+  // Congratulatory Message
+  Materialize.toast("Tack!", 8000, "green white-text darken-2");
 };
 
 // Empty variable to gather and hold html for mission cards in memory
@@ -269,7 +275,7 @@ trails = new Mission({
         <input accept="image/*" class="file-path validate" type="text" placeholder="Upload one or more photos of the trail.">
       </div>
     </div>
-    <button class="section col s12 btn btn-large waves-effect waves-light green darken-2 white-text" type="submit" name="action" onclick="collectInputs('${this
+    <button class="section col s12 btn btn-large waves-effect waves-light green darken-2 white-text" name="action" onclick="collectInputs('${this
       .database}')">Submit
       <i class="material-icons right">send</i>
     </button>
@@ -434,7 +440,7 @@ tumlare = new Mission({
         <input class="file-path validate" type="text" placeholder="Upload one or more photographs of the sighting.">
       </div>
     </div>
-    <button class="section col s12 btn btn-large waves-effect waves-light green darken-2 white-text" type="submit" onclick="window.collectInputs('${this
+    <button class="section col s12 btn btn-large waves-effect waves-light green darken-2 white-text" onclick="window.collectInputs('${this
       .database}')" name="action">Submit
       <i class="material-icons right">send</i>
     </button>
