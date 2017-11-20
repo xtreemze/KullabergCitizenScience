@@ -7,7 +7,12 @@ const db = stitchClient
   .service("mongodb", "mongodb-atlas")
   .db("citizenScience");
 
-// Function to Upload data to DB
+/**
+ * Function to Upload data to DB
+ * 
+ * @param {any} Database collection 
+ * @param {any} Dataset from the Form
+ */
 const updateDB = function(database, set) {
   window.variables = {
     database: database,
@@ -30,13 +35,16 @@ const updateDB = function(database, set) {
         Materialize.toast("Unable to Connect", 8000, "red darken-3 white-text");
     });
 };
-
 /**
- * Function to Collect Data, send to Database and Congratulate User
+ *  Function to Collect Data, send to Database and Congratulate User
  * 
- * @param {any} database 
+ * @param {any} Database Collection 
+ * @param {string} A Congratulatory Message 
  */
-window.collectInputs = function(databaseCollection, congratulatoryMessage) {
+window.collectInputs = function(
+  databaseCollection = {},
+  congratulatoryMessage = ""
+) {
   window.form = parent.document.getElementsByTagName("form")[0];
   window.data = {
     location: {
@@ -474,6 +482,11 @@ tumlare = new Mission({
 
 // Breadcrumbs in Footer
 window.navigationBreadcrumbs = document.getElementById("navigationBreadcrumbs");
+
+/**
+ * Show the Missions in Front Page
+ * 
+ */
 window.showMissions = function() {
   missionsElement.innerHTML = missionCardsHTML;
   navigationBreadcrumbs.innerHTML = `
