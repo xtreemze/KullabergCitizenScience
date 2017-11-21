@@ -7,7 +7,7 @@ module.exports = __webpack_require__.p + "./img/trail.jpg?e5ae226dede12f864004ec
 
 /***/ }),
 
-/***/ 75:
+/***/ 76:
 /***/ (function(module, exports, __webpack_require__) {
 
 // require("./node_modules/materialize-css/dist/css/materialize.css");
@@ -18,33 +18,33 @@ module.exports = __webpack_require__.p + "./img/trail.jpg?e5ae226dede12f864004ec
 __webpack_require__(7);
 // require("./node_modules/material-design-icons/iconfont/material-icons.css");
 // require("./node_modules/material-icons/css/material-icons.css");
-__webpack_require__(76);
+__webpack_require__(77);
 // require("./node_modules/material-icons/css/material-icons.css");
 // require("./node_modules/material-icons/css/material-icons.css");
-__webpack_require__(81);
 __webpack_require__(82);
+__webpack_require__(83);
 // require("./node_modules/materialize-css/sass/materialize.scss");
 // require("materialize-css/sass/materialize.scss");
 // require("./app/css/variables.scss");
-__webpack_require__(84);
+__webpack_require__(85);
 
-
-/***/ }),
-
-/***/ 76:
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(77);
 
 /***/ }),
 
 /***/ 77:
 /***/ (function(module, exports, __webpack_require__) {
 
+__webpack_require__(78);
+
+/***/ }),
+
+/***/ 78:
+/***/ (function(module, exports, __webpack_require__) {
+
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(78);
+var content = __webpack_require__(79);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -52,7 +52,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(79)(content, options);
+var update = __webpack_require__(80)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -70,7 +70,7 @@ if(false) {
 
 /***/ }),
 
-/***/ 78:
+/***/ 79:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(21)(undefined);
@@ -85,7 +85,7 @@ exports.push([module.i, ".materialize-red {\n  background-color: #e51c23 !import
 
 /***/ }),
 
-/***/ 79:
+/***/ 80:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -131,7 +131,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(80);
+var	fixUrls = __webpack_require__(81);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -445,7 +445,7 @@ function updateLink (link, options, obj) {
 
 /***/ }),
 
-/***/ 80:
+/***/ 81:
 /***/ (function(module, exports) {
 
 
@@ -541,7 +541,7 @@ module.exports = function (css) {
 
 /***/ }),
 
-/***/ 81:
+/***/ 82:
 /***/ (function(module, exports) {
 
 window.addEventListener("DOMContentLoaded", function() {
@@ -555,7 +555,7 @@ window.addEventListener("load", function() {
 
 /***/ }),
 
-/***/ 82:
+/***/ 83:
 /***/ (function(module, exports, __webpack_require__) {
 
 const stitch = __webpack_require__(8);
@@ -884,7 +884,7 @@ tumlare = new Mission({
     "Thank you for your participation! Your contribution helps us to develop an adaptive management in the Kullaberg Nature.",
   description:
     "Engage in the collection of visual harbor porpoise observations (both living and dead) in the north-western parts of Scania. Observations are used in scientific research to help increase the knowledge about this threatened species.",
-  image: __webpack_require__(83),
+  image: __webpack_require__(84),
   monitor: function() {
     let content = ``;
     navigator.geolocation.getCurrentPosition(position => {
@@ -1057,18 +1057,18 @@ window.showMissions = function() {
 
 /***/ }),
 
-/***/ 83:
+/***/ 84:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "./img/tumlare.jpg?a0b7d3b21f32536b83f0e5192c541a22";
 
 /***/ }),
 
-/***/ 84:
+/***/ 85:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ })
 
-},[75]);
+},[76]);

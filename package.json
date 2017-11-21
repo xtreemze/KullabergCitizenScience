@@ -42,6 +42,7 @@
     "html-minifier-webpack-plugin": "^1.1.1",
     "html-webpack-plugin": "^2.30.1",
     "image-webpack-loader": "^3.4.2",
+    "material-design-icons": "^3.0.1",
     "material-icons": "^0.1.0",
     "materialize-css": "^0.100.2",
     "materialize-loader": "^2.0.2",

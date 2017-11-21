@@ -1,5 +1,5 @@
 CACHE MANIFEST
-#ver:2017-11-21 00:31:55
+#ver:2017-11-21 07:14:56
 #plugin:4.8.4
 
 CACHE:
@@ -7,13 +7,15 @@ CACHE:
 ../img/regionSkane.svg?88f194c8700e676371cb8344b6e215b7
 ../img/asterisk.svg?591c26a4e965acf3b232cc966801e0ca
 ../img/android-chrome-192x192.png?ac103b4e3f117df160efb2b53dca661d
+../img/MaterialIcons-Regular.eot?e79bfd88537def476913f3ed52f4f4b3
+../img/MaterialIcons-Regular.ttf?a37b0c01c0baf1888ca812cc0508f6e2
 ../img/trail.jpg?e5ae226dede12f864004ec83d0addd44
 ../img/tumlare.jpg?a0b7d3b21f32536b83f0e5192c541a22
-../js/vendor.js?05bff73a537831d69a05
-../js/entry.js?c2e7747c979f4bb37422
-../js/manifest.js?a608f8b08a29d379228d
-../css/vendor.css?05bff73a537831d69a05
-../css/entry.css?c2e7747c979f4bb37422
+../js/vendor.js?06f96e917bbe5e52f9e7
+../js/entry.js?6d975c409416915e381b
+../js/manifest.js?fab301b4ff1b7a8bf042
+../css/vendor.css?06f96e917bbe5e52f9e7
+../css/entry.css?6d975c409416915e381b
 ../
 
 NETWORK:
