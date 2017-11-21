@@ -796,7 +796,7 @@ trails = new Mission({
   <form class="" onsubmit="return false">
     <h3 class="col s12">${this.title}</h3>
     <h5 class="col s12">Georeference</h5>
-    <div id="map"></div>
+    <div class="col s12" id="map"></div>
     <div class="input-field col s6 m3">
       <input id="Latitude" type="number" value="${window.geoReference.lat}">
       <label for="Latitude">Latitude</label>
@@ -965,7 +965,7 @@ trails = new Mission({
   <div class="">
     <h3 class="col s12">${this.title}</h3>
     <h5 class="col s12">Database Results</h5>
-    <div id="map"></div>
+    <div class="col s12" id="map"></div>
   </div>
 </div>
 `;
@@ -1052,7 +1052,8 @@ tumlare = new Mission({
   <form class="" onsubmit="return false">
     <h3 class="col s12">${this.title}</h3>
     <h5 class="col s12">Location of Sighting</h5>
-    <div id="map"></div>
+    <p class="col s12">Locate the sighting on the map.</p>
+    <div class="col s12" id="map"></div>
     <div class="input-field col s6 m4">
       <input id="Latitude" type="number" value="${window.geoReference.lat}">
       <label for="Latitude">Latitude</label>
@@ -1176,6 +1177,19 @@ tumlare = new Mission({
         .bindPopup("Your Location")
         .openPopup();
 
+      let popup = L.popup();
+
+      function onMapClick(e) {
+        window.Latitude.value = e.latlng.lat;
+        window.Longitude.value = e.latlng.lng;
+        popup
+          .setLatLng(e.latlng)
+          .setContent(window.Species.value)
+          .openOn(map);
+      }
+
+      map.on("click", onMapClick);
+
       setTimeout(function() {
         M.updateTextFields();
         let multiSelect = document.querySelectorAll("select");
@@ -1229,7 +1243,7 @@ tumlare = new Mission({
   <div class="">
     <h3 class="col s12">${this.title}</h3>
     <h5 class="col s12">Database Results</h5>
-    <div id="map"></div>    
+    <div class="col s12" id="map"></div>    
   </div>
 </div>
 `;
