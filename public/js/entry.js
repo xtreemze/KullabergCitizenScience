@@ -1107,6 +1107,13 @@ tumlare = new Mission({
           },
           false
         );
+        number.addEventListener(
+          "change",
+          function() {
+            display.innerHTML = number.value;
+          },
+          false
+        );
         // datePickerInstance.setDate(new Date());
       }, 80);
     });
