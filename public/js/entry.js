@@ -1093,14 +1093,14 @@ tumlare = new Mission({
         }
         let number = document.getElementById("Quantity");
         let display = document.getElementById("QuantityDisplay");
-        addEventListener(
+        number.addEventListener(
           "mousemove",
           function() {
             display.innerHTML = number.value;
           },
           false
         );
-        addEventListener(
+        number.addEventListener(
           "touchmove",
           function() {
             display.innerHTML = number.value;
