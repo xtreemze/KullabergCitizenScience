@@ -360,8 +360,8 @@ trails = new Mission({
     let content = ``;
 
     content += `<div class="row">
-  <div class="container">
-    <h4 class="col s12">${this.title}</h4>
+  <div class="">
+    <h3 class="col s12">${this.title}</h3>
     <h5 class="col s12">Database Results</h5>
   </div>
 </div>
@@ -544,8 +544,8 @@ tumlare = new Mission({
     let content = ``;
 
     content += `<div class="row">
-  <div class="container">
-    <h4 class="col s12">${this.title}</h4>
+  <div class="">
+    <h3 class="col s12">${this.title}</h3>
     <h5 class="col s12">Database Results</h5>
   </div>
 </div>
