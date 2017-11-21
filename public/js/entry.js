@@ -15,7 +15,6 @@ module.exports = __webpack_require__.p + "./img/trail.jpg?e5ae226dede12f864004ec
 // require("materialize-css/dist/js/materialize");
 // require("./node_modules/mdi/css/materialdesignicons.css");
 // require("./node_modules/material-design-icons/iconfont/material-icons.css");
-__webpack_require__(7);
 __webpack_require__(6);
 // require("./node_modules/material-icons/css/material-icons.css");
 __webpack_require__(63);
@@ -27,6 +26,7 @@ __webpack_require__(69);
 // require("materialize-css/sass/materialize.scss");
 // require("./app/css/variables.scss");
 __webpack_require__(71);
+__webpack_require__(7);
 
 
 /***/ }),
@@ -920,8 +920,8 @@ trails = new Mission({
     let content = ``;
 
     content += `<div class="row">
-  <div class="container">
-    <h4 class="col s12">${this.title}</h4>
+  <div class="">
+    <h3 class="col s12">${this.title}</h3>
     <h5 class="col s12">Database Results</h5>
   </div>
 </div>
@@ -1104,8 +1104,8 @@ tumlare = new Mission({
     let content = ``;
 
     content += `<div class="row">
-  <div class="container">
-    <h4 class="col s12">${this.title}</h4>
+  <div class="">
+    <h3 class="col s12">${this.title}</h3>
     <h5 class="col s12">Database Results</h5>
   </div>
 </div>

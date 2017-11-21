@@ -36,8 +36,7 @@ module.exports = function e(env) {
         // },
         {
           test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-          loader:
-            "url-loader?limit=10000000&mimetype=application/font-woff"
+          loader: "url-loader?limit=10000000&mimetype=application/font-woff"
         },
         {
           test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -142,8 +141,8 @@ module.exports = function e(env) {
       new OfflinePlugin({
         externals: [],
         caches: "all",
-        // responseStrategy: "network-first",
-        responseStrategy: "cache-first",
+        responseStrategy: "network-first",
+        // responseStrategy: "cache-first",
         // updateStrategy: "all",
         updateStrategy: "changed",
         minify: "true",

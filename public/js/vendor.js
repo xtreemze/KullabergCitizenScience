@@ -13121,22 +13121,38 @@ __webpack_require__(5);
 
 __WEBPACK_IMPORTED_MODULE_0_offline_plugin_runtime__["install"]({
   onInstalled: function() {
-    Materialize.toast("App Installed", 4000, "blue darken-3 white-text");
+    M.toast({
+      html: "App Installed",
+      displayLength: 4000,
+      classes: "blue darken-2"
+    });
   },
 
   onUpdating: function() {
-    Materialize.toast("Updating...", 4000, "blue darken-3 white-text");
+    M.toast({
+      html: "Updating...",
+      displayLength: 4000,
+      classes: "blue darken-2"
+    });
   },
 
   onUpdateReady: function() {
     __WEBPACK_IMPORTED_MODULE_0_offline_plugin_runtime__["applyUpdate"]();
-    Materialize.toast("Update Ready", 4000, "blue darken-3 white-text");
+    M.toast({
+      html: "Update Ready",
+      displayLength: 4000,
+      classes: "blue darken-2"
+    });
   },
   onUpdated: function() {
-    Materialize.toast("Reloading...", 10000, "blue darken-3 white-text");
     setTimeout(function() {
       window.location.reload();
-    }, 10000);
+    }, 8000);
+    M.toast({
+      html: "Reloading",
+      displayLength: 7500,
+      classes: "blue darken-2"
+    });
   }
 });
 
