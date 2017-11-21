@@ -1,21 +1,21 @@
 CACHE MANIFEST
-#ver:2017-11-21 16:14:35
+#ver:2017-11-21 17:43:57
 #plugin:4.8.4
 
 CACHE:
 ../img/lansstyrelsen.svg?14ac55e5c7c2e4abafc011efa7a6818e
 ../img/regionSkane.svg?88f194c8700e676371cb8344b6e215b7
 ../img/asterisk.svg?591c26a4e965acf3b232cc966801e0ca
-../img/android-chrome-192x192.png?ac103b4e3f117df160efb2b53dca661d
+../img/Kv4sq.svg?4f6df6f61a7dc59a6184d515dfa0d8ef
 ../img/MaterialIcons-Regular.eot?e79bfd88537def476913f3ed52f4f4b3
 ../img/MaterialIcons-Regular.ttf?a37b0c01c0baf1888ca812cc0508f6e2
 ../img/trail.jpg?e5ae226dede12f864004ec83d0addd44
 ../img/tumlare.jpg?a0b7d3b21f32536b83f0e5192c541a22
-../js/vendor.js?f9bd5e9d3450c8e7238d
-../js/entry.js?a4eaa06d5288d6271c9f
-../js/manifest.js?d8d414c01c7cde675ed1
-../css/vendor.css?f9bd5e9d3450c8e7238d
-../css/entry.css?a4eaa06d5288d6271c9f
+../js/vendor.js?edbbbc038c6710caa098
+../js/entry.js?9d2bc8f00af781e3fa33
+../js/manifest.js?166f95c03b4df21b78c5
+../css/vendor.css?edbbbc038c6710caa098
+../css/entry.css?9d2bc8f00af781e3fa33
 ../
 
 NETWORK:

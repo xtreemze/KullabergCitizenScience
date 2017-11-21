@@ -14,7 +14,7 @@ stitchClient
     console.log("[MongoDB Stitch] Logged in as: " + stitchClient.authedId());
     M.toast({
       html: "Connected to Database",
-      displayLength: 8000,
+      displayLength: 4000,
       classes: "green darken-2"
     });
   })
@@ -22,7 +22,7 @@ stitchClient
     console.log("error: ", e);
     M.toast({
       html: "Database Unavailable",
-      displayLength: 8000,
+      displayLength: 4000,
       classes: "yellow darken-2"
     });
   });
@@ -433,11 +433,11 @@ tumlare = new Mission({
       </label>
     </p>
     <h5 class="col s12">Quantity</h5>
-    <div class="col s11 range-field">
+    <div class="col s10 range-field">
       <label>Quantity</label>
       <input id="Quantity" type="range" min="1" max="20" value="10">
     </div>
-    <p class="col s1">
+    <p class="col s2">
       <span id="QuantityDisplay" class="helper-text">10</span>
     </p>
     <p class="col s12">
@@ -533,9 +533,20 @@ tumlare = new Mission({
         }
         let number = document.getElementById("Quantity");
         let display = document.getElementById("QuantityDisplay");
-        addEventListener("pointermove", function() {
-          display.innerHTML = number.value;
-        });
+        addEventListener(
+          "mousemove",
+          function() {
+            display.innerHTML = number.value;
+          },
+          false
+        );
+        addEventListener(
+          "touchmove",
+          function() {
+            display.innerHTML = number.value;
+          },
+          false
+        );
         // datePickerInstance.setDate(new Date());
       }, 80);
     });
