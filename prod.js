@@ -62,7 +62,7 @@ module.exports = function e(env) {
         {
           test: /\.(gif|png|jpe?g)$/i,
           loaders: [
-            "file-loader?name=./img/[name].[ext]?[hash]",
+            "file-loader?name=./css/[name].[ext]?[hash]",
             {
               loader: "image-webpack-loader",
               options: {

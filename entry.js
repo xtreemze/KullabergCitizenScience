@@ -8,6 +8,8 @@ require("./node_modules/material-design-icons/iconfont/material-icons.css");
 require("materialize-loader!./app/materialize.config.js");
 // require("./node_modules/material-icons/css/material-icons.css");
 // require("./node_modules/material-icons/css/material-icons.css");
+require("./node_modules/leaflet/dist/leaflet.css");
+require("./node_modules/leaflet/dist/leaflet.js");
 require("./app/js/master");
 require("./app/js/missions");
 // require("./node_modules/materialize-css/sass/materialize.scss");

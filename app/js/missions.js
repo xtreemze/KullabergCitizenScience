@@ -216,6 +216,7 @@ trails = new Mission({
   <form class="" onsubmit="return false">
     <h3 class="col s12">${this.title}</h3>
     <h5 class="col s12">Georeference</h5>
+    <div id="map"></div>
     <div class="input-field col s6 m3">
       <input id="Latitude" type="number" value="${window.geoReference.lat}">
       <label for="Latitude">Latitude</label>
@@ -326,6 +327,27 @@ trails = new Mission({
 <a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
 <a class="pointer breadcrumb">Monitor</a>
 `;
+
+      const map = L.map("map").setView(
+        [window.Latitude.value, window.Longitude.value],
+        16
+      );
+
+      L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
+        // attribution:
+        //   '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+
+      let circle = L.circle([window.Latitude.value, window.Longitude.value], {
+        color: "red",
+        fillColor: "#f03",
+        fillOpacity: 0.5,
+        radius: 5
+      })
+        .addTo(map)
+        .bindPopup("Your Location")
+        .openPopup();
+
       setTimeout(function() {
         M.updateTextFields();
         let multiSelect = document.querySelectorAll("select");
@@ -363,6 +385,7 @@ trails = new Mission({
   <div class="">
     <h3 class="col s12">${this.title}</h3>
     <h5 class="col s12">Database Results</h5>
+    <div id="map"></div>
   </div>
 </div>
 `;
@@ -371,8 +394,47 @@ trails = new Mission({
 <a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
 <a class="pointer breadcrumb">Analyze</a>
 `;
+    navigator.geolocation.getCurrentPosition(position => {
+      (window.geoReference = {
+        lat: position.coords.latitude || 0,
+        long: position.coords.longitude || 0,
+        alt: position.coords.altitude || 0
+      }),
+        () => {
+          console.log(
+            "We are unable to locate your device. Please describe your location as best you can."
+          );
+          window.geoReference = {
+            lat: "Latitude",
+            long: "Longitude",
+            alt: "Altitude"
+          };
+        },
+        {
+          enableHighAccuracy: true
+        };
 
-    M.updateTextFields();
+      const map = L.map("map").setView(
+        [geoReference.lat, geoReference.long],
+        16
+      );
+
+      L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
+        // attribution:
+        //   '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+
+      let circle = L.circle([geoReference.lat, geoReference.long], {
+        color: "red",
+        fillColor: "#f03",
+        fillOpacity: 0.5,
+        radius: 5
+      })
+        .addTo(map)
+        .bindPopup("Your Location")
+        .openPopup();
+      M.updateTextFields();
+    });
   }
 });
 
@@ -410,6 +472,7 @@ tumlare = new Mission({
   <form class="" onsubmit="return false">
     <h3 class="col s12">${this.title}</h3>
     <h5 class="col s12">Location of Sighting</h5>
+    <div id="map"></div>
     <div class="input-field col s6 m4">
       <input id="Latitude" type="number" value="${window.geoReference.lat}">
       <label for="Latitude">Latitude</label>
@@ -512,6 +575,27 @@ tumlare = new Mission({
       <a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
       <a class="pointer breadcrumb">Monitor</a>
       `;
+
+      const map = L.map("map").setView(
+        [window.Latitude.value, window.Longitude.value],
+        16
+      );
+
+      L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
+        // attribution:
+        //   '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+
+      let circle = L.circle([window.Latitude.value, window.Longitude.value], {
+        color: "red",
+        fillColor: "#f03",
+        fillOpacity: 0.5,
+        radius: 5
+      })
+        .addTo(map)
+        .bindPopup("Your Location")
+        .openPopup();
+
       setTimeout(function() {
         M.updateTextFields();
         let multiSelect = document.querySelectorAll("select");
@@ -565,6 +649,7 @@ tumlare = new Mission({
   <div class="">
     <h3 class="col s12">${this.title}</h3>
     <h5 class="col s12">Database Results</h5>
+    <div id="map"></div>    
   </div>
 </div>
 `;
@@ -574,8 +659,47 @@ tumlare = new Mission({
 <a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
 <a class="pointer breadcrumb">Analyze</a>
 `;
+    navigator.geolocation.getCurrentPosition(position => {
+      (window.geoReference = {
+        lat: position.coords.latitude || 0,
+        long: position.coords.longitude || 0,
+        alt: position.coords.altitude || 0
+      }),
+        () => {
+          console.log(
+            "We are unable to locate your device. Please describe your location as best you can."
+          );
+          window.geoReference = {
+            lat: "Latitude",
+            long: "Longitude",
+            alt: "Altitude"
+          };
+        },
+        {
+          enableHighAccuracy: true
+        };
 
-    M.updateTextFields();
+      const map = L.map("map").setView(
+        [geoReference.lat, geoReference.long],
+        16
+      );
+
+      L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
+        // attribution:
+        //   '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+
+      let circle = L.circle([geoReference.lat, geoReference.long], {
+        color: "red",
+        fillColor: "#f03",
+        fillOpacity: 0.5,
+        radius: 5
+      })
+        .addTo(map)
+        .bindPopup("Your Location")
+        .openPopup();
+      M.updateTextFields();
+    });
   }
 });
 
