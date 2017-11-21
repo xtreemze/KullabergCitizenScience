@@ -4,7 +4,7 @@
 
 .breadcrumb {
   font-size: 1.2rem;
-  line-height: 2.8rem;
+  line-height: 3rem;
 }
 
 .strong {
@@ -31,4 +31,9 @@ img.logoImg:hover {
 
 tr.pika-row {
   border-bottom: 1px solid rgba(0, 0, 0, 0);
+}
+
+#QuantityDisplay {
+  font-size: 2.1rem;
+  font-weight: 200;
 }

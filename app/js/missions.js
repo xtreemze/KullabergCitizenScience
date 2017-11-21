@@ -94,7 +94,9 @@ window.collectInputs = function(
           $numberDecimal: elements[e].value
         };
       } else if (elements[e].value.id === "Date") {
-        window.data[elements[e].id] = { $date: new Date(elements[e].value) };
+        window.data[elements[e].id] = {
+          $date: new Date(elements[e].value)
+        };
       } else if (elements[e].type == "number") {
         window.data[elements[e].id] = parseInt(elements[e].value, 10);
       } else if (elements[e].value.length > 0) {
@@ -212,7 +214,7 @@ trails = new Mission({
         };
       content += `<div class="row">
   <form class="" onsubmit="return false">
-    <h4 class="col s12">${this.title}</h4>
+    <h3 class="col s12">${this.title}</h3>
     <h5 class="col s12">Georeference</h5>
     <div class="input-field col s6 m3">
     <input id="Latitude" type="number" value="${window.geoReference.lat}">
@@ -292,7 +294,7 @@ trails = new Mission({
     <div class="section">
     <div class="input-field col s12 m6">
       <textarea id="SupportInfrastructure" class="materialize-textarea"></textarea>
-      <label for="SupportInfrastructure">Support Infrastructure:</label>
+      <label for="SupportInfrastructure">Support Infrastructure</label>
       <span class="helper-text">Example: handrails, ropes, steps.</span>
     </div>
     <div class="input-field col s12 m6">
@@ -407,7 +409,7 @@ tumlare = new Mission({
         };
       content += `<div class="row">
   <form class="" onsubmit="return false">
-    <h4 class="col s12">${this.title}</h4>
+    <h3 class="col s12">${this.title}</h3>
     <h5 class="col s12">Location of Sighting</h5>
     <div class="input-field col s6 m4">
       <input id="Latitude" type="number" value="${window.geoReference.lat}">
@@ -418,28 +420,29 @@ tumlare = new Mission({
       <label for="Longitude">Longitude</label>
     </div>
     <div class="input-field col s6 m4">
+    <label class="" for="Date">Date</label>
       <input id="Day" type="text" class="datepicker" value="${new Date().toDateString()}">
-      <span class="helper-text" for="Date">Date</span>
     </div>
-    <div class="input-field col s12 m8">
+    <div class="input-field col s6 m8">
       <label for="Species">Species</label>
       <input id="Species" type="text" value="Porpoise">
     </div>
-    <div class="col s6 m4">
+    <div class="col s12 m4">
       <label>
         <input id="BinocularsUsed" type="checkbox">
         <span>Observation Made with Binoculars</span>
       </label>
     </div>
     <h5 class="col s12">Quantity</h5>
-    <p class="col s5 range-field">
-    <span class="helper-text">Quantity</span>
+
+    <div class="col s11 range-field">
+    <label>Quantity</label>
     <input id="Quantity" type="range" min="1" max="20" value="10">
-    </p>
+    </div>
     <p class="col s1">
     <span id="QuantityDisplay" class="helper-text">10</span>
     </p>
-    <div class="col s4">
+    <div class="col s12">
       <label>
         <input id="UncertainQuantity" type="checkbox">
         <span>Uncertain Quantity</span>
@@ -533,7 +536,7 @@ tumlare = new Mission({
         }
         let number = document.getElementById("Quantity");
         let display = document.getElementById("QuantityDisplay");
-        addEventListener("change", function() {
+        addEventListener("pointermove", function() {
           display.innerHTML = number.value;
         });
         // datePickerInstance.setDate(new Date());
