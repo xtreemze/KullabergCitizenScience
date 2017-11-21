@@ -11,12 +11,11 @@
   font-weight: 800;
 }
 
-.brand-logo {
-  font-size: 1.2rem !important;
+nav .brand-logo {
   text-transform: uppercase;
   font-weight: 600;
+  font-size: 1.4rem !important;
 }
-
 
 img.logoImg:hover {
   transform: rotate(1turn);
@@ -28,4 +27,8 @@ img.logoImg:hover {
 
 .pointer {
   cursor: pointer;
+}
+
+tr.pika-row {
+  border-bottom: 1px solid rgba(0, 0, 0, 0);
 }

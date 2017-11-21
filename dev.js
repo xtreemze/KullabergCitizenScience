@@ -21,12 +21,11 @@ module.exports = function e(env) {
       rules: [
         {
           test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-          loader:
-            "url-loader?limit=10000000&mimetype=application/font-woff"
+          loader: "url-loader?limit=1000000000&mimetype=application/font-woff"
         },
         {
-          test: /\.svg(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-          loader: "file-loader?name=./img/[name].[ext]?[hash]"
+          test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+          loader: "url-loader?limit=3000000000&name=./img/[name].[ext]?[hash]"
         },
         {
           test: /\.(ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -45,8 +44,8 @@ module.exports = function e(env) {
                   importLoaders: 1
                 }
               },
-              // "postcss-loader"
-              "sass-loader"
+              "postcss-loader"
+              // "sass-loader"
             ]
           })
         },

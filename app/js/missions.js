@@ -7,13 +7,33 @@ const db = stitchClient
   .service("mongodb", "mongodb-atlas")
   .db("citizenScience");
 
+// Anonymous Authentication
+stitchClient
+  .login()
+  .then(() => {
+    console.log("[MongoDB Stitch] Logged in as: " + stitchClient.authedId());
+    M.toast({
+      html: "Connected to Database",
+      displayLength: 8000,
+      classes: "green darken-2"
+    });
+  })
+  .catch(e => {
+    console.log("error: ", e);
+    M.toast({
+      html: "Database Unavailable",
+      displayLength: 8000,
+      classes: "yellow darken-2"
+    });
+  });
+
 /**
- * Function to Upload data to DB
+ * Upload FormData to MongoDB Database
  * 
- * @param {any} Database collection 
- * @param {any} Dataset from the Form
+ * @param {string} [database=""]  Name of the Database Collection
+ * @param {any} [set={}] The Data as an Object
  */
-const updateDB = function(database, set) {
+const updateDB = function(database = "", set = {}) {
   window.variables = {
     database: database,
     set: set
@@ -24,15 +44,19 @@ const updateDB = function(database, set) {
     .then(() => db.collection(variables.database).insertOne(variables.set))
     .then(result => {
       console.log("[MongoDB Stitch] Updated: ", result),
-        Materialize.toast(
-          "Database Updated",
-          8000,
-          "green darken-2"
-        );
+        M.toast({
+          html: "Database Updated",
+          displayLength: 8000,
+          classes: "green darken-2"
+        });
     })
     .catch(error => {
       console.error("[MongoDB Stitch] Error: ", error),
-        Materialize.toast("Unable to Connect", 8000, "red darken-2");
+        M.toast({
+          html: "Unable to Connect",
+          displayLength: 8000,
+          classes: "red darken-2"
+        });
     });
 };
 /**
@@ -87,7 +111,11 @@ window.collectInputs = function(
     window.showMissions();
   }, 4000);
   // Congratulatory Message
-  Materialize.toast(congratulatoryMessage, 8000, "blue darken-2");
+  M.toast({
+    html: congratulatoryMessage,
+    displayLength: 8000,
+    classes: "blue darken-2"
+  });
 };
 
 // Empty variable to gather and hold html for mission cards in memory
@@ -136,7 +164,7 @@ class Mission {
         <span class="card-title">${this.title}</span>
       </div>
       <div class="card-content">
-        <p>${this.description}</p>
+        <div>${this.description}</div>
       </div>
       <div class="card-action">
         <a class="pointer" onclick="${this.shortName}.monitor()">Monitor</a>
@@ -165,8 +193,8 @@ trails = new Mission({
     let content = ``;
     navigator.geolocation.getCurrentPosition(position => {
       (window.geoReference = {
-        lat: position.coords.latitude,
-        long: position.coords.longitude,
+        lat: position.coords.latitude || 0,
+        long: position.coords.longitude || 0,
         alt: position.coords.altitude || 0
       }),
         () => {
@@ -183,78 +211,100 @@ trails = new Mission({
           enableHighAccuracy: true
         };
       content += `<div class="row">
-  <form class="container" onsubmit="return false">
+  <form class="" onsubmit="return false">
     <h4 class="col s12">${this.title}</h4>
     <h5 class="col s12">Georeference</h5>
-    <p class="input-text col s6 m3">
-      <label for="Latitude">Latitude</label>
-      <input id="Latitude" type="number" value="${window.geoReference.lat}">
-    </p>
-    <p class="input-text col s6 m3">
-      <label for="Longitude">Longitude</label>
-      <input id="Longitude" type="number" value="${window.geoReference.long}">
-    </p>
-    <p class="input-text col s6 m2">
-      <label for="Altitude">Altitude</label>
-      <input id="Altitude" type="number" value="${window.geoReference.alt}">
-    </p>
-    <div class="input-field col s6 m4">
-      <label class="" for="Date">Date</label>
-      <input id="Date" type="date" class="datepicker" data-value="${window.Date.now()}">
+    <div class="input-field col s6 m3">
+    <input id="Latitude" type="number" value="${window.geoReference.lat}">
+    <label for="Latitude">Latitude</label>
+    </div>
+    <div class="input-field col s6 m3">
+    <input id="Longitude" type="number" value="${window.geoReference.long}">
+    <label for="Longitude">Longitude</label>
+    </div>
+    <div class="input-field col s6 m2">
+    <input id="Altitude" type="number" value="${window.geoReference.alt}">
+    <label for="Altitude">Altitude</label>
+    </div>
+    <div class="col s6 m4">
+    <label for="Date">Date</label>
+    <input id="Day" type="text" class="datepicker" value="${new Date().toDateString()}">
     </div>
     <h5 class="col s12">Select All that Apply</h5>
-    <p class="col s12 m4">
-      <input id="Roots Exposed" type="checkbox">
-      <label for="Roots Exposed">Roots Exposed</label>
-    </p>
-    <p class="col s12 m4">
-      <input id="Flooded" type="checkbox">
-      <label for="Flooded">Flooded</label>
-    </p>
-    <p class="col s12 m4">
-      <input id="Bifurcation" type="checkbox">
-      <label for="Bifurcation">Bifurcation - Widening</label>
-    </p>
-    <p class="col s12 m4">
-      <input id="Fallen Trees" type="checkbox">
-      <label for="Fallen Trees">Fallen Trees on Trail</label>
-    </p>
-    <p class="col s12 m4">
-      <input id="Slippery" type="checkbox">
-      <label for="Slippery">Slippery</label>
-    </p>
-    <p class="col s12 m4">
-      <input id="Sharp Stones" type="checkbox">
-      <label for="Sharp Stones">Sharp Stones</label>
-    </p>
-    <p class="col s12 m4">
-      <input id="Thorns" type="checkbox">
-      <label for="Thorns">Thorny Vegetation on the Edge</label>
-    </p>
-    <p class="col s12 m4">
-      <input id="Risk" type="checkbox">
-      <label for="Risk">Risk From Fallen Trees or Branches</label>
-    </p>
-    <p class="input-field col s12 m4">
+    <div class="col s12 m4">
+      <label>
+        <input id="RootsExposed" type="checkbox">
+        <span>Roots Exposed</span>
+      </label>
+    </div>
+    <div class="col s12 m4">
+      <label>
+        <input id="Flooded" type="checkbox">
+        <span>Flooded</span>
+      </label>
+    </div>
+    <div class="col s12 m4">
+      <label>
+        <input id="Bifurcation" type="checkbox">
+        <span>Bifurcation - Widening</span>
+      </label>
+    </div>
+    <div class="col s12 m4">
+      <label>
+        <input id="FallenTrees" type="checkbox">
+        <span>Fallen Trees on Trail</span>
+      </label>
+    </div>
+    <div class="col s12 m4">
+      <label>
+        <input id="Slippery" type="checkbox">
+        <span>Slippery</span>
+      </label>
+    </div>
+    <div class="col s12 m4">
+      <label>
+        <input id="SharpStones" type="checkbox">
+        <span>Sharp Stones</span>
+      </label>
+    </div>
+    <div class="col s12 m4">
+      <label>
+        <input id="Thorns" type="checkbox">
+        <span>Thorny Vegetation on the Edge</span>
+      </label>
+    </div>
+    <div class="col s12 m4">
+      <label>
+        <input id="Risk" type="checkbox">
+        <span>Risk From Fallen Trees or Branches</span>
+      </label>
+    </div>
+    <div class="input-field col s12 m4">
       <select id="Erosion">
         <option value="Low">Low</option>
         <option value="Medium">Medium</option>
         <option value="High">High</option>
       </select>
       <label for="Erosion">Erosion</label>
-    </p>
+    </div>
     <h5 class="col s12">Please Describe</h5>
-    <p class="input-field col s12 m6">
-      <textarea id="Support Infrastructure" class="materialize-textarea"></textarea>
-      <label for="Support Infrastructure">Support Infrastructure: handrails, ropes, steps</label>
-    </p>
-    <p class="input-field col s12 m6">
-      <textarea id="Use Perception" class="materialize-textarea"></textarea>
-      <label for="Use Perception">
-        Trail Usage: many people, conflicts betwen hikers, horses, bicycles</label>
-    </p>
+    <div class="divider"></div>
+    <div class="section">
+    <div class="input-field col s12 m6">
+      <textarea id="SupportInfrastructure" class="materialize-textarea"></textarea>
+      <label for="SupportInfrastructure">Support Infrastructure:</label>
+      <span class="helper-text">Example: handrails, ropes, steps.</span>
+    </div>
+    <div class="input-field col s12 m6">
+      <textarea id="UsePerception" class="materialize-textarea"></textarea>
+      <label for="UsePerception">
+        Trail Usage</label>
+        <span class="helper-text">Example: Many people, conflicts betwen hikers, horses, bicycles.</span>
+    </div>
+    </div>
+
     <div class="file-field input-field col s12">
-      <div class="btn ">
+      <div class="btn">
         <span>Photos</span>
         <input id="Photos" accept="image/*;capture=camera" type="file" multiple>
       </div>
@@ -262,10 +312,10 @@ trails = new Mission({
         <input accept="image/*" class="file-path validate" type="text" placeholder="Upload one or more photos of the trail.">
       </div>
     </div>
-    <div class="section col s12 btn btn-large waves-effect waves-light  " type="submit" onClick="collectInputs('${this
+    <button class="col s12 btn btn-large waves-effect waves-light" type="submit" onclick="collectInputs('${this
       .databaseCollection}', '${this.congratulatoryMessage}')">Submit
       <i class="material-icons right">send</i>
-    </div>
+    </button>
   </form>
 </div>
 `;
@@ -275,18 +325,29 @@ trails = new Mission({
 <a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
 <a class="pointer breadcrumb">Monitor</a>
 `;
-      $(".datepicker").pickadate({
-        selectMonths: true, // Creates a dropdown to control month
-        selectYears: 2, // Creates a dropdown of 15 years to control year,
-        today: "Today",
-        clear: "Clear",
-        close: "Ok",
-        closeOnSelect: false // Close upon selecting a date,
-      });
-      $("select").material_select();
-      if (!Materialize == false) {
-        Materialize.updateTextFields();
-      }
+      setTimeout(function() {
+        M.updateTextFields();
+        let multiSelect = document.querySelectorAll("select");
+        for (const element in multiSelect) {
+          if (multiSelect.hasOwnProperty(element)) {
+            const newInstance = new M.Select(multiSelect[element]);
+          }
+        }
+        let datePicker = document.querySelectorAll(".datepicker");
+        for (const element in datePicker) {
+          if (datePicker.hasOwnProperty(element)) {
+            const datePickerInstance = new M.Datepicker(datePicker[element], {
+              // container: ".datepicker",
+              setDefaultDate: true,
+              // format: "mmm-dd-yyyy",
+              defaultDate: new Date().toDateString(),
+              yearRange: 2
+            });
+          }
+        }
+
+        // datePickerInstance.setDate(new Date());
+      }, 80);
     });
   },
   //
@@ -310,9 +371,7 @@ trails = new Mission({
 <a class="pointer breadcrumb">Analyze</a>
 `;
 
-    if (!Materialize == false) {
-      Materialize.updateTextFields();
-    }
+    M.updateTextFields();
   }
 });
 
@@ -329,8 +388,8 @@ tumlare = new Mission({
     let content = ``;
     navigator.geolocation.getCurrentPosition(position => {
       (window.geoReference = {
-        lat: position.coords.latitude,
-        long: position.coords.longitude,
+        lat: position.coords.latitude || 0,
+        long: position.coords.longitude || 0,
         alt: position.coords.altitude || 0
       }),
         () => {
@@ -347,79 +406,90 @@ tumlare = new Mission({
           enableHighAccuracy: true
         };
       content += `<div class="row">
-  <form class="container" onsubmit="return false">
+  <form class="" onsubmit="return false">
     <h4 class="col s12">${this.title}</h4>
     <h5 class="col s12">Location of Sighting</h5>
-    <p class="input-text col s6 m4">
-      <label for="Latitude">Latitude</label>
-      <input id="Latitude" type="number" value="${window.geoReference.lat}">
-    </p>
-    <p class="input-text col s6 m4">
-      <label for="Longitude">Longitude</label>
-      <input id="Longitude" type="number" value="${window.geoReference.long}">
-    </p>
     <div class="input-field col s6 m4">
-      <label class="" for="Date">Date</label>
-      <input id="Date" type="date" class="datepicker" data-value="${window.Date.now()}">
+      <input id="Latitude" type="number" value="${window.geoReference.lat}">
+      <label for="Latitude">Latitude</label>
     </div>
-    <p class="col s6 m4">
-      <input id="Binoculars Used" type="checkbox">
-      <label for="Binoculars Used">Observation Made with Binoculars</label>
-    </p>
-    <p class="input-text col s12 m8">
+    <div class="input-field col s6 m4">
+      <input id="Longitude" type="number" value="${window.geoReference.long}">
+      <label for="Longitude">Longitude</label>
+    </div>
+    <div class="input-field col s6 m4">
+      <input id="Day" type="text" class="datepicker" value="${new Date().toDateString()}">
+      <span class="helper-text" for="Date">Date</span>
+    </div>
+    <div class="input-field col s12 m8">
       <label for="Species">Species</label>
       <input id="Species" type="text" value="Porpoise">
-    </p>
+    </div>
+    <div class="col s6 m4">
+      <label>
+        <input id="BinocularsUsed" type="checkbox">
+        <span>Observation Made with Binoculars</span>
+      </label>
+    </div>
     <h5 class="col s12">Quantity</h5>
-    <p class="col s8 range-field">
-      <input id="Quantity" type="range" min="1" max="10">
-      <label for="Quantity">Quantity</label>
+    <p class="col s5 range-field">
+    <span class="helper-text">Quantity</span>
+    <input id="Quantity" type="range" min="1" max="20" value="10">
     </p>
-    <p class="col s4">
-      <input id="Uncertain Quantity" type="checkbox">
-      <label for="Uncertain Quantity">Uncertain Quantity</label>
+    <p class="col s1">
+    <span id="QuantityDisplay" class="helper-text">10</span>
     </p>
+    <div class="col s4">
+      <label>
+        <input id="UncertainQuantity" type="checkbox">
+        <span>Uncertain Quantity</span>
+      </label>
+    </div>
     <h5 class="col s12">Behavior</h5>
-    <p class="input-field col s12 m6">
+    <div class="input-field col s12 m6">
       <select id="Behavior">
-        <option value="Constant Heading, Regular Diving">Constant Heading, Regular Diving</option>
+        <option selected value="Constant Heading, Regular Diving">Constant Heading, Regular Diving</option>
         <option value="Varied Heading, Irregular Diving">Varied Heading, Irregular Diving</option>
         <option value="Slow Movement, Long Time at Surface">Slow Movement, Long Time at Surface</option>
         <option value="Jumping">Jumping</option>
         <option value="Found Dead / Injured">Found Dead / Injured</option>
       </select>
       <label for="Behavior">Behavior</label>
-    </p>
-    <p class="input-field col s12 m6">
-      <input id="Other Behavior" class="" type="text"></input>
-      <label for="Other Behavior">Other Behavior (optional)</label>
-    </p>
+    </div>
+    <div class="input-field col s12 m6">
+      <input id="OtherBehavior" class="" type="text"></input>
+      <label for="OtherBehavior">Other Behavior</label>
+      <span class="helper-text">(optional)</span>
+    </div>
     <h5 class="col s12">Conditions</h5>
-    <p class="input-field col s12 m6">
-      <select id="Ocean Conditions">
-        <option value="Sea Like a Mirror">Sea Like a Mirror</option>
+    <div class="input-field col s12 m6">
+      <select id="OceanConditions">
+        <option selected value="Sea Like a Mirror">Sea Like a Mirror</option>
         <option value="Very Calm / Ripples">Very Calm / Ripples</option>
         <option value="Small Wavelets">Small Wavelets</option>
         <option value="No Whitecaps / Small Waves">No Whitecaps / Small Waves</option>
         <option value="Few Whitecaps / Waves with Whitecaps">Few Whitecaps / Waves with Whitecaps</option>
       </select>
-      <label for="Ocean Conditions">Appearance of the Ocean</label>
-    </p>
-    <p class="input-field col s12 m6">
+      <label for="OceanConditions">Appearance of the Ocean</label>
+    </div>
+    <div class="input-field col s12 m6">
       <select id="Weather">
-        <option value="Sunny">Sunny</option>
+        <option selected value="Sunny">Sunny</option>
         <option value="Cloudy">Cloudy</option>
         <option value="Rainy">Rainy</option>
         <option value="Foggy">Foggy</option>
         <option value="Misty">Misty</option>
       </select>
       <label for="Weather">Weather Conditions</label>
-    </p>
+    </div>
     <h5 class="col s12">Comments</h5>
-    <p class="input-field col s12">
-      <textarea id="Comments" class="materialize-textarea"></textarea>
-      <label for="Comments">Additional Comments (optional)</label>
-    </p>
+    <div class="row">
+      <div class="input-field col s12">
+        <textarea id="Comments" class="materialize-textarea"></textarea>
+        <label for="Comments">Additional Comments</label>
+        <span class="helper-text">(optional)</span>
+      </div>
+    </div>
     <div class="file-field input-field col s12">
       <div class="btn ">
         <span>Photos</span>
@@ -429,7 +499,8 @@ tumlare = new Mission({
         <input class="file-path validate" type="text" placeholder="Upload one or more photographs of the sighting.">
       </div>
     </div>
-    <button class="section col s12 btn btn-large waves-effect waves-light  " type="submit" onClick="window.collectInputs('${this
+  
+    <button class="section col s12 btn btn-large waves-effect waves-light" type="submit" onClick="window.collectInputs('${this
       .databaseCollection}', '${this.congratulatoryMessage}')">Submit
       <i class="material-icons right">send</i>
     </button>
@@ -441,18 +512,32 @@ tumlare = new Mission({
       <a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
       <a class="pointer breadcrumb">Monitor</a>
       `;
-      $(".datepicker").pickadate({
-        selectMonths: true, // Creates a dropdown to control month
-        selectYears: 2, // Creates a dropdown of 15 years to control year,
-        today: "Today",
-        clear: "Clear",
-        close: "Ok",
-        closeOnSelect: false // Close upon selecting a date,
-      });
-      $("select").material_select();
-      if (!Materialize == false) {
-        Materialize.updateTextFields();
-      }
+      setTimeout(function() {
+        M.updateTextFields();
+        let multiSelect = document.querySelectorAll("select");
+        for (const element in multiSelect) {
+          if (multiSelect.hasOwnProperty(element)) {
+            const newInstance = new M.Select(multiSelect[element]);
+          }
+        }
+        let datePicker = document.querySelectorAll(".datepicker");
+        for (const element in datePicker) {
+          if (datePicker.hasOwnProperty(element)) {
+            const datePickerInstance = new M.Datepicker(datePicker[element], {
+              setDefaultDate: true,
+              format: "mmm-dd-yyyy",
+              defaultDate: new Date("mmm-dd-yyyy"),
+              yearRange: 2
+            });
+          }
+        }
+        let number = document.getElementById("Quantity");
+        let display = document.getElementById("QuantityDisplay");
+        addEventListener("change", function() {
+          display.innerHTML = number.value;
+        });
+        // datePickerInstance.setDate(new Date());
+      }, 80);
     });
   },
   analyze: function() {
@@ -472,9 +557,7 @@ tumlare = new Mission({
 <a class="pointer breadcrumb">Analyze</a>
 `;
 
-    if (!Materialize == false) {
-      Materialize.updateTextFields();
-    }
+    M.updateTextFields();
   }
 });
 

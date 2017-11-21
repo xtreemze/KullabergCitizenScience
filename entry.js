@@ -4,7 +4,7 @@
 // require("./node_modules/mdi/css/materialdesignicons.css");
 // require("./node_modules/material-design-icons/iconfont/material-icons.css");
 require("./app/js/offlineRuntimeInstall");
-// require("./node_modules/material-design-icons/iconfont/material-icons.css");
+require("./node_modules/material-design-icons/iconfont/material-icons.css");
 // require("./node_modules/material-icons/css/material-icons.css");
 require("materialize-loader!./app/materialize.config.js");
 // require("./node_modules/material-icons/css/material-icons.css");
