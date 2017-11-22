@@ -783,6 +783,11 @@ trails = new Mission({
           console.log(
             "We are unable to locate your device. Please describe your location as best you can."
           );
+          M.toast({
+            html: "Position Unavailable",
+            displayLength: 4000,
+            classes: "red darken-2"
+          });
           window.geoReference = {
             lat: "Latitude",
             long: "Longitude",
@@ -795,25 +800,7 @@ trails = new Mission({
       content += `<div class="row">
   <form class="" onsubmit="return false">
     <h3 class="col s12">${this.title}</h3>
-    <h5 class="col s12">Georeference</h5>
-    <div class="col s12" id="map"></div>
-    <div class="input-field col s6 m3">
-      <input id="Latitude" type="number" value="${window.geoReference.lat}">
-      <label for="Latitude">Latitude</label>
-    </div>
-    <div class="input-field col s6 m3">
-      <input id="Longitude" type="number" value="${window.geoReference.long}">
-      <label for="Longitude">Longitude</label>
-    </div>
-    <div class="input-field col s6 m2">
-      <input id="Altitude" type="number" value="${window.geoReference.alt}">
-      <label for="Altitude">Altitude</label>
-    </div>
-    <div class="col s6 m4">
-      <label for="Date">Date</label>
-      <input id="Day" type="text" class="datepicker" value="${new Date().toDateString()}">
-    </div>
-    <h5 class="col s12">Select All that Apply</h5>
+       <h5 class="col s12">Select All that Apply</h5>
     <p class="col s12 m4">
       <label>
         <input id="RootsExposed" type="checkbox">
@@ -885,6 +872,24 @@ trails = new Mission({
         <span class="helper-text">Example: Many people, conflicts betwen hikers, horses, bicycles.</span>
       </div>
     </div>
+    <h5 class="col s12">Georeference</h5>
+    <div class ="col s12"><div id="map"></div><div>
+    <div class="input-field col s6 m3">
+      <input id="Latitude" type="number" value="${window.geoReference.lat}">
+      <label for="Latitude">Latitude</label>
+    </div>
+    <div class="input-field col s6 m3">
+      <input id="Longitude" type="number" value="${window.geoReference.long}">
+      <label for="Longitude">Longitude</label>
+    </div>
+    <div class="input-field col s6 m2">
+      <input id="Altitude" type="number" value="${window.geoReference.alt}">
+      <label for="Altitude">Altitude</label>
+    </div>
+    <div class="col s6 m4">
+      <label for="Date">Date</label>
+      <input id="Day" type="text" class="datepicker" value="${new Date().toDateString()}">
+    </div>
     <div class="file-field input-field col s12">
       <div class="btn">
         <span>Photos</span>
@@ -907,6 +912,7 @@ trails = new Mission({
 <a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
 <a class="pointer breadcrumb">Monitor</a>
 `;
+window.scrollTo( 0, 0 );
 
       const map = L.map("map").setView(
         [window.Latitude.value, window.Longitude.value],
@@ -965,7 +971,7 @@ trails = new Mission({
   <div class="">
     <h3 class="col s12">${this.title}</h3>
     <h5 class="col s12">Database Results</h5>
-    <div class="col s12" id="map"></div>
+    <div class ="col s12"><div id="map"></div><div>
   </div>
 </div>
 `;
@@ -974,6 +980,7 @@ trails = new Mission({
 <a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
 <a class="pointer breadcrumb">Analyze</a>
 `;
+window.scrollTo( 0, 0 );
     navigator.geolocation.getCurrentPosition(position => {
       (window.geoReference = {
         lat: position.coords.latitude || 0,
@@ -1053,7 +1060,7 @@ tumlare = new Mission({
     <h3 class="col s12">${this.title}</h3>
     <h5 class="col s12">Location of Sighting</h5>
     <p class="col s12">Locate the sighting on the map.</p>
-    <div class="col s12" id="map"></div>
+    <div class ="col s12"><div id="map"></div><div>
     <div class="input-field col s6 m4">
       <input id="Latitude" type="number" value="${window.geoReference.lat}">
       <label for="Latitude">Latitude</label>
@@ -1156,6 +1163,7 @@ tumlare = new Mission({
       <a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
       <a class="pointer breadcrumb">Monitor</a>
       `;
+      window.scrollTo( 0, 0 );
 
       const map = L.map("map").setView(
         [window.Latitude.value, window.Longitude.value],
@@ -1216,21 +1224,21 @@ tumlare = new Mission({
           function() {
             display.innerHTML = number.value;
           },
-          false
+          { passive: true }
         );
         number.addEventListener(
           "touchmove",
           function() {
             display.innerHTML = number.value;
           },
-          false
+          { passive: true }
         );
         number.addEventListener(
           "change",
           function() {
             display.innerHTML = number.value;
           },
-          false
+          { passive: true }
         );
         // datePickerInstance.setDate(new Date());
       }, 80);
@@ -1243,7 +1251,7 @@ tumlare = new Mission({
   <div class="">
     <h3 class="col s12">${this.title}</h3>
     <h5 class="col s12">Database Results</h5>
-    <div class="col s12" id="map"></div>    
+    <div class ="col s12"><div id="map"></div><div>    
   </div>
 </div>
 `;
@@ -1253,6 +1261,7 @@ tumlare = new Mission({
 <a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
 <a class="pointer breadcrumb">Analyze</a>
 `;
+window.scrollTo( 0, 0 );
     navigator.geolocation.getCurrentPosition(position => {
       (window.geoReference = {
         lat: position.coords.latitude || 0,
@@ -1311,6 +1320,7 @@ window.showMissions = function() {
   navigationBreadcrumbs.innerHTML = `
   <a class="pointer breadcrumb">Missions</a>
   `;
+  window.scrollTo( 0, 0 );
 };
 
 

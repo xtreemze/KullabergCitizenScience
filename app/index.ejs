@@ -53,18 +53,6 @@ const site = {
     <meta name="msapplication-TileImage" content="${ site.github }mstile-310x310.png">
     <meta name="msapplication-config" content="${ site.github }browserconfig.xml">
     <style>
-      body {
-        display: flex;
-        min-height: 100vh;
-        flex-direction: column;
-        background-color: #eeeeee;
-      }
-
-      main {
-        flex: 1 0 auto;
-      }
-
-
       .logoImg {
         transition: transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
         margin-top: 1.3rem;
@@ -83,6 +71,10 @@ const site = {
         position: absolute;
         z-index: 10000;
         overflow: hidden;
+        margin: 0;
+        padding: 0;
+        left: 0;
+        top: 0;
       }
 
       .loaderImg {
@@ -97,24 +89,19 @@ const site = {
     <section id="loading">
       <img class="loaderImg" src="${ site.logo }" alt="${ site.name }">
     </section>
-    <header class="navbar">
-      <nav class="" role="navigation">
-        <div class="nav-wrapper">
-          <a class="brand-logo">
-            <span class="kullaberg">
-              <img class="left logoImg hide-on-small-only responsive-img turn" src="${ site.asterisk }" alt="${ site.name }" />${ site.name }</span>
-          </a>
-        </div>
-      </nav>
-    </header>
-    <main class="container">
+    <main class="container section">
       <section class="row" id="missions"></section>
     </main>
-    <footer class="page-footer section">
-      <div class="container transparent z-depth-0">
-        <div class="col s12" id="navigationBreadcrumbs">
-          <a class="pointer breadcrumb">Missions</a>
-        </div>
+    <footer class="page-footer z12 row">
+      <div class="container">
+        <section class="">
+          <span class="brand-logo left">
+            ${ site.name }
+          </span>
+          <div class="left" id="navigationBreadcrumbs">
+            <a class="pointer breadcrumb">Missions</a>
+          </div>
+        </section>
       </div>
     </footer>
   </body>
