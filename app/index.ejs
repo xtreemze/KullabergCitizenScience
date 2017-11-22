@@ -2,9 +2,6 @@
 const site = {
   name: 'Citizen Science',
   description: 'A tool for participatory monitoring in Kullaberg.',
-  lansstyrelsen: require("./img/lansstyrelsen.svg"),
-  regionSkane: require("./img/regionSkane.svg"),
-  asterisk: require("./img/asterisk.svg"),
   github: "https://xtreemze.github.io/KullabergCitizenScience/",
   logo: require('./img/Kv4sq.svg')
 }
@@ -95,7 +92,7 @@ const site = {
     <footer class="page-footer z12 row">
       <div class="container">
         <section class="">
-          <span class="brand-logo left">
+          <span onclick="showMissions()" class="brand-logo left pointer">
             ${ site.name }
           </span>
           <div class="left" id="navigationBreadcrumbs">

@@ -1,9 +1,6 @@
 var __wpo = {
   "assets": {
     "main": [
-      "./img/lansstyrelsen.svg?14ac55e5c7c2e4abafc011efa7a6818e",
-      "./img/regionSkane.svg?88f194c8700e676371cb8344b6e215b7",
-      "./img/asterisk.svg?591c26a4e965acf3b232cc966801e0ca",
       "./img/Kv4sq.svg?ce812da7504a377dca2e0a662bc586fb",
       "./img/MaterialIcons-Regular.eot?e79bfd88537def476913f3ed52f4f4b3",
       "./img/MaterialIcons-Regular.ttf?a37b0c01c0baf1888ca812cc0508f6e2",
@@ -24,9 +21,6 @@ var __wpo = {
   },
   "externals": [],
   "hashesMap": {
-    "198f591c1f8640cde2abf40fe49d445650089498": "./img/lansstyrelsen.svg?14ac55e5c7c2e4abafc011efa7a6818e",
-    "6704b83793b0f7692c98e616873e05e9a4c3e9d7": "./img/regionSkane.svg?88f194c8700e676371cb8344b6e215b7",
-    "805db6e929e98fd3deb05cdb2935fc5a33183c15": "./img/asterisk.svg?591c26a4e965acf3b232cc966801e0ca",
     "7c60df0a5cd81e45f2e1dcc2cb9ecc9661fe1827": "./img/Kv4sq.svg?ce812da7504a377dca2e0a662bc586fb",
     "26fb8cecb5512223277b4d290a24492a0f09ede1": "./img/MaterialIcons-Regular.eot?e79bfd88537def476913f3ed52f4f4b3",
     "fc05de31234e0090f7ddc28ce1b23af4026cb1da": "./img/MaterialIcons-Regular.ttf?a37b0c01c0baf1888ca812cc0508f6e2",
@@ -40,11 +34,11 @@ var __wpo = {
     "e201dd24f1152501644325d7e90d25840a7640bb": "./js/manifest.js?40a176089984b40dc64b",
     "d9fb46a65239346d6df1e9dfe603fac56d16c09c": "./css/vendor.css?203b4820873e1b62ba7e",
     "1ecb066bb66fedb6c4bb0c095fbc6d25a1dae31a": "./css/entry.css?bdc267d72540901013d2",
-    "f193ee3236aadc8d51c0f6321c2e0ccffc4a6d9d": "./"
+    "b85c1c1443ec7dff1b797a8872bb3caafc275edf": "./"
   },
   "strategy": "changed",
   "responseStrategy": "network-first",
-  "version": "2017-11-22 15:43:25",
+  "version": "2017-11-22 15:51:45",
   "name": "webpack-offline",
   "pluginVersion": "4.8.4",
   "relativePaths": true
