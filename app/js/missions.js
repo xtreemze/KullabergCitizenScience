@@ -26,6 +26,11 @@ stitchClient
       classes: "yellow darken-2"
     });
   });
+
+/**
+ * Image Capture and Resizing Function
+ *
+ */
 window.imageResize = function() {
   if (!window.Photos.files[0] === false) {
     // Create ObjectURL() to Show a thumbnail/preview
@@ -66,7 +71,7 @@ window.imageResize = function() {
 };
 /**
  * Upload FormData to MongoDB Database
- * 
+ *
  * @param {string} [database=""]  Name of the Database Collection
  * @param {any} [set={}] The Data as an Object
  */
@@ -80,27 +85,59 @@ const updateDB = function(database = "", set = {}) {
     .login()
     .then(() => db.collection(variables.database).insertOne(variables.set))
     .then(result => {
-      console.log("[MongoDB Stitch] Updated: ", result),
-        M.toast({
-          html: "Database Updated",
-          displayLength: 8000,
-          classes: "green darken-2"
-        });
+      console.log("[MongoDB Stitch] Updated: ", result);
+      M.toast({
+        html: "Database Updated",
+        displayLength: 6000,
+        classes: "green darken-2"
+      });
     })
     .catch(error => {
-      console.error("[MongoDB Stitch] Error: ", error),
-        M.toast({
-          html: "Unable to Connect",
-          displayLength: 8000,
-          classes: "red darken-2"
-        });
+      console.error("[MongoDB Stitch] Error: ", error);
+      M.toast({
+        html: "Unable to Connect",
+        displayLength: 6000,
+        classes: "red darken-2"
+      });
+    });
+};
+
+const queryDB = function(database = "", query = {}) {
+  window.variables = {
+    database: database,
+    query: query,
+    results: {}
+  };
+  stitchClient
+    .login()
+    .then(() =>
+      db
+        .collection(window.variables.database)
+        .find({})
+        .then(result => {
+          window.variables.results = result;
+          console.log("[MongoDB Stitch] Updated: ", result);
+          M.toast({
+            html: "Data Obtained ",
+            displayLength: 6000,
+            classes: "green darken-2"
+          });
+        })
+    )
+    .catch(error => {
+      console.error("[MongoDB Stitch] Error: ", error);
+      M.toast({
+        html: "Unable to Connect",
+        displayLength: 6000,
+        classes: "red darken-2"
+      });
     });
 };
 /**
  *  Function to Collect Data, send to Database and Congratulate User
- * 
- * @param {any} Database Collection 
- * @param {string} A Congratulatory Message 
+ *
+ * @param {any} Database Collection
+ * @param {string} A Congratulatory Message
  */
 window.collectInputs = function(
   databaseCollection = {},
@@ -337,15 +374,15 @@ trails = new Mission({
     <h5 class="col s12">Georeference</h5>
     <div class="col s12"><div id="map"></div></div>
     <div class="input-field col s6 m3">
-      <input id="Latitude" type="number" value="${window.geoReference.lat}">
+      <input id="Latitude" type="text" value="${window.geoReference.lat}">
       <label for="Latitude">Latitude</label>
     </div>
     <div class="input-field col s6 m3">
-      <input id="Longitude" type="number" value="${window.geoReference.long}">
+      <input id="Longitude" type="text" value="${window.geoReference.long}">
       <label for="Longitude">Longitude</label>
     </div>
     <div class="input-field col s6 m2">
-      <input id="Altitude" type="number" value="${window.geoReference.alt}">
+      <input id="Altitude" type="text" value="${window.geoReference.alt}">
       <label for="Altitude">Altitude</label>
     </div>
     <div class="col s6 m4">
@@ -362,8 +399,9 @@ trails = new Mission({
       </div>
     </div>
     <canvas id="photoDisplay" width="800" height="600"></canvas>
-    <button class="col s12 btn btn-large waves-effect waves-light" type="submit" onclick="collectInputs('${this
-      .databaseCollection}', '${this.congratulatoryMessage}')">Submit
+    <button class="col s12 btn btn-large waves-effect waves-light" type="submit" onclick="collectInputs('${
+      this.databaseCollection
+    }', '${this.congratulatoryMessage}')">Submit
       <i class="material-icons right">send</i>
     </button>
   </form>
@@ -424,16 +462,25 @@ trails = new Mission({
   //
   /**
    * Function to retrieve display Database Results
-   * 
+   *
    */
   analyze: function() {
     let content = ``;
+    queryDB("TrailCondition", {});
 
     content += `<div class="row">
   <div class="">
     <h3 class="col s12">${this.title}</h3>
     <h5 class="col s12">Database Results</h5>
     <div class="col s12"><div id="map"></div><div>
+    `;
+    if (variables.results.length > 0) {
+      for (const iterator of variables.results) {
+        content += `<p>${iterator}</p>`;
+      }
+    }
+
+    content += `
   </div>
 </div>
 `;
@@ -545,11 +592,11 @@ tumlare = new Mission({
   </p>
     <h5 class="col s12">Location of Sighting</h5>
     <div class="input-field col s6 m4">
-      <input id="Latitude" type="number" value="${window.geoReference.lat}">
+      <input id="Latitude" type="text" value="${window.geoReference.lat}">
       <label for="Latitude">Latitude</label>
     </div>
     <div class="input-field col s6 m4">
-    <input id="Longitude" type="number" value="${window.geoReference.long}">
+    <input id="Longitude" type="text" value="${window.geoReference.long}">
     <label for="Longitude">Longitude</label>
     </div>
     <div class="input-field col s6 m4">
@@ -622,8 +669,9 @@ tumlare = new Mission({
       </div>
     </div>
     <canvas id="photoDisplay" width="800" height="600"></canvas>
-    <button class="section col s12 btn btn-large waves-effect waves-light" type="submit" onClick="window.collectInputs('${this
-      .databaseCollection}', '${this.congratulatoryMessage}')">Submit
+    <button class="section col s12 btn btn-large waves-effect waves-light" type="submit" onClick="window.collectInputs('${
+      this.databaseCollection
+    }', '${this.congratulatoryMessage}')">Submit
       <i class="material-icons right">send</i>
     </button>
   </form>
@@ -819,7 +867,7 @@ window.navigationBreadcrumbs = document.getElementById("navigationBreadcrumbs");
 
 /**
  * Show the Missions in Front Page
- * 
+ *
  */
 window.showMissions = function() {
   missionsElement.innerHTML = missionCardsHTML;
