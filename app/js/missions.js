@@ -102,10 +102,10 @@ const updateDB = function(database = "", set = {}) {
     });
 };
 
-const queryDB = function(database = "", query = {}) {
+const queryDB = function(database, query) {
   window.variables = {
     database: database,
-    query: query,
+    query: query || {},
     results: {}
   };
   stitchClient
@@ -113,10 +113,12 @@ const queryDB = function(database = "", query = {}) {
     .then(() =>
       db
         .collection(window.variables.database)
-        .find({})
-        .then(result => {
-          window.variables.results = result;
-          console.log("[MongoDB Stitch] Updated: ", result);
+        .find(window.variables.query)
+        .limit(50)
+        .execute()
+        .then(documents => {
+          window.variables.results = documents;
+          console.log("[MongoDB Stitch] Founds: ", documents);
           M.toast({
             html: "Data Obtained ",
             displayLength: 6000,
