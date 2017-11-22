@@ -10,12 +10,12 @@ module.exports = __webpack_require__.p + "./css/trail.jpg?e5ae226dede12f864004ec
 /***/ 63:
 /***/ (function(module, exports, __webpack_require__) {
 
+__webpack_require__(7);
 // require("./node_modules/materialize-css/dist/css/materialize.css");
 // require("./node_modules/materialize-css/dist/js/materialize");
 // require("materialize-css/dist/js/materialize");
 // require("./node_modules/mdi/css/materialdesignicons.css");
 // require("./node_modules/material-design-icons/iconfont/material-icons.css");
-__webpack_require__(6);
 // require("./node_modules/material-icons/css/material-icons.css");
 __webpack_require__(64);
 // require("./node_modules/material-icons/css/material-icons.css");
@@ -23,12 +23,12 @@ __webpack_require__(64);
 __webpack_require__(69);
 __webpack_require__(70);
 __webpack_require__(71);
-__webpack_require__(72);
 // require("./node_modules/materialize-css/sass/materialize.scss");
 // require("materialize-css/sass/materialize.scss");
 // require("./app/css/variables.scss");
+__webpack_require__(6);
+__webpack_require__(73);
 __webpack_require__(74);
-__webpack_require__(7);
 
 
 /***/ }),
@@ -544,13 +544,6 @@ module.exports = function (css) {
 /***/ }),
 
 /***/ 69:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 70:
 /***/ (function(module, exports, __webpack_require__) {
 
 /* @preserve
@@ -561,7 +554,7 @@ module.exports = function (css) {
 
 /***/ }),
 
-/***/ 71:
+/***/ 70:
 /***/ (function(module, exports) {
 
 window.addEventListener("DOMContentLoaded", function() {
@@ -575,7 +568,7 @@ window.addEventListener("load", function() {
 
 /***/ }),
 
-/***/ 72:
+/***/ 71:
 /***/ (function(module, exports, __webpack_require__) {
 
 const stitch = __webpack_require__(8);
@@ -908,11 +901,10 @@ trails = new Mission({
 `;
       missionsElement.innerHTML = content;
       navigationBreadcrumbs.innerHTML = `
-
 <a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
 <a class="pointer breadcrumb">Monitor</a>
 `;
-window.scrollTo( 0, 0 );
+      window.scrollTo(0, 0);
 
       const map = L.map("map").setView(
         [window.Latitude.value, window.Longitude.value],
@@ -980,7 +972,7 @@ window.scrollTo( 0, 0 );
 <a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
 <a class="pointer breadcrumb">Analyze</a>
 `;
-window.scrollTo( 0, 0 );
+    window.scrollTo(0, 0);
     navigator.geolocation.getCurrentPosition(position => {
       (window.geoReference = {
         lat: position.coords.latitude || 0,
@@ -1033,7 +1025,7 @@ tumlare = new Mission({
     "Thank you for your participation! Your contribution helps us to develop an adaptive management in the Kullaberg Nature.",
   description:
     "Engage in the collection of visual harbor porpoise observations (both living and dead) in the north-western parts of Scania. Observations are used in scientific research to help increase the knowledge about this threatened species.",
-  image: __webpack_require__(73),
+  image: __webpack_require__(72),
   monitor: function() {
     let content = ``;
     navigator.geolocation.getCurrentPosition(position => {
@@ -1058,45 +1050,53 @@ tumlare = new Mission({
       content += `<div class="row">
   <form class="" onsubmit="return false">
     <h3 class="col s12">${this.title}</h3>
+    <div class="input-field col m4 s12">
+    <label for="Species">Species</label>
+    <input id="Species" type="text" value="Porpoise">
+  </div>
+  <p class="col s6 m4">
+  <label>
+  <input id="BinocularsUsed" type="checkbox">
+  <span>Observation Made with Binoculars</span>
+  </label>
+  </p>
+  <p class="col s6 m4">
+  <label>
+  <input id="UncertainQuantity" type="checkbox">
+  <span>Uncertain Quantity</span>
+  </label>
+  </p>
+  <div class="col s10 range-field">
+  <label>Quantity</label>
+  <input id="Quantity" type="range" min="1" max="20" value="10">
+  </div>
+  <p class="col s2">
+  <span id="QuantityDisplay" class="helper-text">10</span>
+  </p>
     <h5 class="col s12">Location of Sighting</h5>
-    <p class="col s12">Locate the sighting on the map.</p>
-    <div class ="col s12"><div id="map"></div><div>
     <div class="input-field col s6 m4">
       <input id="Latitude" type="number" value="${window.geoReference.lat}">
       <label for="Latitude">Latitude</label>
     </div>
     <div class="input-field col s6 m4">
-      <input id="Longitude" type="number" value="${window.geoReference.long}">
-      <label for="Longitude">Longitude</label>
+    <input id="Longitude" type="number" value="${window.geoReference.long}">
+    <label for="Longitude">Longitude</label>
     </div>
     <div class="input-field col s6 m4">
-      <label class="" for="Date">Date</label>
-      <input id="Day" type="text" class="datepicker" value="${new Date().toDateString()}">
+    <label class="" for="Date">Date</label>
+    <input id="Day" type="text" class="datepicker" value="${new Date().toDateString()}">
     </div>
-    <div class="input-field col s6 m8">
-      <label for="Species">Species</label>
-      <input id="Species" type="text" value="Porpoise">
-    </div>
-    <p class="col s12 m4">
-      <label>
-        <input id="BinocularsUsed" type="checkbox">
-        <span>Observation Made with Binoculars</span>
-      </label>
-    </p>
-    <h5 class="col s12">Quantity</h5>
+    <p class="col s12">Locate the sighting on the map.</p>
+    <div class ="col s12"><div id="map"></div><div>
     <div class="col s10 range-field">
-      <label>Quantity</label>
-      <input id="Quantity" type="range" min="1" max="20" value="10">
+      <label>Area of Observation</label>
+      <input id="ObservationArea" type="range" min="5" max="200" value="20">
     </div>
     <p class="col s2">
-      <span id="QuantityDisplay" class="helper-text">10</span>
+      <span id="ObservationAreaDisplay" class="helper-text">20</span> <span class="meters">m</span>
     </p>
-    <p class="col s12">
-      <label>
-        <input id="UncertainQuantity" type="checkbox">
-        <span>Uncertain Quantity</span>
-      </label>
-    </p>
+
+
     <h5 class="col s12">Behavior</h5>
     <div class="input-field col s12 m6">
       <select id="Behavior">
@@ -1163,7 +1163,7 @@ tumlare = new Mission({
       <a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
       <a class="pointer breadcrumb">Monitor</a>
       `;
-      window.scrollTo( 0, 0 );
+      window.scrollTo(0, 0);
 
       const map = L.map("map").setView(
         [window.Latitude.value, window.Longitude.value],
@@ -1184,12 +1184,21 @@ tumlare = new Mission({
         .addTo(map)
         .bindPopup("Your Location")
         .openPopup();
-
       let popup = L.popup();
+      window.radius = L.circle(
+        [window.Latitude.value, window.Longitude.value],
+        {
+          color: "#0288d1",
+          fillColor: "#0d47a1",
+          fillOpacity: 0.5,
+          radius: 20
+        }
+      ).addTo(map);
 
       function onMapClick(e) {
         window.Latitude.value = e.latlng.lat;
         window.Longitude.value = e.latlng.lng;
+        radius.setLatLng(e.latlng);
         popup
           .setLatLng(e.latlng)
           .setContent(window.Species.value)
@@ -1198,50 +1207,76 @@ tumlare = new Mission({
 
       map.on("click", onMapClick);
 
-      setTimeout(function() {
-        M.updateTextFields();
-        let multiSelect = document.querySelectorAll("select");
-        for (const element in multiSelect) {
-          if (multiSelect.hasOwnProperty(element)) {
-            const newInstance = new M.Select(multiSelect[element]);
-          }
+      M.updateTextFields();
+      let multiSelect = document.querySelectorAll("select");
+      for (const element in multiSelect) {
+        if (multiSelect.hasOwnProperty(element)) {
+          const newInstance = new M.Select(multiSelect[element]);
         }
-        let datePicker = document.querySelectorAll(".datepicker");
-        for (const element in datePicker) {
-          if (datePicker.hasOwnProperty(element)) {
-            const datePickerInstance = new M.Datepicker(datePicker[element], {
-              setDefaultDate: true,
-              format: "mmm-dd-yyyy",
-              defaultDate: new Date("mmm-dd-yyyy"),
-              yearRange: 2
-            });
-          }
+      }
+      let datePicker = document.querySelectorAll(".datepicker");
+      for (const element in datePicker) {
+        if (datePicker.hasOwnProperty(element)) {
+          const datePickerInstance = new M.Datepicker(datePicker[element], {
+            setDefaultDate: true,
+            format: "mmm-dd-yyyy",
+            defaultDate: new Date("mmm-dd-yyyy"),
+            yearRange: 2
+          });
         }
-        let number = document.getElementById("Quantity");
-        let display = document.getElementById("QuantityDisplay");
-        number.addEventListener(
-          "mousemove",
-          function() {
-            display.innerHTML = number.value;
-          },
-          { passive: true }
-        );
-        number.addEventListener(
-          "touchmove",
-          function() {
-            display.innerHTML = number.value;
-          },
-          { passive: true }
-        );
-        number.addEventListener(
-          "change",
-          function() {
-            display.innerHTML = number.value;
-          },
-          { passive: true }
-        );
-        // datePickerInstance.setDate(new Date());
-      }, 80);
+      }
+      let observationArea = document.getElementById("ObservationArea");
+      let observationAreaDisplay = document.getElementById(
+        "ObservationAreaDisplay"
+      );
+      observationArea.addEventListener(
+        "mousemove",
+        function() {
+          observationAreaDisplay.innerHTML = observationArea.value;
+          radius.setRadius(observationArea.value);
+        },
+        { passive: true }
+      );
+      observationArea.addEventListener(
+        "touchmove",
+        function() {
+          observationAreaDisplay.innerHTML = observationArea.value;
+          radius.setRadius(observationArea.value);
+        },
+        { passive: true }
+      );
+      observationArea.addEventListener(
+        "change",
+        function() {
+          observationAreaDisplay.innerHTML = observationArea.value;
+          radius.setRadius(observationArea.value);
+        },
+        { passive: true }
+      );
+      let number = document.getElementById("Quantity");
+      let display = document.getElementById("QuantityDisplay");
+      number.addEventListener(
+        "mousemove",
+        function() {
+          display.innerHTML = number.value;
+        },
+        { passive: true }
+      );
+      number.addEventListener(
+        "touchmove",
+        function() {
+          display.innerHTML = number.value;
+        },
+        { passive: true }
+      );
+      number.addEventListener(
+        "change",
+        function() {
+          display.innerHTML = number.value;
+        },
+        { passive: true }
+      );
+      // datePickerInstance.setDate(new Date());
     });
   },
   analyze: function() {
@@ -1261,7 +1296,7 @@ tumlare = new Mission({
 <a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
 <a class="pointer breadcrumb">Analyze</a>
 `;
-window.scrollTo( 0, 0 );
+    window.scrollTo(0, 0);
     navigator.geolocation.getCurrentPosition(position => {
       (window.geoReference = {
         lat: position.coords.latitude || 0,
@@ -1320,16 +1355,23 @@ window.showMissions = function() {
   navigationBreadcrumbs.innerHTML = `
   <a class="pointer breadcrumb">Missions</a>
   `;
-  window.scrollTo( 0, 0 );
+  window.scrollTo(0, 0);
 };
 
 
 /***/ }),
 
-/***/ 73:
+/***/ 72:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "./css/tumlare.jpg?a0b7d3b21f32536b83f0e5192c541a22";
+
+/***/ }),
+
+/***/ 73:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ }),
 
