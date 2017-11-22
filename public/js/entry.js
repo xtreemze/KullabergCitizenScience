@@ -733,7 +733,7 @@ class Mission {
     // Displays on Front Page
     this.card = `<div class="cardContainer" id="${this.title}">
   <div class="col s12 m6 l6">
-    <div class="card large">
+    <div class="card">
       <div class="card-image">
         <img src="${this.image}">
         <span class="card-title">${this.title}</span>
@@ -866,7 +866,7 @@ trails = new Mission({
       </div>
     </div>
     <h5 class="col s12">Georeference</h5>
-    <div class ="col s12"><div id="map"></div><div>
+    <div class="col s12"><div id="map"></div></div>
     <div class="input-field col s6 m3">
       <input id="Latitude" type="number" value="${window.geoReference.lat}">
       <label for="Latitude">Latitude</label>
@@ -908,7 +908,7 @@ trails = new Mission({
 
       const map = L.map("map").setView(
         [window.Latitude.value, window.Longitude.value],
-        16
+        13
       );
 
       L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
@@ -963,7 +963,7 @@ trails = new Mission({
   <div class="">
     <h3 class="col s12">${this.title}</h3>
     <h5 class="col s12">Database Results</h5>
-    <div class ="col s12"><div id="map"></div><div>
+    <div class="col s12"><div id="map"></div><div>
   </div>
 </div>
 `;
@@ -995,7 +995,7 @@ trails = new Mission({
 
       const map = L.map("map").setView(
         [geoReference.lat, geoReference.long],
-        16
+        12
       );
 
       L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
@@ -1090,7 +1090,7 @@ tumlare = new Mission({
     <div class ="col s12"><div id="map"></div><div>
     <div class="col s10 range-field">
       <label>Area of Observation</label>
-      <input id="ObservationArea" type="range" min="5" max="200" value="20">
+      <input id="ObservationArea" type="range" min="1" max="200" value="20">
     </div>
     <p class="col s2">
       <span id="ObservationAreaDisplay" class="helper-text">20</span> <span class="meters">m</span>
@@ -1135,13 +1135,13 @@ tumlare = new Mission({
       <label for="Weather">Weather Conditions</label>
     </div>
     <h5 class="col s12">Comments</h5>
-    <div class="row">
+   
       <div class="input-field col s12">
         <textarea id="Comments" class="materialize-textarea"></textarea>
         <label for="Comments">Additional Comments</label>
         <span class="helper-text">(optional)</span>
       </div>
-    </div>
+    
     <div class="file-field input-field col s12">
       <div class="btn ">
         <span>Photos</span>
@@ -1167,7 +1167,7 @@ tumlare = new Mission({
 
       const map = L.map("map").setView(
         [window.Latitude.value, window.Longitude.value],
-        16
+        13
       );
 
       L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
@@ -1286,7 +1286,7 @@ tumlare = new Mission({
   <div class="">
     <h3 class="col s12">${this.title}</h3>
     <h5 class="col s12">Database Results</h5>
-    <div class ="col s12"><div id="map"></div><div>    
+    <div class="col s12"><div id="map"></div><div>    
   </div>
 </div>
 `;
@@ -1319,7 +1319,7 @@ tumlare = new Mission({
 
       const map = L.map("map").setView(
         [geoReference.lat, geoReference.long],
-        16
+        12
       );
 
       L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {

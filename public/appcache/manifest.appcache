@@ -1,5 +1,5 @@
 CACHE MANIFEST
-#ver:2017-11-22 15:51:45
+#ver:2017-11-22 16:15:21
 #plugin:4.8.4
 
 CACHE:
@@ -12,10 +12,10 @@ CACHE:
 ../css/trail.jpg?e5ae226dede12f864004ec83d0addd44
 ../css/tumlare.jpg?a0b7d3b21f32536b83f0e5192c541a22
 ../js/vendor.js?203b4820873e1b62ba7e
-../js/entry.js?bdc267d72540901013d2
-../js/manifest.js?40a176089984b40dc64b
+../js/entry.js?1b0667db34defd4f05fb
+../js/manifest.js?f28ac7820d82644787b7
 ../css/vendor.css?203b4820873e1b62ba7e
-../css/entry.css?bdc267d72540901013d2
+../css/entry.css?1b0667db34defd4f05fb
 ../
 
 NETWORK:
