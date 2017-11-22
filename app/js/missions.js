@@ -189,7 +189,7 @@ trails = new Mission({
   databaseCollection: "TrailCondition",
   congratulatoryMessage: "Thanks for completing the Trail Conditions Mission!",
   description:
-    "Engage in the monitoring of Trail Conditions and participate in adaptive management by reporting incidents while walking in the trails system. The Kullaberg Management Team will analyze measures to execute to resolve the incidents you report.",
+    "Engage in the monitoring of Trail Conditions and participate in adaptive management by reporting incidents while walking in the trails system. Kullaberg Management will analyze measures to execute to resolve the reports.",
   image: require("../img/trail.jpg"),
   monitor: function() {
     let content = ``;

@@ -3,7 +3,7 @@ webpackJsonp([1],{
 /***/ 15:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "./css/trail.jpg?e5ae226dede12f864004ec83d0addd44";
+module.exports = __webpack_require__.p + "./css/trail.jpg?08ddc5a7ed82e346a61bd0c1e7fc99ea";
 
 /***/ }),
 
@@ -762,7 +762,7 @@ trails = new Mission({
   databaseCollection: "TrailCondition",
   congratulatoryMessage: "Thanks for completing the Trail Conditions Mission!",
   description:
-    "Engage in the monitoring of Trail Conditions and participate in adaptive management by reporting incidents while walking in the trails system. The Kullaberg Management Team will analyze measures to execute to resolve the incidents you report.",
+    "Engage in the monitoring of Trail Conditions and participate in adaptive management by reporting incidents while walking in the trails system. Kullaberg Management will analyze measures to execute to resolve the reports.",
   image: __webpack_require__(15),
   monitor: function() {
     let content = ``;
@@ -1364,7 +1364,7 @@ window.showMissions = function() {
 /***/ 72:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "./css/tumlare.jpg?a0b7d3b21f32536b83f0e5192c541a22";
+module.exports = __webpack_require__.p + "./css/tumlare.jpg?9fe4a2b3cb1b890fdbf85c83122b620e";
 
 /***/ }),
 
