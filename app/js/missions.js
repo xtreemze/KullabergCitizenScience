@@ -26,7 +26,44 @@ stitchClient
       classes: "yellow darken-2"
     });
   });
+window.imageResize = function() {
+  if (!window.Photos.files[0] === false) {
+    // Create ObjectURL() to Show a thumbnail/preview
+    window.img = document.createElement("img");
+    img.src = window.URL.createObjectURL(window.Photos.files[0]);
 
+    // Create Canvas
+    var canvas = document.getElementById("photoDisplay");
+    canvas.width = width || 800;
+    canvas.height = height || 600;
+    var context = canvas.getContext("2d");
+    context.drawImage(img, 0, 0);
+
+    // Resize Image
+    var MAX_WIDTH = 800;
+    var MAX_HEIGHT = 600;
+    var width = img.width;
+    var height = img.height;
+
+    if (width > height) {
+      if (width > MAX_WIDTH) {
+        height *= MAX_WIDTH / width;
+        width = MAX_WIDTH;
+      }
+    } else {
+      if (height > MAX_HEIGHT) {
+        width *= MAX_HEIGHT / height;
+        height = MAX_HEIGHT;
+      }
+    }
+
+    var context = canvas.getContext("2d");
+    context.drawImage(img, 0, 0, width, height);
+
+    // Canvas to Data URL https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL
+    window.dataURL = canvas.toDataURL("image/jpeg", 0.4);
+  }
+};
 /**
  * Upload FormData to MongoDB Database
  * 
@@ -69,6 +106,7 @@ window.collectInputs = function(
   databaseCollection = {},
   congratulatoryMessage = ""
 ) {
+  imageResize();
   window.form = parent.document.getElementsByTagName("form")[0];
   window.data = {
     location: {
@@ -76,6 +114,9 @@ window.collectInputs = function(
       coordinates: []
     }
   };
+  if (!window.dataURL === false) {
+    window.data.Photo = window.dataURL;
+  }
   window.elements = form.elements;
   for (e = 0; e < elements.length; e++) {
     if (elements[e].id.length > 0) {
@@ -99,6 +140,7 @@ window.collectInputs = function(
         };
       } else if (elements[e].type == "number") {
         window.data[elements[e].id] = parseInt(elements[e].value, 10);
+      } else if (elements[e].value.id === "Photos") {
       } else if (elements[e].value.length > 0) {
         window.data[elements[e].id] = elements[e].value;
       } else {
@@ -319,6 +361,7 @@ trails = new Mission({
         <input accept="image/*" class="file-path validate" type="text" placeholder="Upload one or more photos of the trail.">
       </div>
     </div>
+    <canvas id="photoDisplay" width="800" height="600"></canvas>
     <button class="col s12 btn btn-large waves-effect waves-light" type="submit" onclick="collectInputs('${this
       .databaseCollection}', '${this.congratulatoryMessage}')">Submit
       <i class="material-icons right">send</i>
@@ -578,6 +621,7 @@ tumlare = new Mission({
         <input class="file-path validate" type="text" placeholder="Upload one or more photographs of the sighting.">
       </div>
     </div>
+    <canvas id="photoDisplay" width="800" height="600"></canvas>
     <button class="section col s12 btn btn-large waves-effect waves-light" type="submit" onClick="window.collectInputs('${this
       .databaseCollection}', '${this.congratulatoryMessage}')">Submit
       <i class="material-icons right">send</i>
