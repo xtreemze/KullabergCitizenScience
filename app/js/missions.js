@@ -1,31 +1,27 @@
 const stitch = require("mongodb-stitch");
-const appId = "citizensciencestitch-oakmw";
-const stitchClient = new stitch.StitchClient(appId);
 
-// MongoDB Conect to citizenScience Database, M0 tier 512MB storage
-const db = stitchClient
-  .service("mongodb", "mongodb-atlas")
-  .db("citizenScience");
+const client = new stitch.StitchClient("citizensciencestitch-oakmw");
+const db = client.service("mongodb", "mongodb-atlas").db("citizenScience");
 
 // Anonymous Authentication
-stitchClient
-  .login()
-  .then(() => {
-    console.log("[MongoDB Stitch] Logged in as: " + stitchClient.authedId());
-    M.toast({
-      html: "Connected to Database",
-      displayLength: 4000,
-      classes: "green darken-2"
-    });
-  })
-  .catch(e => {
-    console.log("error: ", e);
-    M.toast({
-      html: "Database Unavailable",
-      displayLength: 4000,
-      classes: "yellow darken-2"
-    });
-  });
+// client
+//   .login()
+//   .then(() => {
+//     console.log("[MongoDB Stitch] Logged in as: " + client.authedId());
+//     M.toast({
+//       html: "Connected to Database",
+//       displayLength: 4000,
+//       classes: "green darken-2"
+//     });
+//   })
+//   .catch(e => {
+//     console.log("error: ", e);
+//     M.toast({
+//       html: "Database Unavailable",
+//       displayLength: 4000,
+//       classes: "yellow darken-2"
+//     });
+//   });
 
 /**
  * Image Capture and Resizing Function
@@ -80,8 +76,8 @@ const updateDB = function(database = "", set = {}) {
     database: database,
     set: set
   };
-  variables.set["owner_id"] = stitchClient.authedId();
-  stitchClient
+  variables.set["owner_id"] = client.authedId();
+  client
     .login()
     .then(() => db.collection(variables.database).insertOne(variables.set))
     .then(result => {
@@ -108,31 +104,27 @@ const queryDB = function(database, query) {
     query: query || {},
     results: {}
   };
-  stitchClient
+
+  client
     .login()
-    .then(() =>
-      db
-        .collection(window.variables.database)
-        .find(window.variables.query)
-        .limit(50)
-        .execute()
-        .then(documents => {
-          window.variables.results = documents;
-          console.log("[MongoDB Stitch] Founds: ", documents);
-          M.toast({
-            html: "Data Obtained ",
-            displayLength: 6000,
-            classes: "green darken-2"
-          });
-        })
+    .then(
+      () =>
+        db.collection(window.variables.database).find(window.variables.query)
+      // .limit(100)
+      // .execute()
     )
-    .catch(error => {
-      console.error("[MongoDB Stitch] Error: ", error);
+    .then(docs => {
+      window.variables.results = docs;
+      console.log("[MongoDB Stitch] Connected to Stitch");
+      console.log("[MongoDB Stitch] Found: ", docs);
       M.toast({
-        html: "Unable to Connect",
+        html: "Data Obtained ",
         displayLength: 6000,
-        classes: "red darken-2"
+        classes: "green darken-2"
       });
+    })
+    .catch(err => {
+      console.error(err);
     });
 };
 /**
@@ -467,30 +459,43 @@ trails = new Mission({
    *
    */
   analyze: function() {
+    queryDB(this.databaseCollection, {
+      // owner_id: client.authedId()
+    });
     let content = ``;
-    queryDB("TrailCondition", {});
-
     content += `<div class="row">
-  <div class="">
-    <h3 class="col s12">${this.title}</h3>
-    <h5 class="col s12">Database Results</h5>
-    <div class="col s12"><div id="map"></div><div>
-    `;
-    if (variables.results.length > 0) {
-      for (const iterator of variables.results) {
-        content += `<p>${iterator}</p>`;
-      }
-    }
-
-    content += `
-  </div>
-</div>
-`;
+                  <div class="">
+                  <h3 class="col s12">${this.title}</h3>
+                  <h5 class="col s12">Database Results</h5>
+                  <div class="col s12"><div id="map"></div><div>
+                  <div id="resultsList"></div>
+                  </div>
+                  </div>
+                  `;
     missionsElement.innerHTML = content;
+
     navigationBreadcrumbs.innerHTML = `
-<a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
-<a class="pointer breadcrumb">Analyze</a>
-`;
+                  <a onclick="showMissions()" class="pointer breadcrumb">${
+                    this.title
+                  }</a>
+                  <a class="pointer breadcrumb">Analyze</a>
+                  `;
+    let results = document.getElementById("resultsList");
+    let resultContent = "";
+    setTimeout(function() {
+      if (variables.results.length > 0) {
+        for (let i = 0; i < variables.results.length; i++) {
+          resultContent += `<p> Object ${i} ID#${variables.results[i]._id}</p>`;
+          for (const key in variables.results[i]) {
+            if (variables.results[i].hasOwnProperty(key)) {
+              resultContent += `<p>Contains: ${variables.results[i][key]}</p>`;
+            }
+          }
+        }
+      }
+      results.innerHTML = resultContent;
+    }, 2000);
+
     window.scrollTo(0, 0);
     navigator.geolocation.getCurrentPosition(position => {
       (window.geoReference = {
