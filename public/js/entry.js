@@ -600,18 +600,11 @@ const db = client.service("mongodb", "mongodb-atlas").db("citizenScience");
  * Image Capture and Resizing Function
  *
  */
-window.imageResize = function() {
+const imageResize = function() {
   if (!window.Photos.files[0] === false) {
     // Create ObjectURL() to Show a thumbnail/preview
     window.img = document.createElement("img");
     img.src = window.URL.createObjectURL(window.Photos.files[0]);
-
-    // Create Canvas
-    var canvas = document.getElementById("photoDisplay");
-    canvas.width = width || 800;
-    canvas.height = height || 600;
-    var context = canvas.getContext("2d");
-    context.drawImage(img, 0, 0);
 
     // Resize Image
     var MAX_WIDTH = 800;
@@ -630,13 +623,27 @@ window.imageResize = function() {
         height = MAX_HEIGHT;
       }
     }
-
+    // Create Canvas
+    var canvas = document.getElementById("photoDisplay");
+    canvas.width = width || 800;
+    canvas.height = height || 600;
     var context = canvas.getContext("2d");
     context.drawImage(img, 0, 0, width, height);
 
     // Canvas to Data URL https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL
-    window.dataURL = canvas.toDataURL("image/jpeg", 0.4);
+    window.dataURL = canvas.toDataURL("image/jpeg", 0.2);
   }
+};
+/**
+ * Takes a blob from the Database and decodes into an image
+ * 
+ * @param {string} Blob
+ */
+const decodeImage = function(blob = "") {
+  const image = document.createElement("img");
+  // image.src = "data:image/jpeg;base64," + Base64.encode(blob);
+  image.src = Base64.encode(blob);
+  document.body.appendChild(image);
 };
 /**
  * Upload FormData to MongoDB Database
@@ -670,35 +677,46 @@ const updateDB = function(database = "", set = {}) {
       });
     });
 };
-
-const queryDB = function(database, query) {
-  window.variables = {
-    database: database,
-    query: query || {},
-    results: {}
-  };
-
+/**
+ * Query DB and if Succesful, display results in a list
+ * 
+ * @param {any} database 
+ * @param {any} query 
+ * @param {any} missionObject 
+ */
+window.queryDB = function(database, query, missionObject) {
+  M.toast({
+    html: "Connecting...",
+    displayLength: 4000,
+    classes: "green darken-2"
+  });
   client
     .login()
     .then(
-      () =>
-        db.collection(window.variables.database).find(window.variables.query)
+      () => db.collection(database).find(query)
       // .limit(100)
       // .execute()
     )
     .then(docs => {
-      window.variables.results = docs;
+      this.queryDBResult = docs;
       console.log("[MongoDB Stitch] Connected to Stitch");
-      console.log("[MongoDB Stitch] Found: ", docs);
+      console.log("[MongoDB Stitch] Found: ", queryDBResult);
       M.toast({
         html: "Data Obtained ",
-        displayLength: 6000,
+        displayLength: 4000,
         classes: "green darken-2"
       });
+      missionObject.analyze(queryDBResult);
     })
     .catch(err => {
       console.error(err);
+      M.toast({
+        html: "Unable to Connect",
+        displayLength: 4000,
+        classes: "red darken-2"
+      });
     });
+  // return window.variables.results;
 };
 /**
  *  Function to Collect Data, send to Database and Congratulate User
@@ -710,7 +728,6 @@ window.collectInputs = function(
   databaseCollection = {},
   congratulatoryMessage = ""
 ) {
-  imageResize();
   window.form = parent.document.getElementsByTagName("form")[0];
   window.data = {
     location: {
@@ -816,12 +833,26 @@ class Mission {
       </div>
       <div class="card-action">
         <a class="pointer" onclick="${this.shortName}.monitor()">Monitor</a>
-        <a class="pointer" onclick="${this.shortName}.analyze()">Analyze</a>
+        <a class="pointer" onclick="queryDB('${this
+          .databaseCollection}', {}, ${this.shortName})">Analyze</a>
       </div>
     </div>
   </div>
 </div>
 `;
+    this.collectionItem = function({
+      src = "",
+      title = "",
+      content = "",
+      icon = ""
+    }) {
+      `<li class="collection-item avatar">
+<img src="${src}" alt="${title}" class="circle">
+<span class="title">${title}</span>
+${content}
+<a href="#!" class="secondary-content"><i class="material-icons">${icon}</i></a>
+</li>`;
+    };
     Missions.add(this);
     // Add Mission Cards to DOM
     missionCardsHTML += this.card;
@@ -962,13 +993,12 @@ trails = new Mission({
         <input id="Photos" accept="image/*;capture=camera" type="file" multiple>
       </div>
       <div class="file-path-wrapper">
-        <input accept="image/*" class="file-path validate" type="text" placeholder="Upload one or more photos of the trail.">
+        <input id="photoFilePath" accept="image/*" class="file-path validate" type="text" placeholder="Upload one or more photos of the trail.">
       </div>
     </div>
     <canvas id="photoDisplay" width="800" height="600"></canvas>
-    <button class="col s12 btn btn-large waves-effect waves-light" type="submit" onclick="collectInputs('${
-      this.databaseCollection
-    }', '${this.congratulatoryMessage}')">Submit
+    <button class="col s12 btn btn-large waves-effect waves-light" type="submit" onclick="collectInputs('${this
+      .databaseCollection}', '${this.congratulatoryMessage}')">Submit
       <i class="material-icons right">send</i>
     </button>
   </form>
@@ -980,6 +1010,12 @@ trails = new Mission({
 <a class="pointer breadcrumb">Monitor</a>
 `;
       window.scrollTo(0, 0);
+
+      const photos = document.getElementById("photoFilePath");
+      photos.addEventListener("change", function() {
+        console.log("Image load ended");
+        imageResize();
+      });
 
       const map = L.map("map").setView(
         [window.Latitude.value, window.Longitude.value],
@@ -1031,47 +1067,41 @@ trails = new Mission({
    * Function to retrieve display Database Results
    *
    */
-  analyze: function() {
-    queryDB(this.databaseCollection, {
-      // owner_id: client.authedId()
-    });
+  analyze: function(queryDBResult) {
     let content = ``;
     content += `<div class="row">
-                  <div class="">
-                  <h3 class="col s12">${this.title}</h3>
-                  <h5 class="col s12">Database Results</h5>
-                  <div class="col s12"><div id="map"></div><div>
-                  <div id="resultsList"></div>
-                  </div>
-                  </div>
-                  `;
+    <div class="">
+    <h3 class="col s12">${this.title}</h3>
+    <h5 class="col s12">Database Results</h5>
+    <div class="col s12"><div id="map"></div><div>
+    <ul class="collection" id="resultsList"></ul>
+    </div>
+    </div>
+    `;
     missionsElement.innerHTML = content;
 
     navigationBreadcrumbs.innerHTML = `
-                  <a onclick="showMissions()" class="pointer breadcrumb">${
-                    this.title
-                  }</a>
-                  <a class="pointer breadcrumb">Analyze</a>
-                  `;
+    <a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
+      <a class="pointer breadcrumb">Analyze</a>
+      `;
     let results = document.getElementById("resultsList");
     let resultContent = "";
-    setTimeout(function() {
-      if (variables.results.length > 0) {
-        for (let i = 0; i < variables.results.length; i++) {
-          resultContent += `<h5 class="col s12">Object ${i} ID#${
-            variables.results[i]._id
-          }</h5>`;
-          for (const key in variables.results[i]) {
-            if (variables.results[i].hasOwnProperty(key)) {
-              resultContent += `<p class="col s12">${Object.keys(
-                variables.results[i][key]
-              )}: ${variables.results[i][key]}</p>`;
-            }
+
+    if (queryDBResult.length > 0) {
+      for (let i = 0; i < queryDBResult.length; i++) {
+        resultContent += `<h5 class="col s12">Object ${i} ID#${queryDBResult[i]
+          ._id}</h5>`;
+        for (const key in queryDBResult[i]) {
+          if (queryDBResult[i].hasOwnProperty(key)) {
+            resultContent += `<p class="col s12">${Object.keys(
+              queryDBResult[i][key]
+            )}: ${queryDBResult[i][key]}</p>`;
           }
         }
       }
-      results.innerHTML = resultContent;
-    }, 2000);
+    }
+
+    results.innerHTML = resultContent;
 
     window.scrollTo(0, 0);
     navigator.geolocation.getCurrentPosition(position => {
@@ -1253,9 +1283,8 @@ tumlare = new Mission({
       </div>
     </div>
     <canvas id="photoDisplay" width="800" height="600"></canvas>
-    <button class="section col s12 btn btn-large waves-effect waves-light" type="submit" onClick="window.collectInputs('${
-      this.databaseCollection
-    }', '${this.congratulatoryMessage}')">Submit
+    <button class="section col s12 btn btn-large waves-effect waves-light" type="submit" onClick="window.collectInputs('${this
+      .databaseCollection}', '${this.congratulatoryMessage}')">Submit
       <i class="material-icons right">send</i>
     </button>
   </form>
