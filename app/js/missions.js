@@ -132,7 +132,7 @@ class Mission {
     this.congratulatoryMessage = congratulatoryMessage;
     this.monitorSuccess = monitorSuccess;
     this.analyzeSuccess = analyzeSuccess;
-    this.queryDB = function(database, query) {
+    this.queryDB = function(database = this.databaseCollection, query) {
       M.toast({
         html: "Connecting...",
         displayLength: 4000,
@@ -181,8 +181,9 @@ class Mission {
           this.monitorSuccess();
 
           navigationBreadcrumbs.innerHTML = `
-          <a onclick="showMissions()" class="pointer breadcrumb">${this
-            .title}</a>
+          <a onclick="showMissions()" class="pointer breadcrumb">${
+            this.title
+          }</a>
           <a class="pointer breadcrumb">Monitor</a>
           `;
           M.updateTextFields();
@@ -246,7 +247,7 @@ class Mission {
       let resultContent = "";
 
       if (queryDBResult.length > 0) {
-        for (let i = 0; i < queryDBResult.length; i++) {
+        for (let i = queryDBResult.length - 1; i > 0; i--) {
           const getContent = function() {
             let content2 = "";
             for (const key in queryDBResult[i]) {
@@ -255,12 +256,13 @@ class Mission {
                   queryDBResult[i][key]
                 )}: ${queryDBResult[i][key]}</p>`;
               }
-              // return content2;
+              return content2;
             }
           };
           resultContent += `<li class="collection-item avatar">
-          <img src="${queryDBResult[i].Photo}" alt="${queryDBResult[i]
-            .Date}" class="circle"><br>
+          <img src="${this.decodeImage(queryDBResult[i].Photo)}" alt="${
+            queryDBResult[i].Date
+          }" class="circle"><br>
           <span class="title">${queryDBResult[i].Date}</span>
           <p>${getContent()}</p>
           <a href="#!" class="secondary-content">
@@ -336,8 +338,7 @@ class Mission {
       </div>
       <div class="card-action">
         <a class="pointer" onclick="${this.shortName}.monitor()">Monitor</a>
-        <a class="pointer" onclick="${this.shortName}.queryDB('${this
-      .databaseCollection}', {})">Analyze</a>
+        <a class="pointer" onclick="${this.shortName}.queryDB()">Analyze</a>
       </div>
     </div>
   </div>
@@ -347,43 +348,69 @@ class Mission {
     this.imageResize = function() {
       if (!window.Photos.files[0] === false) {
         // Create ObjectURL() to Show a thumbnail/preview
-        window.img = document.createElement("img");
-        img.src = window.URL.createObjectURL(window.Photos.files[0]);
+        let img = new Image();
 
-        // Resize Image
-        var MAX_WIDTH = 800;
-        var MAX_HEIGHT = 600;
-        var width = img.width;
-        var height = img.height;
+        img.setAttribute("crossOrigin", "anonymous");
 
-        if (width > height) {
-          if (width > MAX_WIDTH) {
-            height *= MAX_WIDTH / width;
-            width = MAX_WIDTH;
+        img.onload = function() {
+          var canvas = document.createElement("canvas");
+          canvas.width = this.width;
+          canvas.height = this.height;
+
+          var ctx = canvas.getContext("2d");
+          ctx.drawImage(this, 0, 0);
+
+          var dataURL = canvas.toDataURL("image/png");
+
+          // Resize Image
+          var MAX_WIDTH = 800;
+          var MAX_HEIGHT = 600;
+          var width = img.width;
+          var height = img.height;
+
+          if (width > height) {
+            if (width > MAX_WIDTH) {
+              height *= MAX_WIDTH / width;
+              width = MAX_WIDTH;
+            }
+          } else {
+            if (height > MAX_HEIGHT) {
+              width *= MAX_HEIGHT / height;
+              height = MAX_HEIGHT;
+            }
           }
-        } else {
-          if (height > MAX_HEIGHT) {
-            width *= MAX_HEIGHT / height;
-            height = MAX_HEIGHT;
-          }
-        }
-        // Create Canvas
-        var canvas = document.getElementById("photoDisplay");
-        canvas.width = width || 800;
-        canvas.height = height || 600;
-        var context = canvas.getContext("2d");
-        context.drawImage(img, 0, 0, width, height);
-
+          // Create Canvas
+          canvas.width = width || 800;
+          canvas.height = height || 600;
+          ctx.drawImage(img, 0, 0, width, height);
+          window.dataURL = canvas.toDataURL("image/jpeg", 0.2);
+        };
         // Canvas to Data URL https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL
-        window.dataURL = canvas.toDataURL("image/jpeg", 0.2);
+        img.src = window.URL.createObjectURL(window.Photos.files[0]);
       }
     };
 
     this.decodeImage = function(blob = "") {
-      const image = document.createElement("img");
+      let img = new Image();
+
+      img.setAttribute("crossOrigin", "anonymous");
+
+      img.onload = function() {
+        let canvas = document.createElement("canvas");
+        canvas.width = this.width;
+        canvas.height = this.height;
+
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(this, 0, 0);
+
+        var dataURL = canvas.toDataURL("image/jpeg");
+
+        dataURL.replace(/^data:image\/(jpeg|jpg);base64,/, "");
+      };
+      img.src = blob;
       // image.src = "data:image/jpeg;base64," + Base64.encode(blob);
-      image.src = blob;
-      document.body.appendChild(image);
+      // document.body.appendChild(image);
+      return img;
     };
     Missions.add(this);
     // Add Mission Cards to DOM
