@@ -259,16 +259,26 @@ class Mission {
 
       if (queryDBResult.length > 0) {
         for (let i = 0; i < queryDBResult.length; i++) {
-          resultContent += `<h5 class="col s12">Object ${i} ID#${queryDBResult[
-            i
-          ]._id}</h5>`;
-          for (const key in queryDBResult[i]) {
-            if (queryDBResult[i].hasOwnProperty(key)) {
-              resultContent += `<p class="col s12">${Object.keys(
-                queryDBResult[i][key]
-              )}: ${queryDBResult[i][key]}</p>`;
+          const getContent = function() {
+            let content2 = "";
+            for (const key in queryDBResult[i]) {
+              if (queryDBResult[i].hasOwnProperty(key)) {
+                content2 += `<p class="col s12">${Object.keys(
+                  queryDBResult[i][key]
+                )}: ${queryDBResult[i][key]}</p>`;
+              }
+              // return content2;
             }
-          }
+          };
+          resultContent += `<li class="collection-item avatar">
+          <img src="${queryDBResult[i].Photo}" alt="${queryDBResult[i]
+            .Date}" class="circle"><br>
+          <span class="title">${queryDBResult[i].Date}</span>
+          <p>${getContent()}</p>
+          <a href="#!" class="secondary-content">
+              <i class="material-icons">star</i>
+          </a>
+      </li>`;
         }
       }
 
@@ -345,22 +355,7 @@ class Mission {
   </div>
 </div>
 `;
-    this.collectionItem = function(
-      src = "",
-      title = "",
-      content = "",
-      icon = ""
-    ) {
-      return `<li class="collection-item avatar">
-    <img src="${src}" alt="${title}" class="circle">
-    <span class="title">${title}</span>
-    ${content}
-    <a href="#!" class="secondary-content">
-        <i class="material-icons">${icon}</i>
-    </a>
-</li>
-`;
-    };
+
     this.imageResize = function() {
       if (!window.Photos.files[0] === false) {
         // Create ObjectURL() to Show a thumbnail/preview
@@ -399,7 +394,7 @@ class Mission {
     this.decodeImage = function(blob = "") {
       const image = document.createElement("img");
       // image.src = "data:image/jpeg;base64," + Base64.encode(blob);
-      image.src = Base64.encode(blob);
+      image.src = blob;
       document.body.appendChild(image);
     };
     Missions.add(this);
