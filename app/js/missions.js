@@ -69,46 +69,6 @@ const updateDB = function(database = "", dataset = {}) {
     });
 };
 /**
- * Query DB and if Succesful, display results in a list and launches the analyze function for the mission
- * 
- * @param {any} database 
- * @param {any} query 
- * @param {any} mission 
- */
-window.queryDB = function(database, query, mission) {
-  M.toast({
-    html: "Connecting...",
-    displayLength: 4000,
-    classes: "green darken-2"
-  });
-  client
-    .login()
-    .then(
-      () => db.collection(database).find(query)
-      // .limit(100)
-      // .execute()
-    )
-    .then(docs => {
-      this.queryDBResult = docs;
-      console.log("[MongoDB Stitch] Connected to Stitch");
-      console.log("[MongoDB Stitch] Found: ", queryDBResult);
-      M.toast({
-        html: "Data Obtained ",
-        displayLength: 4000,
-        classes: "green darken-2"
-      });
-      mission.analyze(queryDBResult);
-    })
-    .catch(err => {
-      console.error(err);
-      M.toast({
-        html: "Unable to Connect",
-        displayLength: 4000,
-        classes: "red darken-2"
-      });
-    });
-};
-/**
  *  Function to Collect Data, send to Database and Congratulate User
  *
  * @param {any} Database Collection
@@ -203,7 +163,8 @@ class Mission {
     // Each mission should have a representative image
     image = require("../img/trail.jpg"),
     monitorSuccess,
-    analyzeSuccess
+    analyzeSuccess,
+    queryDB
   }) {
     this.shortName = shortName;
     this.title = title;
@@ -213,6 +174,39 @@ class Mission {
     this.congratulatoryMessage = congratulatoryMessage;
     this.monitorSuccess = monitorSuccess;
     this.analyzeSuccess = analyzeSuccess;
+    this.queryDB = function(database, query) {
+      M.toast({
+        html: "Connecting...",
+        displayLength: 4000,
+        classes: "green darken-2"
+      });
+      client
+        .login()
+        .then(
+          () => db.collection(database).find(query)
+          // .limit(100)
+          // .execute()
+        )
+        .then(docs => {
+          let queryDBResult = docs;
+          console.log("[MongoDB Stitch] Connected to Stitch");
+          console.log("[MongoDB Stitch] Found: ", queryDBResult);
+          M.toast({
+            html: "Data Obtained ",
+            displayLength: 4000,
+            classes: "green darken-2"
+          });
+          this.analyze(queryDBResult);
+        })
+        .catch(err => {
+          console.error(err);
+          M.toast({
+            html: "Unable to Connect",
+            displayLength: 4000,
+            classes: "red darken-2"
+          });
+        });
+    };
     this.monitor = function() {
       navigator.geolocation.getCurrentPosition(
         position => {
@@ -348,8 +342,8 @@ class Mission {
       </div>
       <div class="card-action">
         <a class="pointer" onclick="${this.shortName}.monitor()">Monitor</a>
-        <a class="pointer" onclick="queryDB('${this
-          .databaseCollection}', {}, ${this.shortName})">Analyze</a>
+        <a class="pointer" onclick="${this.shortName}.queryDB('${this
+      .databaseCollection}', {})">Analyze</a>
       </div>
     </div>
   </div>
