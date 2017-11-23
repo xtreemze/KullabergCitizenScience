@@ -112,7 +112,6 @@ trails = new Mission({
             <input id="photoFilePath" accept="image/*" class="file-path validate" type="text" placeholder="Upload one or more photos of the trail.">
           </div>
         </div>
-        <canvas id="photoDisplay" width="800" height="600"></canvas>
         <button class="col s12 btn btn-large waves-effect waves-light" type="submit" onclick="collectInputs('${
           this.databaseCollection
         }', '${this.congratulatoryMessage}')">Submit

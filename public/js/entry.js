@@ -263,16 +263,23 @@ class Mission {
           const getContent = function() {
             let content2 = "";
             for (const key in queryDBResult[i]) {
-              if (queryDBResult[i].hasOwnProperty(key)) {
-                content2 += `<p class="col s12">${Object.keys(
+              console.log(key);
+              if (
+                key === "_id" ||
+                key === "owner_id" ||
+                key === "photoFilePath"
+              ) {
+                return false;
+              } else if (queryDBResult[i].hasOwnProperty(key)) {
+                content2 += `<span class="col s4">${key}: ${
                   queryDBResult[i][key]
-                )}: ${queryDBResult[i][key]}</p>`;
+                }</>`;
               }
               return content2;
             }
           };
           resultContent += `<li class="collection-item avatar">
-          <img src="${this.decodeImage(queryDBResult[i].Photo)}" alt="${
+          <img src="${queryDBResult[i].Photo}" alt="${
             queryDBResult[i].Date
           }" class="circle"><br>
           <span class="title">${queryDBResult[i].Date}</span>
@@ -375,8 +382,8 @@ class Mission {
           var dataURL = canvas.toDataURL("image/png");
 
           // Resize Image
-          var MAX_WIDTH = 800;
-          var MAX_HEIGHT = 600;
+          var MAX_WIDTH = 256;
+          var MAX_HEIGHT = 256;
           var width = img.width;
           var height = img.height;
 
@@ -392,10 +399,10 @@ class Mission {
             }
           }
           // Create Canvas
-          canvas.width = width || 800;
-          canvas.height = height || 600;
+          canvas.width = width;
+          canvas.height = height;
           ctx.drawImage(img, 0, 0, width, height);
-          window.dataURL = canvas.toDataURL("image/jpeg", 0.2);
+          window.dataURL = canvas.toDataURL("image/jpeg", 0.1);
         };
         // Canvas to Data URL https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL
         img.src = window.URL.createObjectURL(window.Photos.files[0]);
@@ -412,12 +419,12 @@ class Mission {
         canvas.width = this.width;
         canvas.height = this.height;
 
-        var ctx = canvas.getContext("2d");
+        let ctx = canvas.getContext("2d");
         ctx.drawImage(this, 0, 0);
 
-        var dataURL = canvas.toDataURL("image/jpeg");
+        let dataURL = canvas.toDataURL("image/jpeg");
 
-        dataURL.replace(/^data:image\/(jpeg|jpg);base64,/, "");
+        // dataURL.replace(/^data:image\/(jpeg|jpg);base64,/, "");
       };
       img.src = blob;
       // image.src = "data:image/jpeg;base64," + Base64.encode(blob);
@@ -1129,7 +1136,6 @@ trails = new Mission({
             <input id="photoFilePath" accept="image/*" class="file-path validate" type="text" placeholder="Upload one or more photos of the trail.">
           </div>
         </div>
-        <canvas id="photoDisplay" width="800" height="600"></canvas>
         <button class="col s12 btn btn-large waves-effect waves-light" type="submit" onclick="collectInputs('${
           this.databaseCollection
         }', '${this.congratulatoryMessage}')">Submit
@@ -1284,7 +1290,6 @@ tumlare = new Mission({
               <input class="file-path validate" type="text" placeholder="Upload one or more photographs of the sighting.">
             </div>
           </div>
-          <canvas id="photoDisplay" width="800" height="600"></canvas>
           <button class="section col s12 btn btn-large waves-effect waves-light" type="submit" onClick="window.collectInputs('${
             this.databaseCollection
           }', '${this.congratulatoryMessage}')">Submit

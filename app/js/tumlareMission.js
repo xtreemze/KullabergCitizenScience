@@ -114,7 +114,6 @@ tumlare = new Mission({
               <input class="file-path validate" type="text" placeholder="Upload one or more photographs of the sighting.">
             </div>
           </div>
-          <canvas id="photoDisplay" width="800" height="600"></canvas>
           <button class="section col s12 btn btn-large waves-effect waves-light" type="submit" onClick="window.collectInputs('${
             this.databaseCollection
           }', '${this.congratulatoryMessage}')">Submit
