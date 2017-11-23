@@ -1058,10 +1058,14 @@ trails = new Mission({
     setTimeout(function() {
       if (variables.results.length > 0) {
         for (let i = 0; i < variables.results.length; i++) {
-          resultContent += `<p> Object ${i} ID#${variables.results[i]._id}</p>`;
+          resultContent += `<h5 class="col s12">Object ${i} ID#${
+            variables.results[i]._id
+          }</h5>`;
           for (const key in variables.results[i]) {
             if (variables.results[i].hasOwnProperty(key)) {
-              resultContent += `<p>Contains: ${variables.results[i][key]}</p>`;
+              resultContent += `<p class="col s12">${Object.keys(
+                variables.results[i][key]
+              )}: ${variables.results[i][key]}</p>`;
             }
           }
         }
