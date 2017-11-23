@@ -15,6 +15,71 @@ const stitch = __webpack_require__(9);
 const client = new stitch.StitchClient("citizensciencestitch-oakmw");
 const db = client.service("mongodb", "mongodb-atlas").db("citizenScience");
 
+const imageResize = function() {
+  if (!window.Photos.files[0] === false) {
+    // Create ObjectURL() to Show a thumbnail/preview
+    window.img = document.createElement("img");
+    img.src = window.URL.createObjectURL(window.Photos.files[0]);
+
+    // Resize Image
+    var MAX_WIDTH = 800;
+    var MAX_HEIGHT = 600;
+    var width = img.width;
+    var height = img.height;
+
+    if (width > height) {
+      if (width > MAX_WIDTH) {
+        height *= MAX_WIDTH / width;
+        width = MAX_WIDTH;
+      }
+    } else {
+      if (height > MAX_HEIGHT) {
+        width *= MAX_HEIGHT / height;
+        height = MAX_HEIGHT;
+      }
+    }
+    // Create Canvas
+    var canvas = document.getElementById("photoDisplay");
+    canvas.width = width || 800;
+    canvas.height = height || 600;
+    var context = canvas.getContext("2d");
+    context.drawImage(img, 0, 0, width, height);
+
+    // Canvas to Data URL https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL
+    window.dataURL = canvas.toDataURL("image/jpeg", 0.2);
+  }
+};
+
+const decodeImage = function(blob = "") {
+  const image = document.createElement("img");
+  // image.src = "data:image/jpeg;base64," + Base64.encode(blob);
+  image.src = Base64.encode(blob);
+  document.body.appendChild(image);
+};
+
+const updateDB = function(database = "", dataset = {}) {
+  const datasetContent = dataset;
+  datasetContent["owner_id"] = client.authedId();
+  client
+    .login()
+    .then(() => db.collection(database).insertOne(datasetContent))
+    .then(result => {
+      console.log("[MongoDB Stitch] Updated: ", result, dataset);
+      M.toast({
+        html: "Database Updated",
+        displayLength: 6000,
+        classes: "green darken-2"
+      });
+    })
+    .catch(error => {
+      console.error("[MongoDB Stitch] Error: ", error);
+      M.toast({
+        html: "Unable to Connect",
+        displayLength: 6000,
+        classes: "red darken-2"
+      });
+    });
+};
 /**
  * Query DB and if Succesful, display results in a list and launches the analyze function for the mission
  * 
@@ -67,7 +132,7 @@ window.collectInputs = function(
 ) {
   window.form = parent.document.getElementsByTagName("form")[0];
   window.data = {
-    location: {
+    Location: {
       type: "Point",
       coordinates: []
     }
@@ -102,7 +167,7 @@ window.collectInputs = function(
       } else if (elements[e].value.length > 0) {
         window.data[elements[e].id] = elements[e].value;
       } else {
-        console.warn("[Form] Did not include: " + elements[e].id);
+        console.warn("[Form] Did not include: ", elements[e].id);
       }
     }
   }
@@ -148,7 +213,9 @@ class Mission {
     // Data retrieval and display
     analyze = ``,
     // Each mission should have a representative image
-    image = __webpack_require__(16)
+    image = __webpack_require__(16),
+    monitorSuccess,
+    analyzeSuccess
   }) {
     this.shortName = shortName;
     this.title = title;
@@ -156,90 +223,130 @@ class Mission {
     this.image = image;
     this.databaseCollection = databaseCollection;
     this.congratulatoryMessage = congratulatoryMessage;
-    this.monitor = monitor;
-    this.analyze = analyze;
-
-    /**
-     * Image Capture and Resizing Function
-     *
-     */
-    const imageResize = function() {
-      if (!window.Photos.files[0] === false) {
-        // Create ObjectURL() to Show a thumbnail/preview
-        window.img = document.createElement("img");
-        img.src = window.URL.createObjectURL(window.Photos.files[0]);
-
-        // Resize Image
-        var MAX_WIDTH = 800;
-        var MAX_HEIGHT = 600;
-        var width = img.width;
-        var height = img.height;
-
-        if (width > height) {
-          if (width > MAX_WIDTH) {
-            height *= MAX_WIDTH / width;
-            width = MAX_WIDTH;
-          }
-        } else {
-          if (height > MAX_HEIGHT) {
-            width *= MAX_HEIGHT / height;
-            height = MAX_HEIGHT;
-          }
-        }
-        // Create Canvas
-        var canvas = document.getElementById("photoDisplay");
-        canvas.width = width || 800;
-        canvas.height = height || 600;
-        var context = canvas.getContext("2d");
-        context.drawImage(img, 0, 0, width, height);
-
-        // Canvas to Data URL https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL
-        window.dataURL = canvas.toDataURL("image/jpeg", 0.2);
-      }
-    };
-    /**
-     * Takes a blob from the Database and decodes into an image
-     * 
-     * @param {string} Blob
-     */
-    const decodeImage = function(blob = "") {
-      const image = document.createElement("img");
-      // image.src = "data:image/jpeg;base64," + Base64.encode(blob);
-      image.src = Base64.encode(blob);
-      document.body.appendChild(image);
-    };
-    /**
-     * Upload FormData to MongoDB Database
-     *
-     * @param {string} [database=""]  Name of the Database Collection
-     * @param {any} [set={}] The Data as an Object
-     */
-    const updateDB = function(database = "", set = {}) {
-      window.variables = {
-        database: database,
-        set: set
-      };
-      variables.set["owner_id"] = client.authedId();
-      client
-        .login()
-        .then(() => db.collection(variables.database).insertOne(variables.set))
-        .then(result => {
-          console.log("[MongoDB Stitch] Updated: ", result);
+    this.monitorSuccess = monitorSuccess;
+    this.analyzeSuccess = analyzeSuccess;
+    this.monitor = function() {
+      navigator.geolocation.getCurrentPosition(
+        position => {
           M.toast({
-            html: "Database Updated",
-            displayLength: 6000,
+            html: "GPS Located",
+            displayLength: 4000,
             classes: "green darken-2"
           });
-        })
-        .catch(error => {
-          console.error("[MongoDB Stitch] Error: ", error);
+          window.geoReference = {
+            lat: position.coords.latitude || 0,
+            long: position.coords.longitude || 0,
+            alt: position.coords.altitude || 0
+          };
+          this.monitorSuccess();
+        },
+        error => {
           M.toast({
-            html: "Unable to Connect",
-            displayLength: 6000,
+            html: "Position Unavailable",
+            displayLength: 4000,
             classes: "red darken-2"
           });
-        });
+          window.geoReference = {
+            lat: "Latitude",
+            long: "Longitude",
+            alt: "Altitude"
+          };
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 30000
+        }
+      );
     };
+    this.analyze = function(queryDBResult) {
+      let content = ``;
+      content += `<div class="row">
+      <div class="">
+      <h3 class="col s12">${this.title}</h3>
+      <h5 class="col s12">Database Results</h5>
+      <div class="col s12"><div id="map"></div><div>
+      <ul class="collection" id="resultsList"></ul>
+      </div>
+      </div>
+      `;
+      missions.innerHTML = content;
+
+      navigationBreadcrumbs.innerHTML = `
+      <a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
+        <a class="pointer breadcrumb">Analyze</a>
+        `;
+      let results = document.getElementById("resultsList");
+      let resultContent = "";
+
+      if (queryDBResult.length > 0) {
+        for (let i = 0; i < queryDBResult.length; i++) {
+          resultContent += `<h5 class="col s12">Object ${i} ID#${queryDBResult[
+            i
+          ]._id}</h5>`;
+          for (const key in queryDBResult[i]) {
+            if (queryDBResult[i].hasOwnProperty(key)) {
+              resultContent += `<p class="col s12">${Object.keys(
+                queryDBResult[i][key]
+              )}: ${queryDBResult[i][key]}</p>`;
+            }
+          }
+        }
+      }
+
+      results.innerHTML = resultContent;
+
+      window.scrollTo(0, 0);
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          M.toast({
+            html: "GPS Located",
+            displayLength: 4000,
+            classes: "green darken-2"
+          });
+          window.geoReference = {
+            lat: position.coords.latitude || 0,
+            long: position.coords.longitude || 0,
+            alt: position.coords.altitude || 0
+          };
+          const map = L.map("map").setView(
+            [geoReference.lat, geoReference.long],
+            12
+          );
+
+          L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
+
+          let circle = L.circle([geoReference.lat, geoReference.long], {
+            color: "red",
+            fillColor: "#f03",
+            fillOpacity: 0.5,
+            radius: 5
+          })
+            .addTo(map)
+            .bindPopup("Your Location")
+            .openPopup();
+          M.updateTextFields();
+        },
+        error => {
+          M.toast({
+            html: "Position Unavailable",
+            displayLength: 4000,
+            classes: "red darken-2"
+          });
+          window.geoReference = {
+            lat: "Latitude",
+            long: "Longitude",
+            alt: "Altitude"
+          };
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 30000
+        }
+      );
+    };
+
     // Displays on Front Page
     this.card = `<div class="cardContainer" id="${this.title}">
   <div class="col s12 m6 l6">
@@ -267,20 +374,20 @@ class Mission {
       icon = ""
     }) {
       `<li class="collection-item avatar">
-<img src="${src}" alt="${title}" class="circle">
-<span class="title">${title}</span>
-${content}
-<a href="#!" class="secondary-content"><i class="material-icons">${icon}</i></a>
-</li>`;
+    <img src="${src}" alt="${title}" class="circle">
+    <span class="title">${title}</span>
+    ${content}
+    <a href="#!" class="secondary-content">
+        <i class="material-icons">${icon}</i>
+    </a>
+</li>
+`;
     };
     Missions.add(this);
     // Add Mission Cards to DOM
     missionCardsHTML += this.card;
   }
 }
-
-// Additional missions go in separate files and require this file. Add them to ./../entry.js
-// test = new Mission({});
 
 // Breadcrumbs in Footer
 window.navigationBreadcrumbs = document.getElementById("navigationBreadcrumbs");
@@ -297,6 +404,8 @@ window.showMissions = function() {
   window.scrollTo(0, 0);
 };
 
+// Additional missions go in separate files and require this file. Add them to ./../entry.js
+// test = new Mission({});
 module.exports = Mission;
 
 
@@ -869,9 +978,7 @@ window.addEventListener("load", function() {
 /***/ (function(module, exports, __webpack_require__) {
 
 const Mission = __webpack_require__(5);
-// require("./missions");
 
-// Create the Missions
 trails = new Mission({
   shortName: "trails",
   title: "Trail Condition",
@@ -880,294 +987,167 @@ trails = new Mission({
   description:
     "Engage in the monitoring of Trail Conditions and participate in adaptive management by reporting incidents while walking in the trails system. Kullaberg Management will analyze measures to execute to resolve the reports.",
   image: __webpack_require__(16),
-  monitor: function() {
-    let content = ``;
-    navigator.geolocation.getCurrentPosition(position => {
-      M.toast({
-        html: "GPS Located",
-        displayLength: 4000,
-        classes: "green darken-2"
-      });
-      (window.geoReference = {
-        lat: position.coords.latitude || 0,
-        long: position.coords.longitude || 0,
-        alt: position.coords.altitude || 0
-      }),
-        error => {
-          M.toast({
-            html: "Position Unavailable",
-            displayLength: 4000,
-            classes: "red darken-2"
-          });
-          window.geoReference = {
-            lat: "Latitude",
-            long: "Longitude",
-            alt: "Altitude"
-          };
-        },
-        {
-          enableHighAccuracy: true,
-          timeout: 5000,
-          maximumAge: 30000
-        };
-      content += `<div class="row">
-  <form class="" onsubmit="return false">
-    <h3 class="col s12">${this.title}</h3>
-       <h5 class="col s12">Select All that Apply</h5>
-    <p class="col s12 m4">
-      <label>
-        <input id="RootsExposed" type="checkbox">
-        <span>Roots Exposed</span>
-      </label>
-    </p>
-    <p class="col s12 m4">
-      <label>
-        <input id="Flooded" type="checkbox">
-        <span>Flooded</span>
-      </label>
-    </p>
-    <p class="col s12 m4">
-      <label>
-        <input id="Bifurcation" type="checkbox">
-        <span>Bifurcation - Widening</span>
-      </label>
-    </p>
-    <p class="col s12 m4">
-      <label>
-        <input id="FallenTrees" type="checkbox">
-        <span>Fallen Trees on Trail</span>
-      </label>
-    </p>
-    <p class="col s12 m4">
-      <label>
-        <input id="Slippery" type="checkbox">
-        <span>Slippery</span>
-      </label>
-    </p>
-    <p class="col s12 m4">
-      <label>
-        <input id="SharpStones" type="checkbox">
-        <span>Sharp Stones</span>
-      </label>
-    </p>
-    <p class="col s12 m4">
-      <label>
-        <input id="Thorns" type="checkbox">
-        <span>Thorny Vegetation on the Edge</span>
-      </label>
-    </p>
-    <p class="col s12 m4">
-      <label>
-        <input id="Risk" type="checkbox">
-        <span>Risk From Fallen Trees or Branches</span>
-      </label>
-    </p>
-    <div class="input-field col s12 m4">
-      <select id="Erosion">
-        <option value="Low">Low</option>
-        <option value="Medium">Medium</option>
-        <option value="High">High</option>
-      </select>
-      <label for="Erosion">Erosion</label>
-    </div>
-    <h5 class="col s12">Please Describe</h5>
-    <div class="divider"></div>
-    <div class="section">
-      <div class="input-field col s12 m6">
-        <textarea id="SupportInfrastructure" class="materialize-textarea"></textarea>
-        <label for="SupportInfrastructure">Support Infrastructure</label>
-        <span class="helper-text">Example: handrails, ropes, steps.</span>
-      </div>
-      <div class="input-field col s12 m6">
-        <textarea id="UsePerception" class="materialize-textarea"></textarea>
-        <label for="UsePerception">
-          Trail Usage</label>
-        <span class="helper-text">Example: Many people, conflicts betwen hikers, horses, bicycles.</span>
-      </div>
-    </div>
-    <h5 class="col s12">Georeference</h5>
-    <div class="col s12"><div id="map"></div></div>
-    <div class="input-field col s6 m3">
-      <input id="Latitude" type="text" value="${window.geoReference.lat}">
-      <label for="Latitude">Latitude</label>
-    </div>
-    <div class="input-field col s6 m3">
-      <input id="Longitude" type="text" value="${window.geoReference.long}">
-      <label for="Longitude">Longitude</label>
-    </div>
-    <div class="input-field col s6 m2">
-      <input id="Altitude" type="text" value="${window.geoReference.alt}">
-      <label for="Altitude">Altitude</label>
-    </div>
-    <div class="col s6 m4">
-      <label for="Date">Date</label>
-      <input id="Day" type="text" class="datepicker" value="${new Date().toDateString()}">
-    </div>
-    <div class="file-field input-field col s12">
-      <div class="btn">
-        <span>Photos</span>
-        <input id="Photos" accept="image/*;capture=camera" type="file" multiple>
-      </div>
-      <div class="file-path-wrapper">
-        <input id="photoFilePath" accept="image/*" class="file-path validate" type="text" placeholder="Upload one or more photos of the trail.">
-      </div>
-    </div>
-    <canvas id="photoDisplay" width="800" height="600"></canvas>
-    <button class="col s12 btn btn-large waves-effect waves-light" type="submit" onclick="collectInputs('${this
-      .databaseCollection}', '${this.congratulatoryMessage}')">Submit
-      <i class="material-icons right">send</i>
-    </button>
-  </form>
-</div>
-`;
-      missions.innerHTML = content;
-      navigationBreadcrumbs.innerHTML = `
-<a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
-<a class="pointer breadcrumb">Monitor</a>
-`;
-      window.scrollTo(0, 0);
-
-      const photos = document.getElementById("photoFilePath");
-      photos.addEventListener("change", function() {
-        console.log("Image load ended");
-        imageResize();
-      });
-
-      const map = L.map("map").setView(
-        [window.Latitude.value, window.Longitude.value],
-        13
-      );
-
-      L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
-        // attribution:
-        //   '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(map);
-
-      let circle = L.circle([window.Latitude.value, window.Longitude.value], {
-        color: "red",
-        fillColor: "#f03",
-        fillOpacity: 0.5,
-        radius: 5
-      })
-        .addTo(map)
-        .bindPopup("Your Location")
-        .openPopup();
-
-      setTimeout(function() {
-        M.updateTextFields();
-        let multiSelect = document.querySelectorAll("select");
-        for (const element in multiSelect) {
-          if (multiSelect.hasOwnProperty(element)) {
-            const newInstance = new M.Select(multiSelect[element]);
-          }
-        }
-        let datePicker = document.querySelectorAll(".datepicker");
-        for (const element in datePicker) {
-          if (datePicker.hasOwnProperty(element)) {
-            const datePickerInstance = new M.Datepicker(datePicker[element], {
-              // container: ".datepicker",
-              setDefaultDate: true,
-              // format: "mmm-dd-yyyy",
-              defaultDate: new Date().toDateString(),
-              yearRange: 2
-            });
-          }
-        }
-
-        // datePickerInstance.setDate(new Date());
-      }, 80);
-    });
-  },
-  //
-  /**
-   * Function to retrieve display Database Results
-   *
-   */
-  analyze: function(queryDBResult) {
+  monitorSuccess: function() {
     let content = ``;
     content += `<div class="row">
-    <div class="">
-    <h3 class="col s12">${this.title}</h3>
-    <h5 class="col s12">Database Results</h5>
-    <div class="col s12"><div id="map"></div><div>
-    <ul class="collection" id="resultsList"></ul>
-    </div>
+      <form class="" onsubmit="return false">
+        <h3 class="col s12">${this.title}</h3>
+           <h5 class="col s12">Select All that Apply</h5>
+        <p class="col s12 m4">
+          <label>
+            <input id="RootsExposed" type="checkbox">
+            <span>Roots Exposed</span>
+          </label>
+        </p>
+        <p class="col s12 m4">
+          <label>
+            <input id="Flooded" type="checkbox">
+            <span>Flooded</span>
+          </label>
+        </p>
+        <p class="col s12 m4">
+          <label>
+            <input id="Bifurcation" type="checkbox">
+            <span>Bifurcation - Widening</span>
+          </label>
+        </p>
+        <p class="col s12 m4">
+          <label>
+            <input id="FallenTrees" type="checkbox">
+            <span>Fallen Trees on Trail</span>
+          </label>
+        </p>
+        <p class="col s12 m4">
+          <label>
+            <input id="Slippery" type="checkbox">
+            <span>Slippery</span>
+          </label>
+        </p>
+        <p class="col s12 m4">
+          <label>
+            <input id="SharpStones" type="checkbox">
+            <span>Sharp Stones</span>
+          </label>
+        </p>
+        <p class="col s12 m4">
+          <label>
+            <input id="Thorns" type="checkbox">
+            <span>Thorny Vegetation on the Edge</span>
+          </label>
+        </p>
+        <p class="col s12 m4">
+          <label>
+            <input id="Risk" type="checkbox">
+            <span>Risk From Fallen Trees or Branches</span>
+          </label>
+        </p>
+        <div class="input-field col s12 m4">
+          <select id="Erosion">
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+          </select>
+          <label for="Erosion">Erosion</label>
+        </div>
+        <h5 class="col s12">Please Describe</h5>
+        <div class="divider"></div>
+        <div class="section">
+          <div class="input-field col s12 m6">
+            <textarea id="SupportInfrastructure" class="materialize-textarea"></textarea>
+            <label for="SupportInfrastructure">Support Infrastructure</label>
+            <span class="helper-text">Example: handrails, ropes, steps.</span>
+          </div>
+          <div class="input-field col s12 m6">
+            <textarea id="UsePerception" class="materialize-textarea"></textarea>
+            <label for="UsePerception">
+              Trail Usage</label>
+            <span class="helper-text">Example: Many people, conflicts betwen hikers, horses, bicycles.</span>
+          </div>
+        </div>
+        <h5 class="col s12">Georeference</h5>
+        <div class="col s12"><div id="map"></div></div>
+        <div class="input-field col s6 m3">
+          <input id="Latitude" type="text" value="${window.geoReference.lat}">
+          <label for="Latitude">Latitude</label>
+        </div>
+        <div class="input-field col s6 m3">
+          <input id="Longitude" type="text" value="${window.geoReference.long}">
+          <label for="Longitude">Longitude</label>
+        </div>
+        <div class="input-field col s6 m2">
+          <input id="Altitude" type="text" value="${window.geoReference.alt}">
+          <label for="Altitude">Altitude</label>
+        </div>
+        <div class="col s6 m4">
+          <label for="Date">Date</label>
+          <input id="Day" type="text" class="datepicker" value="${new Date().toDateString()}">
+        </div>
+        <div class="file-field input-field col s12">
+          <div class="btn">
+            <span>Photos</span>
+            <input id="Photos" accept="image/*;capture=camera" type="file" multiple>
+          </div>
+          <div class="file-path-wrapper">
+            <input id="photoFilePath" accept="image/*" class="file-path validate" type="text" placeholder="Upload one or more photos of the trail.">
+          </div>
+        </div>
+        <canvas id="photoDisplay" width="800" height="600"></canvas>
+        <button class="col s12 btn btn-large waves-effect waves-light" type="submit" onclick="collectInputs('${this
+          .databaseCollection}', '${this.congratulatoryMessage}')">Submit
+          <i class="material-icons right">send</i>
+        </button>
+      </form>
     </div>
     `;
     missions.innerHTML = content;
-
     navigationBreadcrumbs.innerHTML = `
     <a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
-      <a class="pointer breadcrumb">Analyze</a>
-      `;
-    let results = document.getElementById("resultsList");
-    let resultContent = "";
+    <a class="pointer breadcrumb">Monitor</a>
+    `;
+    window.scrollTo(0, 0);
 
-    if (queryDBResult.length > 0) {
-      for (let i = 0; i < queryDBResult.length; i++) {
-        resultContent += `<h5 class="col s12">Object ${i} ID#${queryDBResult[i]
-          ._id}</h5>`;
-        for (const key in queryDBResult[i]) {
-          if (queryDBResult[i].hasOwnProperty(key)) {
-            resultContent += `<p class="col s12">${Object.keys(
-              queryDBResult[i][key]
-            )}: ${queryDBResult[i][key]}</p>`;
-          }
-        }
+    const photos = document.getElementById("photoFilePath");
+    photos.addEventListener("change", function() {
+      console.log("Image load ended");
+      imageResize();
+    });
+
+    const map = L.map("map").setView(
+      [window.Latitude.value, window.Longitude.value],
+      13
+    );
+
+    L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
+
+    let circle = L.circle([window.Latitude.value, window.Longitude.value], {
+      color: "red",
+      fillColor: "#f03",
+      fillOpacity: 0.5,
+      radius: 5
+    })
+      .addTo(map)
+      .bindPopup("Your Location")
+      .openPopup();
+
+    M.updateTextFields();
+    let multiSelect = document.querySelectorAll("select");
+    for (const element in multiSelect) {
+      if (multiSelect.hasOwnProperty(element)) {
+        const newInstance = new M.Select(multiSelect[element]);
       }
     }
-
-    results.innerHTML = resultContent;
-
-    window.scrollTo(0, 0);
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        M.toast({
-          html: "GPS Located",
-          displayLength: 4000,
-          classes: "green darken-2"
+    let datePicker = document.querySelectorAll(".datepicker");
+    for (const element in datePicker) {
+      if (datePicker.hasOwnProperty(element)) {
+        const datePickerInstance = new M.Datepicker(datePicker[element], {
+          // container: ".datepicker",
+          setDefaultDate: true,
+          // format: "mmm-dd-yyyy",
+          defaultDate: new Date().toDateString(),
+          yearRange: 2
         });
-        window.geoReference = {
-          lat: position.coords.latitude || 0,
-          long: position.coords.longitude || 0,
-          alt: position.coords.altitude || 0
-        };
-        const map = L.map("map").setView(
-          [geoReference.lat, geoReference.long],
-          12
-        );
-
-        L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
-
-        let circle = L.circle([geoReference.lat, geoReference.long], {
-          color: "red",
-          fillColor: "#f03",
-          fillOpacity: 0.5,
-          radius: 5
-        })
-          .addTo(map)
-          .bindPopup("Your Location")
-          .openPopup();
-        M.updateTextFields();
-      },
-      error => {
-        M.toast({
-          html: "Position Unavailable",
-          displayLength: 4000,
-          classes: "red darken-2"
-        });
-        window.geoReference = {
-          lat: "Latitude",
-          long: "Longitude",
-          alt: "Altitude"
-        };
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 30000
       }
-    );
+    }
   }
 });
 
@@ -1188,342 +1168,232 @@ tumlare = new Mission({
   description:
     "Engage in the collection of visual harbor porpoise observations (both living and dead) in the north-western parts of Scania. Observations are used in scientific research to help increase the knowledge about this threatened species.",
   image: __webpack_require__(74),
-  monitor: function() {
-    const mission = this;
+  monitorSuccess: function() {
     let content = ``;
-    const success = function() {
-      content += `<div class="row">
-      <form class="" onsubmit="return false">
-        <h3 class="col s12">${mission.title}</h3>
-        <div class="input-field col m4 s12">
-          <label for="Species">Species</label>
-          <input id="Species" type="text" value="Porpoise">
-        </div>
-        <p class="col s6 m4">
-          <label>
-            <input id="BinocularsUsed" type="checkbox">
-            <span>Observation Made with Binoculars</span>
-          </label>
-        </p>
-        <p class="col s6 m4">
-          <label>
-            <input id="UncertainQuantity" type="checkbox">
-            <span>Uncertain Quantity</span>
-          </label>
-        </p>
-        <div class="col s10 range-field">
-          <label>Quantity</label>
-          <input id="Quantity" type="range" min="1" max="20" value="10">
-        </div>
-        <p class="col s2">
-          <span id="QuantityDisplay" class="helper-text">10</span>
-        </p>
-        <h5 class="col s12">Location of Sighting</h5>
-        <div class="input-field col s6 m4">
-          <input id="Latitude" type="text" value="${window.geoReference.lat}">
-          <label for="Latitude">Latitude</label>
-        </div>
-        <div class="input-field col s6 m4">
-          <input id="Longitude" type="text" value="${window.geoReference.long}">
-          <label for="Longitude">Longitude</label>
-        </div>
-        <div class="input-field col s6 m4">
-          <label class="" for="Date">Date</label>
-          <input id="Day" type="text" class="datepicker" value="${new Date().toDateString()}">
-        </div>
-        <p class="col s12">Locate the sighting on the map.</p>
-        <div class="col s12">
-          <div id="map"></div>
-          <div>
-            <div class="col s10 range-field">
-              <label>Area of Observation</label>
-              <input id="ObservationArea" type="range" min="1" max="200" value="20">
-            </div>
-            <p class="col s2">
-              <span id="ObservationAreaDisplay" class="helper-text">20</span>
-              <span class="meters">m</span>
-            </p>
-            <h5 class="col s12">Behavior</h5>
-            <div class="input-field col s12 m6">
-              <select id="Behavior">
-                <option selected value="Constant Heading, Regular Diving">Constant Heading, Regular Diving</option>
-                <option value="Varied Heading, Irregular Diving">Varied Heading, Irregular Diving</option>
-                <option value="Slow Movement, Long Time at Surface">Slow Movement, Long Time at Surface</option>
-                <option value="Jumping">Jumping</option>
-                <option value="Found Dead / Injured">Found Dead / Injured</option>
-              </select>
-              <label for="Behavior">Behavior</label>
-            </div>
-            <div class="input-field col s12 m6">
-              <input id="OtherBehavior" class="" type="text"></input>
-              <label for="OtherBehavior">Other Behavior</label>
-              <span class="helper-text">(optional)</span>
-            </div>
-            <h5 class="col s12">Conditions</h5>
-            <div class="input-field col s12 m6">
-              <select id="OceanConditions">
-                <option selected value="Sea Like a Mirror">Sea Like a Mirror</option>
-                <option value="Very Calm / Ripples">Very Calm / Ripples</option>
-                <option value="Small Wavelets">Small Wavelets</option>
-                <option value="No Whitecaps / Small Waves">No Whitecaps / Small Waves</option>
-                <option value="Few Whitecaps / Waves with Whitecaps">Few Whitecaps / Waves with Whitecaps</option>
-              </select>
-              <label for="OceanConditions">Appearance of the Ocean</label>
-            </div>
-            <div class="input-field col s12 m6">
-              <select id="Weather">
-                <option selected value="Sunny">Sunny</option>
-                <option value="Cloudy">Cloudy</option>
-                <option value="Rainy">Rainy</option>
-                <option value="Foggy">Foggy</option>
-                <option value="Misty">Misty</option>
-              </select>
-              <label for="Weather">Weather Conditions</label>
-            </div>
-            <h5 class="col s12">Comments</h5>
-            <div class="input-field col s12">
-              <textarea id="Comments" class="materialize-textarea"></textarea>
-              <label for="Comments">Additional Comments</label>
-              <span class="helper-text">(optional)</span>
-            </div>
-            <div class="file-field input-field col s12">
-              <div class="btn ">
-                <span>Photos</span>
-                <input id="Photos" accept="image/*;capture=camera" type="file" multiple>
-              </div>
-              <div class="file-path-wrapper">
-                <input class="file-path validate" type="text" placeholder="Upload one or more photographs of the sighting.">
-              </div>
-            </div>
-            <canvas id="photoDisplay" width="800" height="600"></canvas>
-            <button class="section col s12 btn btn-large waves-effect waves-light" type="submit" onClick="window.collectInputs('${mission.databaseCollection}', '${mission.congratulatoryMessage}')">Submit
-              <i class="material-icons right">send</i>
-            </button>
-      </form>
-      </div>
-    `;
-      missions.innerHTML = content;
-      navigationBreadcrumbs.innerHTML = `
-            <a onclick="showMissions()" class="pointer breadcrumb">${mission.title}</a>
-            <a class="pointer breadcrumb">Monitor</a>
-            `;
-      window.scrollTo(0, 0);
-
-      const map = L.map("map").setView(
-        [window.Latitude.value, window.Longitude.value],
-        13
-      );
-
-      L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
-        // attribution:
-        //   '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(map);
-
-      let circle = L.circle([window.Latitude.value, window.Longitude.value], {
-        color: "red",
-        fillColor: "#f03",
-        fillOpacity: 0.5,
-        radius: 5
-      })
-        .addTo(map)
-        .bindPopup("Your Location")
-        .openPopup();
-      let popup = L.popup();
-      window.radius = L.circle(
-        [window.Latitude.value, window.Longitude.value],
-        {
-          color: "#0288d1",
-          fillColor: "#0d47a1",
-          fillOpacity: 0.5,
-          radius: 20
-        }
-      ).addTo(map);
-
-      function onMapClick(e) {
-        window.Latitude.value = e.latlng.lat;
-        window.Longitude.value = e.latlng.lng;
-        radius.setLatLng(e.latlng);
-        popup
-          .setLatLng(e.latlng)
-          .setContent(window.Species.value)
-          .openOn(map);
-      }
-
-      map.on("click", onMapClick);
-
-      M.updateTextFields();
-      let multiSelect = document.querySelectorAll("select");
-      for (const element in multiSelect) {
-        if (multiSelect.hasOwnProperty(element)) {
-          const newInstance = new M.Select(multiSelect[element]);
-        }
-      }
-      let datePicker = document.querySelectorAll(".datepicker");
-      for (const element in datePicker) {
-        if (datePicker.hasOwnProperty(element)) {
-          const datePickerInstance = new M.Datepicker(datePicker[element], {
-            setDefaultDate: true,
-            format: "mmm-dd-yyyy",
-            defaultDate: new Date("mmm-dd-yyyy"),
-            yearRange: 2
-          });
-        }
-      }
-      let observationArea = document.getElementById("ObservationArea");
-      let observationAreaDisplay = document.getElementById(
-        "ObservationAreaDisplay"
-      );
-      observationArea.addEventListener(
-        "mousemove",
-        function() {
-          observationAreaDisplay.innerHTML = observationArea.value;
-          radius.setRadius(observationArea.value);
-        },
-        { passive: true }
-      );
-      observationArea.addEventListener(
-        "touchmove",
-        function() {
-          observationAreaDisplay.innerHTML = observationArea.value;
-          radius.setRadius(observationArea.value);
-        },
-        { passive: true }
-      );
-      observationArea.addEventListener(
-        "change",
-        function() {
-          observationAreaDisplay.innerHTML = observationArea.value;
-          radius.setRadius(observationArea.value);
-        },
-        { passive: true }
-      );
-      let number = document.getElementById("Quantity");
-      let display = document.getElementById("QuantityDisplay");
-      number.addEventListener(
-        "mousemove",
-        function() {
-          display.innerHTML = number.value;
-        },
-        { passive: true }
-      );
-      number.addEventListener(
-        "touchmove",
-        function() {
-          display.innerHTML = number.value;
-        },
-        { passive: true }
-      );
-      number.addEventListener(
-        "change",
-        function() {
-          display.innerHTML = number.value;
-        },
-        { passive: true }
-      );
-    };
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        M.toast({
-          html: "GPS Located",
-          displayLength: 4000,
-          classes: "green darken-2"
-        });
-        window.geoReference = {
-          lat: position.coords.latitude || 0,
-          long: position.coords.longitude || 0,
-          alt: position.coords.altitude || 0
-        };
-        success();
-      },
-      error => {
-        M.toast({
-          html: "Position Unavailable",
-          displayLength: 4000,
-          classes: "red darken-2"
-        });
-        window.geoReference = {
-          lat: "Latitude",
-          long: "Longitude",
-          alt: "Altitude"
-        };
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 30000
-      }
-    );
-  },
-
-  analyze: function() {
-    let content = ``;
-
     content += `<div class="row">
-      <div class="">
-        <h3 class="col s12">${this.title}</h3>
-        <h5 class="col s12">Database Results</h5>
-        <div class="col s12"><div id="map"></div><div>    
+    <form class="" onsubmit="return false">
+      <h3 class="col s12">${this.title}</h3>
+      <div class="input-field col m4 s12">
+        <label for="Species">Species</label>
+        <input id="Species" type="text" value="Porpoise">
       </div>
+      <p class="col s6 m4">
+        <label>
+          <input id="BinocularsUsed" type="checkbox">
+          <span>Observation Made with Binoculars</span>
+        </label>
+      </p>
+      <p class="col s6 m4">
+        <label>
+          <input id="UncertainQuantity" type="checkbox">
+          <span>Uncertain Quantity</span>
+        </label>
+      </p>
+      <div class="col s10 range-field">
+        <label>Quantity</label>
+        <input id="Quantity" type="range" min="1" max="20" value="10">
+      </div>
+      <p class="col s2">
+        <span id="QuantityDisplay" class="helper-text">10</span>
+      </p>
+      <h5 class="col s12">Location of Sighting</h5>
+      <div class="input-field col s6 m4">
+        <input id="Latitude" type="text" value="${window.geoReference.lat}">
+        <label for="Latitude">Latitude</label>
+      </div>
+      <div class="input-field col s6 m4">
+        <input id="Longitude" type="text" value="${window.geoReference.long}">
+        <label for="Longitude">Longitude</label>
+      </div>
+      <div class="input-field col s6 m4">
+        <label class="" for="Date">Date</label>
+        <input id="Day" type="text" class="datepicker" value="${new Date().toDateString()}">
+      </div>
+      <p class="col s12">Locate the sighting on the map.</p>
+      <div class="col s12">
+        <div id="map"></div>
+        <div>
+          <div class="col s10 range-field">
+            <label>Area of Observation</label>
+            <input id="ObservationArea" type="range" min="1" max="200" value="20">
+          </div>
+          <p class="col s2">
+            <span id="ObservationAreaDisplay" class="helper-text">20</span>
+            <span class="meters">m</span>
+          </p>
+          <h5 class="col s12">Behavior</h5>
+          <div class="input-field col s12 m6">
+            <select id="Behavior">
+              <option selected value="Constant Heading, Regular Diving">Constant Heading, Regular Diving</option>
+              <option value="Varied Heading, Irregular Diving">Varied Heading, Irregular Diving</option>
+              <option value="Slow Movement, Long Time at Surface">Slow Movement, Long Time at Surface</option>
+              <option value="Jumping">Jumping</option>
+              <option value="Found Dead / Injured">Found Dead / Injured</option>
+            </select>
+            <label for="Behavior">Behavior</label>
+          </div>
+          <div class="input-field col s12 m6">
+            <input id="OtherBehavior" class="" type="text"></input>
+            <label for="OtherBehavior">Other Behavior</label>
+            <span class="helper-text">(optional)</span>
+          </div>
+          <h5 class="col s12">Conditions</h5>
+          <div class="input-field col s12 m6">
+            <select id="OceanConditions">
+              <option selected value="Sea Like a Mirror">Sea Like a Mirror</option>
+              <option value="Very Calm / Ripples">Very Calm / Ripples</option>
+              <option value="Small Wavelets">Small Wavelets</option>
+              <option value="No Whitecaps / Small Waves">No Whitecaps / Small Waves</option>
+              <option value="Few Whitecaps / Waves with Whitecaps">Few Whitecaps / Waves with Whitecaps</option>
+            </select>
+            <label for="OceanConditions">Appearance of the Ocean</label>
+          </div>
+          <div class="input-field col s12 m6">
+            <select id="Weather">
+              <option selected value="Sunny">Sunny</option>
+              <option value="Cloudy">Cloudy</option>
+              <option value="Rainy">Rainy</option>
+              <option value="Foggy">Foggy</option>
+              <option value="Misty">Misty</option>
+            </select>
+            <label for="Weather">Weather Conditions</label>
+          </div>
+          <h5 class="col s12">Comments</h5>
+          <div class="input-field col s12">
+            <textarea id="Comments" class="materialize-textarea"></textarea>
+            <label for="Comments">Additional Comments</label>
+            <span class="helper-text">(optional)</span>
+          </div>
+          <div class="file-field input-field col s12">
+            <div class="btn ">
+              <span>Photos</span>
+              <input id="Photos" accept="image/*;capture=camera" type="file" multiple>
+            </div>
+            <div class="file-path-wrapper">
+              <input class="file-path validate" type="text" placeholder="Upload one or more photographs of the sighting.">
+            </div>
+          </div>
+          <canvas id="photoDisplay" width="800" height="600"></canvas>
+          <button class="section col s12 btn btn-large waves-effect waves-light" type="submit" onClick="window.collectInputs('${this
+            .databaseCollection}', '${this.congratulatoryMessage}')">Submit
+            <i class="material-icons right">send</i>
+          </button>
+    </form>
     </div>
-  
   `;
     missions.innerHTML = content;
     navigationBreadcrumbs.innerHTML = `
-  
-  <a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
-  <a class="pointer breadcrumb">Analyze</a>
-  `;
+          <a onclick="showMissions()" class="pointer breadcrumb">${this
+            .title}</a>
+          <a class="pointer breadcrumb">Monitor</a>
+          `;
     window.scrollTo(0, 0);
-    navigator.geolocation.getCurrentPosition(position => {
-      M.toast({
-        html: "GPS Located",
-        displayLength: 4000,
-        classes: "green darken-2"
-      });
-      (window.geoReference = {
-        lat: position.coords.latitude || 0,
-        long: position.coords.longitude || 0,
-        alt: position.coords.altitude || 0
-      }),
-        error => {
-          M.toast({
-            html: "Position Unavailable",
-            displayLength: 4000,
-            classes: "red darken-2"
-          });
-          window.geoReference = {
-            lat: "Latitude",
-            long: "Longitude",
-            alt: "Altitude"
-          };
-        },
-        {
-          enableHighAccuracy: true,
-          timeout: 5000,
-          maximumAge: 30000
-        };
 
-      const map = L.map("map").setView(
-        [geoReference.lat, geoReference.long],
-        12
-      );
+    const map = L.map("map").setView(
+      [window.Latitude.value, window.Longitude.value],
+      13
+    );
 
-      L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
-        // attribution:
-        //   '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(map);
+    L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
 
-      let circle = L.circle([geoReference.lat, geoReference.long], {
-        color: "red",
-        fillColor: "#f03",
-        fillOpacity: 0.5,
-        radius: 5
-      })
-        .addTo(map)
-        .bindPopup("Your Location")
-        .openPopup();
-      M.updateTextFields();
-    });
+    let circle = L.circle([window.Latitude.value, window.Longitude.value], {
+      color: "red",
+      fillColor: "#f03",
+      fillOpacity: 0.5,
+      radius: 5
+    })
+      .addTo(map)
+      .bindPopup("Your Location")
+      .openPopup();
+    let popup = L.popup();
+    window.radius = L.circle([window.Latitude.value, window.Longitude.value], {
+      color: "#0288d1",
+      fillColor: "#0d47a1",
+      fillOpacity: 0.5,
+      radius: 20
+    }).addTo(map);
+
+    function onMapClick(e) {
+      window.Latitude.value = e.latlng.lat;
+      window.Longitude.value = e.latlng.lng;
+      radius.setLatLng(e.latlng);
+      popup
+        .setLatLng(e.latlng)
+        .setContent(window.Species.value)
+        .openOn(map);
+    }
+
+    map.on("click", onMapClick);
+
+    M.updateTextFields();
+    let multiSelect = document.querySelectorAll("select");
+    for (const element in multiSelect) {
+      if (multiSelect.hasOwnProperty(element)) {
+        const newInstance = new M.Select(multiSelect[element]);
+      }
+    }
+    let datePicker = document.querySelectorAll(".datepicker");
+    for (const element in datePicker) {
+      if (datePicker.hasOwnProperty(element)) {
+        const datePickerInstance = new M.Datepicker(datePicker[element], {
+          setDefaultDate: true,
+          format: "mmm-dd-yyyy",
+          defaultDate: new Date("mmm-dd-yyyy"),
+          yearRange: 2
+        });
+      }
+    }
+    let observationArea = document.getElementById("ObservationArea");
+    let observationAreaDisplay = document.getElementById(
+      "ObservationAreaDisplay"
+    );
+    observationArea.addEventListener(
+      "mousemove",
+      function() {
+        observationAreaDisplay.innerHTML = observationArea.value;
+        radius.setRadius(observationArea.value);
+      },
+      { passive: true }
+    );
+    observationArea.addEventListener(
+      "touchmove",
+      function() {
+        observationAreaDisplay.innerHTML = observationArea.value;
+        radius.setRadius(observationArea.value);
+      },
+      { passive: true }
+    );
+    observationArea.addEventListener(
+      "change",
+      function() {
+        observationAreaDisplay.innerHTML = observationArea.value;
+        radius.setRadius(observationArea.value);
+      },
+      { passive: true }
+    );
+    let number = document.getElementById("Quantity");
+    let display = document.getElementById("QuantityDisplay");
+    number.addEventListener(
+      "mousemove",
+      function() {
+        display.innerHTML = number.value;
+      },
+      { passive: true }
+    );
+    number.addEventListener(
+      "touchmove",
+      function() {
+        display.innerHTML = number.value;
+      },
+      { passive: true }
+    );
+    number.addEventListener(
+      "change",
+      function() {
+        display.innerHTML = number.value;
+      },
+      { passive: true }
+    );
   }
 });
 

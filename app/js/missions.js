@@ -3,6 +3,71 @@ const stitch = require("mongodb-stitch");
 const client = new stitch.StitchClient("citizensciencestitch-oakmw");
 const db = client.service("mongodb", "mongodb-atlas").db("citizenScience");
 
+const imageResize = function() {
+  if (!window.Photos.files[0] === false) {
+    // Create ObjectURL() to Show a thumbnail/preview
+    window.img = document.createElement("img");
+    img.src = window.URL.createObjectURL(window.Photos.files[0]);
+
+    // Resize Image
+    var MAX_WIDTH = 800;
+    var MAX_HEIGHT = 600;
+    var width = img.width;
+    var height = img.height;
+
+    if (width > height) {
+      if (width > MAX_WIDTH) {
+        height *= MAX_WIDTH / width;
+        width = MAX_WIDTH;
+      }
+    } else {
+      if (height > MAX_HEIGHT) {
+        width *= MAX_HEIGHT / height;
+        height = MAX_HEIGHT;
+      }
+    }
+    // Create Canvas
+    var canvas = document.getElementById("photoDisplay");
+    canvas.width = width || 800;
+    canvas.height = height || 600;
+    var context = canvas.getContext("2d");
+    context.drawImage(img, 0, 0, width, height);
+
+    // Canvas to Data URL https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL
+    window.dataURL = canvas.toDataURL("image/jpeg", 0.2);
+  }
+};
+
+const decodeImage = function(blob = "") {
+  const image = document.createElement("img");
+  // image.src = "data:image/jpeg;base64," + Base64.encode(blob);
+  image.src = Base64.encode(blob);
+  document.body.appendChild(image);
+};
+
+const updateDB = function(database = "", dataset = {}) {
+  const datasetContent = dataset;
+  datasetContent["owner_id"] = client.authedId();
+  client
+    .login()
+    .then(() => db.collection(database).insertOne(datasetContent))
+    .then(result => {
+      console.log("[MongoDB Stitch] Updated: ", result, dataset);
+      M.toast({
+        html: "Database Updated",
+        displayLength: 6000,
+        classes: "green darken-2"
+      });
+    })
+    .catch(error => {
+      console.error("[MongoDB Stitch] Error: ", error);
+      M.toast({
+        html: "Unable to Connect",
+        displayLength: 6000,
+        classes: "red darken-2"
+      });
+    });
+};
 /**
  * Query DB and if Succesful, display results in a list and launches the analyze function for the mission
  * 
@@ -55,7 +120,7 @@ window.collectInputs = function(
 ) {
   window.form = parent.document.getElementsByTagName("form")[0];
   window.data = {
-    location: {
+    Location: {
       type: "Point",
       coordinates: []
     }
@@ -90,7 +155,7 @@ window.collectInputs = function(
       } else if (elements[e].value.length > 0) {
         window.data[elements[e].id] = elements[e].value;
       } else {
-        console.warn("[Form] Did not include: " + elements[e].id);
+        console.warn("[Form] Did not include: ", elements[e].id);
       }
     }
   }
@@ -136,7 +201,9 @@ class Mission {
     // Data retrieval and display
     analyze = ``,
     // Each mission should have a representative image
-    image = require("../img/trail.jpg")
+    image = require("../img/trail.jpg"),
+    monitorSuccess,
+    analyzeSuccess
   }) {
     this.shortName = shortName;
     this.title = title;
@@ -144,90 +211,130 @@ class Mission {
     this.image = image;
     this.databaseCollection = databaseCollection;
     this.congratulatoryMessage = congratulatoryMessage;
-    this.monitor = monitor;
-    this.analyze = analyze;
-
-    /**
-     * Image Capture and Resizing Function
-     *
-     */
-    const imageResize = function() {
-      if (!window.Photos.files[0] === false) {
-        // Create ObjectURL() to Show a thumbnail/preview
-        window.img = document.createElement("img");
-        img.src = window.URL.createObjectURL(window.Photos.files[0]);
-
-        // Resize Image
-        var MAX_WIDTH = 800;
-        var MAX_HEIGHT = 600;
-        var width = img.width;
-        var height = img.height;
-
-        if (width > height) {
-          if (width > MAX_WIDTH) {
-            height *= MAX_WIDTH / width;
-            width = MAX_WIDTH;
-          }
-        } else {
-          if (height > MAX_HEIGHT) {
-            width *= MAX_HEIGHT / height;
-            height = MAX_HEIGHT;
-          }
-        }
-        // Create Canvas
-        var canvas = document.getElementById("photoDisplay");
-        canvas.width = width || 800;
-        canvas.height = height || 600;
-        var context = canvas.getContext("2d");
-        context.drawImage(img, 0, 0, width, height);
-
-        // Canvas to Data URL https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL
-        window.dataURL = canvas.toDataURL("image/jpeg", 0.2);
-      }
-    };
-    /**
-     * Takes a blob from the Database and decodes into an image
-     * 
-     * @param {string} Blob
-     */
-    const decodeImage = function(blob = "") {
-      const image = document.createElement("img");
-      // image.src = "data:image/jpeg;base64," + Base64.encode(blob);
-      image.src = Base64.encode(blob);
-      document.body.appendChild(image);
-    };
-    /**
-     * Upload FormData to MongoDB Database
-     *
-     * @param {string} [database=""]  Name of the Database Collection
-     * @param {any} [set={}] The Data as an Object
-     */
-    const updateDB = function(database = "", set = {}) {
-      window.variables = {
-        database: database,
-        set: set
-      };
-      variables.set["owner_id"] = client.authedId();
-      client
-        .login()
-        .then(() => db.collection(variables.database).insertOne(variables.set))
-        .then(result => {
-          console.log("[MongoDB Stitch] Updated: ", result);
+    this.monitorSuccess = monitorSuccess;
+    this.analyzeSuccess = analyzeSuccess;
+    this.monitor = function() {
+      navigator.geolocation.getCurrentPosition(
+        position => {
           M.toast({
-            html: "Database Updated",
-            displayLength: 6000,
+            html: "GPS Located",
+            displayLength: 4000,
             classes: "green darken-2"
           });
-        })
-        .catch(error => {
-          console.error("[MongoDB Stitch] Error: ", error);
+          window.geoReference = {
+            lat: position.coords.latitude || 0,
+            long: position.coords.longitude || 0,
+            alt: position.coords.altitude || 0
+          };
+          this.monitorSuccess();
+        },
+        error => {
           M.toast({
-            html: "Unable to Connect",
-            displayLength: 6000,
+            html: "Position Unavailable",
+            displayLength: 4000,
             classes: "red darken-2"
           });
-        });
+          window.geoReference = {
+            lat: "Latitude",
+            long: "Longitude",
+            alt: "Altitude"
+          };
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 30000
+        }
+      );
     };
+    this.analyze = function(queryDBResult) {
+      let content = ``;
+      content += `<div class="row">
+      <div class="">
+      <h3 class="col s12">${this.title}</h3>
+      <h5 class="col s12">Database Results</h5>
+      <div class="col s12"><div id="map"></div><div>
+      <ul class="collection" id="resultsList"></ul>
+      </div>
+      </div>
+      `;
+      missions.innerHTML = content;
+
+      navigationBreadcrumbs.innerHTML = `
+      <a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
+        <a class="pointer breadcrumb">Analyze</a>
+        `;
+      let results = document.getElementById("resultsList");
+      let resultContent = "";
+
+      if (queryDBResult.length > 0) {
+        for (let i = 0; i < queryDBResult.length; i++) {
+          resultContent += `<h5 class="col s12">Object ${i} ID#${queryDBResult[
+            i
+          ]._id}</h5>`;
+          for (const key in queryDBResult[i]) {
+            if (queryDBResult[i].hasOwnProperty(key)) {
+              resultContent += `<p class="col s12">${Object.keys(
+                queryDBResult[i][key]
+              )}: ${queryDBResult[i][key]}</p>`;
+            }
+          }
+        }
+      }
+
+      results.innerHTML = resultContent;
+
+      window.scrollTo(0, 0);
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          M.toast({
+            html: "GPS Located",
+            displayLength: 4000,
+            classes: "green darken-2"
+          });
+          window.geoReference = {
+            lat: position.coords.latitude || 0,
+            long: position.coords.longitude || 0,
+            alt: position.coords.altitude || 0
+          };
+          const map = L.map("map").setView(
+            [geoReference.lat, geoReference.long],
+            12
+          );
+
+          L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
+
+          let circle = L.circle([geoReference.lat, geoReference.long], {
+            color: "red",
+            fillColor: "#f03",
+            fillOpacity: 0.5,
+            radius: 5
+          })
+            .addTo(map)
+            .bindPopup("Your Location")
+            .openPopup();
+          M.updateTextFields();
+        },
+        error => {
+          M.toast({
+            html: "Position Unavailable",
+            displayLength: 4000,
+            classes: "red darken-2"
+          });
+          window.geoReference = {
+            lat: "Latitude",
+            long: "Longitude",
+            alt: "Altitude"
+          };
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 30000
+        }
+      );
+    };
+
     // Displays on Front Page
     this.card = `<div class="cardContainer" id="${this.title}">
   <div class="col s12 m6 l6">
@@ -255,20 +362,20 @@ class Mission {
       icon = ""
     }) {
       `<li class="collection-item avatar">
-<img src="${src}" alt="${title}" class="circle">
-<span class="title">${title}</span>
-${content}
-<a href="#!" class="secondary-content"><i class="material-icons">${icon}</i></a>
-</li>`;
+    <img src="${src}" alt="${title}" class="circle">
+    <span class="title">${title}</span>
+    ${content}
+    <a href="#!" class="secondary-content">
+        <i class="material-icons">${icon}</i>
+    </a>
+</li>
+`;
     };
     Missions.add(this);
     // Add Mission Cards to DOM
     missionCardsHTML += this.card;
   }
 }
-
-// Additional missions go in separate files and require this file. Add them to ./../entry.js
-// test = new Mission({});
 
 // Breadcrumbs in Footer
 window.navigationBreadcrumbs = document.getElementById("navigationBreadcrumbs");
@@ -285,4 +392,6 @@ window.showMissions = function() {
   window.scrollTo(0, 0);
 };
 
+// Additional missions go in separate files and require this file. Add them to ./../entry.js
+// test = new Mission({});
 module.exports = Mission;
