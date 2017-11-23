@@ -48,7 +48,7 @@ tumlare = new Mission({
       </div>
       <div class="input-field col s6 m4">
         <label class="" for="Date">Date</label>
-        <input id="Day" type="text" class="datepicker" value="${new Date().toDateString()}">
+        <input id="Date" type="text" class="datepicker" value="${new Date().toDateString()}">
       </div>
       <p class="col s12">Locate the sighting on the map.</p>
       <div class="col s12">
@@ -115,8 +115,9 @@ tumlare = new Mission({
             </div>
           </div>
           <canvas id="photoDisplay" width="800" height="600"></canvas>
-          <button class="section col s12 btn btn-large waves-effect waves-light" type="submit" onClick="window.collectInputs('${this
-            .databaseCollection}', '${this.congratulatoryMessage}')">Submit
+          <button class="section col s12 btn btn-large waves-effect waves-light" type="submit" onClick="window.collectInputs('${
+            this.databaseCollection
+          }', '${this.congratulatoryMessage}')">Submit
             <i class="material-icons right">send</i>
           </button>
     </form>

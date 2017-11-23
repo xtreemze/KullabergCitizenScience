@@ -101,7 +101,7 @@ trails = new Mission({
         </div>
         <div class="col s6 m4">
           <label for="Date">Date</label>
-          <input id="Day" type="text" class="datepicker" value="${new Date().toDateString()}">
+          <input id="Date" type="text" class="datepicker" value="${new Date().toDateString()}">
         </div>
         <div class="file-field input-field col s12">
           <div class="btn">
@@ -113,8 +113,9 @@ trails = new Mission({
           </div>
         </div>
         <canvas id="photoDisplay" width="800" height="600"></canvas>
-        <button class="col s12 btn btn-large waves-effect waves-light" type="submit" onclick="collectInputs('${this
-          .databaseCollection}', '${this.congratulatoryMessage}')">Submit
+        <button class="col s12 btn btn-large waves-effect waves-light" type="submit" onclick="collectInputs('${
+          this.databaseCollection
+        }', '${this.congratulatoryMessage}')">Submit
           <i class="material-icons right">send</i>
         </button>
       </form>
