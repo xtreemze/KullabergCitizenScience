@@ -121,25 +121,11 @@ trails = new Mission({
     </div>
     `;
     missions.innerHTML = content;
-    navigationBreadcrumbs.innerHTML = `
-    <a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
-    <a class="pointer breadcrumb">Monitor</a>
-    `;
-    window.scrollTo(0, 0);
-
-    const photos = document.getElementById("photoFilePath");
-    photos.addEventListener("change", function() {
-      console.log("Image load ended");
-      imageResize();
-    });
-
     const map = L.map("map").setView(
       [window.Latitude.value, window.Longitude.value],
       13
     );
-
     L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
-
     let circle = L.circle([window.Latitude.value, window.Longitude.value], {
       color: "red",
       fillColor: "#f03",
@@ -149,25 +135,11 @@ trails = new Mission({
       .addTo(map)
       .bindPopup("Your Location")
       .openPopup();
-
-    M.updateTextFields();
-    let multiSelect = document.querySelectorAll("select");
-    for (const element in multiSelect) {
-      if (multiSelect.hasOwnProperty(element)) {
-        const newInstance = new M.Select(multiSelect[element]);
-      }
-    }
-    let datePicker = document.querySelectorAll(".datepicker");
-    for (const element in datePicker) {
-      if (datePicker.hasOwnProperty(element)) {
-        const datePickerInstance = new M.Datepicker(datePicker[element], {
-          // container: ".datepicker",
-          setDefaultDate: true,
-          // format: "mmm-dd-yyyy",
-          defaultDate: new Date().toDateString(),
-          yearRange: 2
-        });
-      }
-    }
+    const photos = document.getElementById("photoFilePath");
+    const mission = this;
+    photos.addEventListener("change", function() {
+      console.log("Image loaded");
+      mission.imageResize();
+    });
   }
 });

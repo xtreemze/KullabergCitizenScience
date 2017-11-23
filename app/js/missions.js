@@ -3,48 +3,6 @@ const stitch = require("mongodb-stitch");
 const client = new stitch.StitchClient("citizensciencestitch-oakmw");
 const db = client.service("mongodb", "mongodb-atlas").db("citizenScience");
 
-const imageResize = function() {
-  if (!window.Photos.files[0] === false) {
-    // Create ObjectURL() to Show a thumbnail/preview
-    window.img = document.createElement("img");
-    img.src = window.URL.createObjectURL(window.Photos.files[0]);
-
-    // Resize Image
-    var MAX_WIDTH = 800;
-    var MAX_HEIGHT = 600;
-    var width = img.width;
-    var height = img.height;
-
-    if (width > height) {
-      if (width > MAX_WIDTH) {
-        height *= MAX_WIDTH / width;
-        width = MAX_WIDTH;
-      }
-    } else {
-      if (height > MAX_HEIGHT) {
-        width *= MAX_HEIGHT / height;
-        height = MAX_HEIGHT;
-      }
-    }
-    // Create Canvas
-    var canvas = document.getElementById("photoDisplay");
-    canvas.width = width || 800;
-    canvas.height = height || 600;
-    var context = canvas.getContext("2d");
-    context.drawImage(img, 0, 0, width, height);
-
-    // Canvas to Data URL https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL
-    window.dataURL = canvas.toDataURL("image/jpeg", 0.2);
-  }
-};
-
-const decodeImage = function(blob = "") {
-  const image = document.createElement("img");
-  // image.src = "data:image/jpeg;base64," + Base64.encode(blob);
-  image.src = Base64.encode(blob);
-  document.body.appendChild(image);
-};
-
 const updateDB = function(database = "", dataset = {}) {
   const datasetContent = dataset;
   datasetContent["owner_id"] = client.authedId();
@@ -94,15 +52,15 @@ window.collectInputs = function(
       if (elements[e].type == "checkbox") {
         window.data[elements[e].id] = elements[e].checked;
       } else if (elements[e].id === "Longitude") {
-        window.data.location.coordinates[0] = {
+        window.data.Location.coordinates[0] = {
           $numberDecimal: elements[e].value
         };
       } else if (elements[e].id === "Latitude") {
-        window.data.location.coordinates[1] = {
+        window.data.Location.coordinates[1] = {
           $numberDecimal: elements[e].value
         };
       } else if (elements[e].id === "Altitude") {
-        window.data.location.coordinates[2] = {
+        window.data.Location.coordinates[2] = {
           $numberDecimal: elements[e].value
         };
       } else if (elements[e].value.id === "Date") {
@@ -221,6 +179,32 @@ class Mission {
             alt: position.coords.altitude || 0
           };
           this.monitorSuccess();
+
+          navigationBreadcrumbs.innerHTML = `
+          <a onclick="showMissions()" class="pointer breadcrumb">${this
+            .title}</a>
+          <a class="pointer breadcrumb">Monitor</a>
+          `;
+          M.updateTextFields();
+          let multiSelect = document.querySelectorAll("select");
+          for (const element in multiSelect) {
+            if (multiSelect.hasOwnProperty(element)) {
+              const newInstance = new M.Select(multiSelect[element]);
+            }
+          }
+          let datePicker = document.querySelectorAll(".datepicker");
+          for (const element in datePicker) {
+            if (datePicker.hasOwnProperty(element)) {
+              const datePickerInstance = new M.Datepicker(datePicker[element], {
+                // container: ".datepicker",
+                setDefaultDate: true,
+                // format: "mmm-dd-yyyy",
+                defaultDate: new Date().toDateString(),
+                yearRange: 2
+              });
+            }
+          }
+          window.scrollTo(0, 0);
         },
         error => {
           M.toast({
@@ -349,13 +333,13 @@ class Mission {
   </div>
 </div>
 `;
-    this.collectionItem = function({
+    this.collectionItem = function(
       src = "",
       title = "",
       content = "",
       icon = ""
-    }) {
-      `<li class="collection-item avatar">
+    ) {
+      return `<li class="collection-item avatar">
     <img src="${src}" alt="${title}" class="circle">
     <span class="title">${title}</span>
     ${content}
@@ -365,14 +349,52 @@ class Mission {
 </li>
 `;
     };
+    this.imageResize = function() {
+      if (!window.Photos.files[0] === false) {
+        // Create ObjectURL() to Show a thumbnail/preview
+        window.img = document.createElement("img");
+        img.src = window.URL.createObjectURL(window.Photos.files[0]);
+
+        // Resize Image
+        var MAX_WIDTH = 800;
+        var MAX_HEIGHT = 600;
+        var width = img.width;
+        var height = img.height;
+
+        if (width > height) {
+          if (width > MAX_WIDTH) {
+            height *= MAX_WIDTH / width;
+            width = MAX_WIDTH;
+          }
+        } else {
+          if (height > MAX_HEIGHT) {
+            width *= MAX_HEIGHT / height;
+            height = MAX_HEIGHT;
+          }
+        }
+        // Create Canvas
+        var canvas = document.getElementById("photoDisplay");
+        canvas.width = width || 800;
+        canvas.height = height || 600;
+        var context = canvas.getContext("2d");
+        context.drawImage(img, 0, 0, width, height);
+
+        // Canvas to Data URL https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL
+        window.dataURL = canvas.toDataURL("image/jpeg", 0.2);
+      }
+    };
+
+    this.decodeImage = function(blob = "") {
+      const image = document.createElement("img");
+      // image.src = "data:image/jpeg;base64," + Base64.encode(blob);
+      image.src = Base64.encode(blob);
+      document.body.appendChild(image);
+    };
     Missions.add(this);
     // Add Mission Cards to DOM
     missionCardsHTML += this.card;
   }
 }
-
-// Breadcrumbs in Footer
-window.navigationBreadcrumbs = document.getElementById("navigationBreadcrumbs");
 
 /**
  * Show the Missions in Front Page

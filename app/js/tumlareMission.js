@@ -5,7 +5,7 @@ tumlare = new Mission({
   title: "Porpoise Observation",
   databaseCollection: "Tumlare",
   congratulatoryMessage:
-    "Thank you for your participation! Your contribution helps us to develop an adaptive management in the Kullaberg Nature.",
+    "Thank you for your participation with adaptive management in the Kullaberg Nature Reserve!",
   description:
     "Engage in the collection of visual harbor porpoise observations (both living and dead) in the north-western parts of Scania. Observations are used in scientific research to help increase the knowledge about this threatened species.",
   image: require("../img/tumlare.jpg"),
@@ -123,12 +123,6 @@ tumlare = new Mission({
     </div>
   `;
     missions.innerHTML = content;
-    navigationBreadcrumbs.innerHTML = `
-          <a onclick="showMissions()" class="pointer breadcrumb">${this
-            .title}</a>
-          <a class="pointer breadcrumb">Monitor</a>
-          `;
-    window.scrollTo(0, 0);
 
     const map = L.map("map").setView(
       [window.Latitude.value, window.Longitude.value],
@@ -136,7 +130,6 @@ tumlare = new Mission({
     );
 
     L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
-
     let circle = L.circle([window.Latitude.value, window.Longitude.value], {
       color: "red",
       fillColor: "#f03",
@@ -147,6 +140,7 @@ tumlare = new Mission({
       .bindPopup("Your Location")
       .openPopup();
     let popup = L.popup();
+
     window.radius = L.circle([window.Latitude.value, window.Longitude.value], {
       color: "#0288d1",
       fillColor: "#0d47a1",
@@ -166,49 +160,27 @@ tumlare = new Mission({
 
     map.on("click", onMapClick);
 
-    M.updateTextFields();
-    let multiSelect = document.querySelectorAll("select");
-    for (const element in multiSelect) {
-      if (multiSelect.hasOwnProperty(element)) {
-        const newInstance = new M.Select(multiSelect[element]);
-      }
-    }
-    let datePicker = document.querySelectorAll(".datepicker");
-    for (const element in datePicker) {
-      if (datePicker.hasOwnProperty(element)) {
-        const datePickerInstance = new M.Datepicker(datePicker[element], {
-          setDefaultDate: true,
-          format: "mmm-dd-yyyy",
-          defaultDate: new Date("mmm-dd-yyyy"),
-          yearRange: 2
-        });
-      }
-    }
-    let observationArea = document.getElementById("ObservationArea");
-    let observationAreaDisplay = document.getElementById(
-      "ObservationAreaDisplay"
-    );
-    observationArea.addEventListener(
+    ObservationArea.addEventListener(
       "mousemove",
       function() {
-        observationAreaDisplay.innerHTML = observationArea.value;
-        radius.setRadius(observationArea.value);
+        ObservationAreaDisplay.innerHTML = ObservationArea.value;
+        radius.setRadius(ObservationArea.value);
       },
       { passive: true }
     );
-    observationArea.addEventListener(
+    ObservationArea.addEventListener(
       "touchmove",
       function() {
-        observationAreaDisplay.innerHTML = observationArea.value;
-        radius.setRadius(observationArea.value);
+        ObservationAreaDisplay.innerHTML = ObservationArea.value;
+        radius.setRadius(ObservationArea.value);
       },
       { passive: true }
     );
-    observationArea.addEventListener(
+    ObservationArea.addEventListener(
       "change",
       function() {
-        observationAreaDisplay.innerHTML = observationArea.value;
-        radius.setRadius(observationArea.value);
+        ObservationAreaDisplay.innerHTML = ObservationArea.value;
+        radius.setRadius(ObservationArea.value);
       },
       { passive: true }
     );
