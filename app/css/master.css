@@ -21,6 +21,11 @@
   z-index: 0;
 }
 
+.leaflet-marker-icon.leaflet-div-icon {
+  background: #f37315de;
+  border-radius: 10px;
+}
+
 .brand-logo {
   text-transform: uppercase;
   font-weight: 600;

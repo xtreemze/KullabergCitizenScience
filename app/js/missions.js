@@ -254,6 +254,15 @@ class Mission {
             geoJSONPoints.push(queryDBResult[i].Location);
           }
 
+          // var markers = L.markerClusterGroup({
+          //   iconCreateFunction: function(cluster) {
+          //     return L.divIcon({
+          //       html: "<b>" + cluster.getChildCount() + "</>"
+          //     });
+          //   }
+          // });
+          // https://github.com/Leaflet/Leaflet.markercluster
+          // markers.addLayer(
           L.geoJSON(geoJSONPoints, {
             pointToLayer: function(feature, latlng) {
               return L.circleMarker(latlng, {
@@ -266,10 +275,14 @@ class Mission {
               });
             }
           }).addTo(map);
+          // );
+
           const geoJSONTrails = require("./trails.json");
+
           L.geoJSON(geoJSONTrails, {
             style: function(feature) {}
           }).addTo(map);
+          map.addLayer(markers);
           M.updateTextFields();
         },
         error => {
