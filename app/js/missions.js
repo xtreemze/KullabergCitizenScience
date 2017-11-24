@@ -41,40 +41,44 @@ window.collectInputs = function(
     Location: {
       type: "Point",
       coordinates: []
-    }
+    },
+    Status: "Reported"
   };
   if (!window.dataURL === false) {
     window.data.Photo = window.dataURL;
   }
   window.elements = form.elements;
   for (e = 0; e < elements.length; e++) {
-    if (elements[e].id.length > 0) {
-      if (elements[e].type == "checkbox") {
-        window.data[elements[e].id] = elements[e].checked;
-      } else if (elements[e].id === "Longitude") {
-        window.data.Location.coordinates[0] = {
-          $numberDecimal: elements[e].value
-        };
-      } else if (elements[e].id === "Latitude") {
-        window.data.Location.coordinates[1] = {
-          $numberDecimal: elements[e].value
-        };
-      } else if (elements[e].id === "Altitude") {
-        window.data.Location.coordinates[2] = {
-          $numberDecimal: elements[e].value
-        };
-      } else if (elements[e].value.id === "Date") {
-        window.data[elements[e].id] = {
-          $date: new Date(elements[e].value)
-        };
-      } else if (elements[e].type == "number") {
-        window.data[elements[e].id] = parseInt(elements[e].value, 10);
-      } else if (elements[e].value.id === "Photos") {
-      } else if (elements[e].value.length > 0) {
-        window.data[elements[e].id] = elements[e].value;
-      } else {
-        console.warn("[Form] Did not include: ", elements[e].id);
-      }
+    if (
+      elements[e].id === "Photos" ||
+      elements[e].id === "photoFilePath" ||
+      elements[e].id.length < 1
+    ) {
+      console.warn("[Form1] Excluded: ", elements[e]);
+    } else if (elements[e].value.id === "Date") {
+      window.data[elements[e].id] = {
+        $date: new Date(elements[e].value)
+      };
+    } else if (elements[e].id === "Longitude") {
+      window.data.Location.coordinates[0] = {
+        $numberDecimal: elements[e].value
+      };
+    } else if (elements[e].id === "Latitude") {
+      window.data.Location.coordinates[1] = {
+        $numberDecimal: elements[e].value
+      };
+    } else if (elements[e].id === "Altitude") {
+      window.data.Location.coordinates[2] = {
+        $numberDecimal: elements[e].value
+      };
+    } else if (elements[e].type == "checkbox") {
+      window.data[elements[e].id] = elements[e].checked;
+    } else if (elements[e].type == "number") {
+      window.data[elements[e].id] = parseInt(elements[e].value, 10);
+    } else if (elements[e].value.length > 0) {
+      window.data[elements[e].id] = elements[e].value;
+    } else {
+      console.warn("[Form2] Excluded: ", elements[e]);
     }
   }
 
@@ -181,9 +185,8 @@ class Mission {
           this.monitorSuccess();
 
           navigationBreadcrumbs.innerHTML = `
-          <a onclick="showMissions()" class="pointer breadcrumb">${
-            this.title
-          }</a>
+          <a onclick="showMissions()" class="pointer breadcrumb">${this
+            .title}</a>
           <a class="pointer breadcrumb">Monitor</a>
           `;
           M.updateTextFields();
@@ -243,43 +246,51 @@ class Mission {
       <a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
         <a class="pointer breadcrumb">Analyze</a>
         `;
-      let results = document.getElementById("resultsList");
       let resultContent = "";
 
       if (queryDBResult.length > 0) {
         for (let i = queryDBResult.length - 1; i > 0; i--) {
-          const getContent = function() {
-            let content2 = "";
-            for (const key in queryDBResult[i]) {
-              console.log(key);
-              if (
-                key === "_id" ||
-                key === "owner_id" ||
-                key === "photoFilePath"
-              ) {
-                return false;
-              } else if (queryDBResult[i].hasOwnProperty(key)) {
-                content2 += `<span class="col s4">${key}: ${
-                  queryDBResult[i][key]
-                }</>`;
+          let dbResponse = "";
+          let icon = "";
+          for (const key in queryDBResult[i]) {
+            if (
+              key === "_id" ||
+              key === "owner_id" ||
+              key === "Date" ||
+              key === "Location" ||
+              key === "Photo"
+            ) {
+            } else if (key === "Status") {
+              if (queryDBResult[i][key] === "Reported") {
+                icon = `<i class="material-icons">star_outline</i>`;
+              } else if (queryDBResult[i][key] === "Asigned") {
+                icon = `<i class="material-icons">star_half</i>`;
+              } else if (queryDBResult[i][key] === "Resolved") {
+                icon = `<i class="material-icons">star</i>`;
               }
-              return content2;
+            } else if (queryDBResult[i][key] === true) {
+              dbResponse += `<span class="">${key}</span>`;
+            } else if (queryDBResult[i][key] === false) {
+              dbResponse += `<span class="grey-text">${key}</span>`;
+            } else {
+              dbResponse += `<span class="">${key}: ${queryDBResult[i][
+                key
+              ]}</span>`;
             }
-          };
+          }
           resultContent += `<li class="collection-item avatar">
-          <img src="${queryDBResult[i].Photo}" alt="${
-            queryDBResult[i].Date
-          }" class="circle"><br>
+          <img src="${queryDBResult[i].Photo}" alt="${queryDBResult[i]
+            .Date}" class="circle"><br>
           <span class="title">${queryDBResult[i].Date}</span>
-          <p>${getContent()}</p>
+          <p>${dbResponse}</p>
           <a href="#!" class="secondary-content">
-              <i class="material-icons">star</i>
+              ${icon}
           </a>
       </li>`;
         }
       }
 
-      results.innerHTML = resultContent;
+      resultsList.innerHTML = resultContent;
 
       window.scrollTo(0, 0);
       navigator.geolocation.getCurrentPosition(
@@ -370,8 +381,8 @@ class Mission {
           var dataURL = canvas.toDataURL("image/png");
 
           // Resize Image
-          var MAX_WIDTH = 256;
-          var MAX_HEIGHT = 256;
+          var MAX_WIDTH = 64;
+          var MAX_HEIGHT = 64;
           var width = img.width;
           var height = img.height;
 
@@ -390,7 +401,7 @@ class Mission {
           canvas.width = width;
           canvas.height = height;
           ctx.drawImage(img, 0, 0, width, height);
-          window.dataURL = canvas.toDataURL("image/jpeg", 0.1);
+          window.dataURL = canvas.toDataURL("image/jpeg", 0.3);
         };
         // Canvas to Data URL https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL
         img.src = window.URL.createObjectURL(window.Photos.files[0]);

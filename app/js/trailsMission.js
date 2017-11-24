@@ -104,17 +104,16 @@ trails = new Mission({
           <input id="Date" type="text" class="datepicker" value="${new Date().toDateString()}">
         </div>
         <div class="file-field input-field col s12">
-          <div class="btn">
-            <span>Photos</span>
-            <input id="Photos" accept="image/*;capture=camera" type="file" multiple>
+          <div class="btn large">
+          <i class="material-icons large">add_a_photo</i>
+            <input id="Photos" accept="image/*;capture=camera" type="file">
           </div>
           <div class="file-path-wrapper">
-            <input id="photoFilePath" accept="image/*" class="file-path validate" type="text" placeholder="Upload one or more photos of the trail.">
+            <input id="photoFilePath" accept="image/*" class="file-path validate" type="text" placeholder="Trail Photos">
           </div>
         </div>
-        <button class="col s12 btn btn-large waves-effect waves-light" type="submit" onclick="collectInputs('${
-          this.databaseCollection
-        }', '${this.congratulatoryMessage}')">Submit
+        <button class="col s12 btn btn-large waves-effect waves-light" type="submit" onclick="collectInputs('${this
+          .databaseCollection}', '${this.congratulatoryMessage}')">Submit
           <i class="material-icons right">send</i>
         </button>
       </form>

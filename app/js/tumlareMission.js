@@ -106,17 +106,16 @@ tumlare = new Mission({
             <span class="helper-text">(optional)</span>
           </div>
           <div class="file-field input-field col s12">
-            <div class="btn ">
-              <span>Photos</span>
-              <input id="Photos" accept="image/*;capture=camera" type="file" multiple>
+            <div class="btn large">
+            <i class="large material-icons">add_a_photo</i>
+              <input id="Photos" accept="image/*;capture=camera" type="file">
             </div>
             <div class="file-path-wrapper">
-              <input class="file-path validate" type="text" placeholder="Upload one or more photographs of the sighting.">
+              <input class="file-path validate" type="text" placeholder="Observation Photos">
             </div>
           </div>
-          <button class="section col s12 btn btn-large waves-effect waves-light" type="submit" onClick="window.collectInputs('${
-            this.databaseCollection
-          }', '${this.congratulatoryMessage}')">Submit
+          <button class="section col s12 btn btn-large waves-effect waves-light" type="submit" onClick="window.collectInputs('${this
+            .databaseCollection}', '${this.congratulatoryMessage}')">Submit
             <i class="material-icons right">send</i>
           </button>
     </form>

@@ -5,7 +5,7 @@ OfflinePluginRuntime.install({
   onInstalled: function() {
     M.toast({
       html: "App Installed",
-      displayLength: 4000,
+      displayLength: 1000,
       classes: "blue darken-2"
     });
   },
@@ -13,7 +13,7 @@ OfflinePluginRuntime.install({
   onUpdating: function() {
     M.toast({
       html: "Updating...",
-      displayLength: 4000,
+      displayLength: 1000,
       classes: "blue darken-2"
     });
   },
@@ -22,17 +22,17 @@ OfflinePluginRuntime.install({
     OfflinePluginRuntime.applyUpdate();
     M.toast({
       html: "Update Ready",
-      displayLength: 4000,
+      displayLength: 1000,
       classes: "blue darken-2"
     });
   },
   onUpdated: function() {
     setTimeout(function() {
       window.location.reload();
-    }, 8000);
+    }, 4000);
     M.toast({
       html: "Reloading",
-      displayLength: 7500,
+      displayLength: 3500,
       classes: "blue darken-2"
     });
   }
