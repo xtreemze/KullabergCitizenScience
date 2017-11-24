@@ -53,7 +53,7 @@ module.exports = function e(env) {
           test: /\.(gif|png|jpe?g)$/i,
           loaders: [
             // "file-loader?name=./[name].[ext]"
-            "url-loader?limit=3000000000"
+            "url-loader?limit=300"
             // "url-loader?name=./[name].[ext]"
           ]
         },

@@ -13,7 +13,7 @@ const updateDB = function(database = "", dataset = {}) {
       console.log("[MongoDB Stitch] Updated: ", result, dataset);
       M.toast({
         html: "Database Updated",
-        displayLength: 4000,
+        displayLength: 1000,
         classes: "green darken-2"
       });
     })
@@ -139,7 +139,7 @@ class Mission {
     this.queryDB = function(database = this.databaseCollection, query) {
       M.toast({
         html: "Connecting...",
-        displayLength: 4000,
+        displayLength: 1000,
         classes: "green darken-2"
       });
       client
@@ -155,7 +155,7 @@ class Mission {
           console.log("[MongoDB Stitch] Found: ", queryDBResult);
           M.toast({
             html: "Data Obtained ",
-            displayLength: 4000,
+            displayLength: 1000,
             classes: "green darken-2"
           });
           this.analyze(queryDBResult);
@@ -172,11 +172,6 @@ class Mission {
     this.monitor = function() {
       navigator.geolocation.getCurrentPosition(
         position => {
-          M.toast({
-            html: "GPS Located",
-            displayLength: 4000,
-            classes: "green darken-2"
-          });
           window.geoReference = {
             lat: position.coords.latitude || 0,
             long: position.coords.longitude || 0,
@@ -230,6 +225,71 @@ class Mission {
       );
     };
     this.analyze = function(queryDBResult) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          window.geoReference = {
+            lat: position.coords.latitude || 0,
+            long: position.coords.longitude || 0,
+            alt: position.coords.altitude || 0
+          };
+          const map = L.map("map").setView(
+            [geoReference.lat, geoReference.long],
+            12
+          );
+
+          L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
+
+          let circle = L.circle([geoReference.lat, geoReference.long], {
+            color: "red",
+            fillColor: "#f03",
+            fillOpacity: 0.5,
+            radius: 5
+          })
+            .addTo(map)
+            .bindPopup("Your Location")
+            .openPopup();
+
+          const geoJSONPoints = [];
+          for (let i = queryDBResult.length - 1; i > 0; i--) {
+            geoJSONPoints.push(queryDBResult[i].Location);
+          }
+
+          L.geoJSON(geoJSONPoints, {
+            pointToLayer: function(feature, latlng) {
+              return L.circleMarker(latlng, {
+                radius: 5,
+                fillColor: "#ff7800",
+                color: "#000",
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+              });
+            }
+          }).addTo(map);
+          const geoJSONTrails = require("./trails.json");
+          L.geoJSON(geoJSONTrails, {
+            style: function(feature) {}
+          }).addTo(map);
+          M.updateTextFields();
+        },
+        error => {
+          M.toast({
+            html: "Position Unavailable",
+            displayLength: 4000,
+            classes: "red darken-2"
+          });
+          window.geoReference = {
+            lat: "Latitude",
+            long: "Longitude",
+            alt: "Altitude"
+          };
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 30000
+        }
+      );
       let content = ``;
       content += `<div class="row">
       <div class="">
@@ -252,6 +312,7 @@ class Mission {
         for (let i = queryDBResult.length - 1; i > 0; i--) {
           let dbResponse = "";
           let icon = "";
+
           for (const key in queryDBResult[i]) {
             if (
               key === "_id" ||
@@ -278,10 +339,13 @@ class Mission {
               ]}</span><br>`;
             }
           }
-          resultContent += `<li class="collection-item avatar">
+
+          resultContent += `<li id="${queryDBResult[i]._id.id.join(
+            ""
+          )}" class="collection-item avatar">
           <img src="${queryDBResult[i].Photo}" alt="${queryDBResult[i]
             .Date}" class="circle"><br>
-          <span class="title">${queryDBResult[i].Date}</span>
+          <span class="title">${queryDBResult[i].Date}</span><br>
           ${dbResponse}
           <a href="#!" class="secondary-content">
               ${icon}
@@ -293,56 +357,7 @@ class Mission {
       resultsList.innerHTML = resultContent;
 
       window.scrollTo(0, 0);
-      navigator.geolocation.getCurrentPosition(
-        position => {
-          M.toast({
-            html: "GPS Located",
-            displayLength: 4000,
-            classes: "green darken-2"
-          });
-          window.geoReference = {
-            lat: position.coords.latitude || 0,
-            long: position.coords.longitude || 0,
-            alt: position.coords.altitude || 0
-          };
-          const map = L.map("map").setView(
-            [geoReference.lat, geoReference.long],
-            12
-          );
-
-          L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
-
-          let circle = L.circle([geoReference.lat, geoReference.long], {
-            color: "red",
-            fillColor: "#f03",
-            fillOpacity: 0.5,
-            radius: 5
-          })
-            .addTo(map)
-            .bindPopup("Your Location")
-            .openPopup();
-          M.updateTextFields();
-        },
-        error => {
-          M.toast({
-            html: "Position Unavailable",
-            displayLength: 4000,
-            classes: "red darken-2"
-          });
-          window.geoReference = {
-            lat: "Latitude",
-            long: "Longitude",
-            alt: "Altitude"
-          };
-        },
-        {
-          enableHighAccuracy: true,
-          timeout: 5000,
-          maximumAge: 30000
-        }
-      );
     };
-
     // Displays on Front Page
     this.card = `<div class="cardContainer" id="${this.title}">
   <div class="col s12 m6 l6">
@@ -365,7 +380,7 @@ class Mission {
 
     this.imageResize = function() {
       if (!window.Photos.files[0] === false) {
-        // Create ObjectURL() to Show a thumbnail/preview
+        // Create ObjectURL()
         let img = new Image();
 
         img.setAttribute("crossOrigin", "anonymous");
@@ -381,8 +396,8 @@ class Mission {
           var dataURL = canvas.toDataURL("image/png");
 
           // Resize Image
-          var MAX_WIDTH = 64;
-          var MAX_HEIGHT = 64;
+          var MAX_WIDTH = 1024;
+          var MAX_HEIGHT = 1024;
           var width = img.width;
           var height = img.height;
 
@@ -401,35 +416,13 @@ class Mission {
           canvas.width = width;
           canvas.height = height;
           ctx.drawImage(img, 0, 0, width, height);
-          window.dataURL = canvas.toDataURL("image/jpeg", 0.3);
+          window.dataURL = canvas.toDataURL("image/jpeg", 0.7);
         };
         // Canvas to Data URL https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL
         img.src = window.URL.createObjectURL(window.Photos.files[0]);
       }
     };
 
-    this.decodeImage = function(blob = "") {
-      let img = new Image();
-
-      img.setAttribute("crossOrigin", "anonymous");
-
-      img.onload = function() {
-        let canvas = document.createElement("canvas");
-        canvas.width = this.width;
-        canvas.height = this.height;
-
-        let ctx = canvas.getContext("2d");
-        ctx.drawImage(this, 0, 0);
-
-        let dataURL = canvas.toDataURL("image/jpeg");
-
-        // dataURL.replace(/^data:image\/(jpeg|jpg);base64,/, "");
-      };
-      img.src = blob;
-      // image.src = "data:image/jpeg;base64," + Base64.encode(blob);
-      // document.body.appendChild(image);
-      return img;
-    };
     Missions.add(this);
     // Add Mission Cards to DOM
     missionCardsHTML += this.card;

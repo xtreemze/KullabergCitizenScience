@@ -134,6 +134,8 @@ trails = new Mission({
       .addTo(map)
       .bindPopup("Your Location")
       .openPopup();
+    const geoJSONTrails = require("./trails.json");
+    L.geoJSON(geoJSONTrails, {}).addTo(map);
     const photos = document.getElementById("photoFilePath");
     const mission = this;
     photos.addEventListener("change", function() {

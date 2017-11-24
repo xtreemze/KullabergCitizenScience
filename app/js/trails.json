@@ -3,6 +3,12 @@
   "features": [
     {
       "type": "Feature",
+      "properties": {
+        "name": "Connection Trail",
+        "stroke": "#ffdd5e",
+        "stroke-opacity": 1,
+        "stroke-width": 6.619
+      },
       "geometry": {
         "type": "LineString",
         "coordinates": [
@@ -39,26 +45,16 @@
           [12.4783249, 56.2937507, 0],
           [12.478155, 56.2935988, 0]
         ]
-      },
-      "properties": {
-        "name": "Connection Trail",
-        "styleUrl": "#line-FFDD5E-6619",
-        "styleHash": "33233494",
-        "styleMapHash": {
-          "normal": "#line-FFDD5E-6619-normal",
-          "highlight": "#line-FFDD5E-6619-highlight"
-        },
-        "description":
-          "<img src=\"https://lh3.googleusercontent.com/QLNh6vOtMrnXECEKyGIdq0if7uNkrvIzjbSrypN6dxxVcFWre4G9HKgYq3oAd_zHAPE6VvND3tGjT5n7nA3fnJUCDF54mBdWRnvI4HWHdVF9d8DzmmXXdaMg\" height=\"200\" width=\"auto\" /><br><br>Distance: 0.5 miles<br>Duration: 8 minutes and 27 seconds<br>Average Speed: 3.7 mph<br>Minimum Elevation: 182 feet<br>Maximum Elevation: 313 feet<br>Total climb: 132 feet<br>Total descent: 24 feet",
-        "stroke": "#ffdd5e",
-        "stroke-opacity": 1,
-        "stroke-width": 6.619,
-        "gx_media_links":
-          "https://lh3.googleusercontent.com/QLNh6vOtMrnXECEKyGIdq0if7uNkrvIzjbSrypN6dxxVcFWre4G9HKgYq3oAd_zHAPE6VvND3tGjT5n7nA3fnJUCDF54mBdWRnvI4HWHdVF9d8DzmmXXdaMg"
       }
     },
     {
       "type": "Feature",
+      "properties": {
+        "name": "Connection Trail",
+        "stroke": "#ffdd5e",
+        "stroke-opacity": 1,
+        "stroke-width": 6.619
+      },
       "geometry": {
         "type": "LineString",
         "coordinates": [
@@ -82,22 +78,16 @@
           [12.454647, 56.298788, 39.55],
           [12.454665, 56.298716, 39.07]
         ]
-      },
-      "properties": {
-        "name": "Connection Trail",
-        "styleUrl": "#line-FFDD5E-6619-nodesc",
-        "styleHash": "4d4fbb15",
-        "styleMapHash": {
-          "normal": "#line-FFDD5E-6619-nodesc-normal",
-          "highlight": "#line-FFDD5E-6619-nodesc-highlight"
-        },
-        "stroke": "#ffdd5e",
-        "stroke-opacity": 1,
-        "stroke-width": 6.619
       }
     },
     {
       "type": "Feature",
+      "properties": {
+        "name": "Connection Trail",
+        "stroke": "#ffdd5e",
+        "stroke-opacity": 1,
+        "stroke-width": 6.619
+      },
       "geometry": {
         "type": "LineString",
         "coordinates": [
@@ -120,22 +110,16 @@
           [12.465293, 56.300683, 0],
           [12.465298, 56.300688, 0]
         ]
-      },
-      "properties": {
-        "name": "Connection Trail",
-        "styleUrl": "#line-FFDD5E-6619-nodesc",
-        "styleHash": "4d4fbb15",
-        "styleMapHash": {
-          "normal": "#line-FFDD5E-6619-nodesc-normal",
-          "highlight": "#line-FFDD5E-6619-nodesc-highlight"
-        },
-        "stroke": "#ffdd5e",
-        "stroke-opacity": 1,
-        "stroke-width": 6.619
       }
     },
     {
       "type": "Feature",
+      "properties": {
+        "name": "Connection Trail",
+        "stroke": "#ffdd5e",
+        "stroke-opacity": 1,
+        "stroke-width": 6.619
+      },
       "geometry": {
         "type": "LineString",
         "coordinates": [
@@ -162,22 +146,16 @@
           [12.488109, 56.291776, 0],
           [12.4882543, 56.29139, 0]
         ]
-      },
-      "properties": {
-        "name": "Connection Trail",
-        "styleUrl": "#line-FFDD5E-6619-nodesc",
-        "styleHash": "4d4fbb15",
-        "styleMapHash": {
-          "normal": "#line-FFDD5E-6619-nodesc-normal",
-          "highlight": "#line-FFDD5E-6619-nodesc-highlight"
-        },
-        "stroke": "#ffdd5e",
-        "stroke-opacity": 1,
-        "stroke-width": 6.619
       }
     },
     {
       "type": "Feature",
+      "properties": {
+        "name": "Connection Trail",
+        "stroke": "#ffdd5e",
+        "stroke-opacity": 1,
+        "stroke-width": 6.619
+      },
       "geometry": {
         "type": "LineString",
         "coordinates": [
@@ -231,22 +209,16 @@
           [12.497737, 56.294326, 0],
           [12.49775, 56.294344, 0]
         ]
-      },
-      "properties": {
-        "name": "Connection Trail",
-        "styleUrl": "#line-FFDD5E-6619-nodesc",
-        "styleHash": "4d4fbb15",
-        "styleMapHash": {
-          "normal": "#line-FFDD5E-6619-nodesc-normal",
-          "highlight": "#line-FFDD5E-6619-nodesc-highlight"
-        },
-        "stroke": "#ffdd5e",
-        "stroke-opacity": 1,
-        "stroke-width": 6.619
       }
     },
     {
       "type": "Feature",
+      "properties": {
+        "name": "Connection Trail",
+        "stroke": "#ffdd5e",
+        "stroke-opacity": 1,
+        "stroke-width": 6.619
+      },
       "geometry": {
         "type": "LineString",
         "coordinates": [
@@ -267,22 +239,16 @@
           [12.530519, 56.284881, 0],
           [12.530519, 56.284669, 0]
         ]
-      },
-      "properties": {
-        "name": "Connection Trail",
-        "styleUrl": "#line-FFDD5E-6619-nodesc",
-        "styleHash": "4d4fbb15",
-        "styleMapHash": {
-          "normal": "#line-FFDD5E-6619-nodesc-normal",
-          "highlight": "#line-FFDD5E-6619-nodesc-highlight"
-        },
-        "stroke": "#ffdd5e",
-        "stroke-opacity": 1,
-        "stroke-width": 6.619
       }
     },
     {
       "type": "Feature",
+      "properties": {
+        "name": "Connection Trail",
+        "stroke": "#ffdd5e",
+        "stroke-opacity": 1,
+        "stroke-width": 6.619
+      },
       "geometry": {
         "type": "LineString",
         "coordinates": [
@@ -323,22 +289,16 @@
           [12.519536, 56.289195, 0],
           [12.519728, 56.289241, 0]
         ]
-      },
-      "properties": {
-        "name": "Connection Trail",
-        "styleUrl": "#line-FFDD5E-6619-nodesc",
-        "styleHash": "4d4fbb15",
-        "styleMapHash": {
-          "normal": "#line-FFDD5E-6619-nodesc-normal",
-          "highlight": "#line-FFDD5E-6619-nodesc-highlight"
-        },
-        "stroke": "#ffdd5e",
-        "stroke-opacity": 1,
-        "stroke-width": 6.619
       }
     },
     {
       "type": "Feature",
+      "properties": {
+        "name": "Connection Trail",
+        "stroke": "#ffdd5e",
+        "stroke-opacity": 1,
+        "stroke-width": 6.619
+      },
       "geometry": {
         "type": "LineString",
         "coordinates": [
@@ -362,22 +322,16 @@
           [12.507609, 56.288829, 123.19],
           [12.507823, 56.288998, 123.19]
         ]
-      },
-      "properties": {
-        "name": "Connection Trail",
-        "styleUrl": "#line-FFDD5E-6619-nodesc",
-        "styleHash": "4d4fbb15",
-        "styleMapHash": {
-          "normal": "#line-FFDD5E-6619-nodesc-normal",
-          "highlight": "#line-FFDD5E-6619-nodesc-highlight"
-        },
-        "stroke": "#ffdd5e",
-        "stroke-opacity": 1,
-        "stroke-width": 6.619
       }
     },
     {
       "type": "Feature",
+      "properties": {
+        "name": "Main Southern Trail",
+        "stroke": "#db4436",
+        "stroke-opacity": 1,
+        "stroke-width": 6.619
+      },
       "geometry": {
         "type": "LineString",
         "coordinates": [
@@ -583,26 +537,16 @@
           [12.569722, 56.277126, 0],
           [12.569932, 56.27714, 0]
         ]
-      },
-      "properties": {
-        "name": "Main Southern Trail",
-        "styleUrl": "#line-DB4436-6619",
-        "styleHash": "bd19e92",
-        "styleMapHash": {
-          "normal": "#line-DB4436-6619-normal",
-          "highlight": "#line-DB4436-6619-highlight"
-        },
-        "description":
-          "<img src=\"https://lh3.googleusercontent.com/hXtEDoc0OR1SQf_O6O_M8J2RoVTKkTTXXzyV4lV6ovHWkcXN7HQHQxYKbpfeJL8Zz3tf_g7-Gzb3P-6o1mzvu2oSAPPl1YLbCQMo4hJ-HWFVRoyBacSBE7EciQ\" height=\"200\" width=\"auto\" /><br><br>Wednesday, March 22, 2017 2:38 PM CET<br>overall ascent: 256.70m<br>overall distance: 8.499km<br>Minimum Elevation: 22 feet<br>Maximum Elevation: 500 feet<br>Total climb: 1515 feet<br>Total descent: 1708 feet",
-        "stroke": "#db4436",
-        "stroke-opacity": 1,
-        "stroke-width": 6.619,
-        "gx_media_links":
-          "https://lh3.googleusercontent.com/hXtEDoc0OR1SQf_O6O_M8J2RoVTKkTTXXzyV4lV6ovHWkcXN7HQHQxYKbpfeJL8Zz3tf_g7-Gzb3P-6o1mzvu2oSAPPl1YLbCQMo4hJ-HWFVRoyBacSBE7EciQ"
       }
     },
     {
       "type": "Feature",
+      "properties": {
+        "name": "Main Northern Trail",
+        "stroke": "#3f5ba9",
+        "stroke-opacity": 1,
+        "stroke-width": 6.813
+      },
       "geometry": {
         "type": "LineString",
         "coordinates": [
@@ -964,18 +908,6 @@
           [12.544051, 56.28176, 0],
           [12.544045, 56.281693, 0]
         ]
-      },
-      "properties": {
-        "name": "Main Northern Trail",
-        "styleUrl": "#line-3F5BA9-6813-nodesc",
-        "styleHash": "39ab7715",
-        "styleMapHash": {
-          "normal": "#line-3F5BA9-6813-nodesc-normal",
-          "highlight": "#line-3F5BA9-6813-nodesc-highlight"
-        },
-        "stroke": "#3f5ba9",
-        "stroke-opacity": 1,
-        "stroke-width": 6.813
       }
     }
   ]
