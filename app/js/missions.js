@@ -13,7 +13,7 @@ const updateDB = function(database = "", dataset = {}) {
       console.log("[MongoDB Stitch] Updated: ", result, dataset);
       M.toast({
         html: "Database Updated",
-        displayLength: 6000,
+        displayLength: 4000,
         classes: "green darken-2"
       });
     })
@@ -21,7 +21,7 @@ const updateDB = function(database = "", dataset = {}) {
       console.error("[MongoDB Stitch] Error: ", error);
       M.toast({
         html: "Unable to Connect",
-        displayLength: 6000,
+        displayLength: 4000,
         classes: "red darken-2"
       });
     });
@@ -86,11 +86,11 @@ window.collectInputs = function(
 
   setTimeout(() => {
     window.showMissions();
-  }, 4000);
+  }, 2000);
   // Congratulatory Message
   M.toast({
     html: congratulatoryMessage,
-    displayLength: 8000,
+    displayLength: 4000,
     classes: "blue darken-2"
   });
 };
@@ -269,20 +269,20 @@ class Mission {
                 icon = `<i class="material-icons">star</i>`;
               }
             } else if (queryDBResult[i][key] === true) {
-              dbResponse += `<span class="">${key}</span>`;
+              dbResponse += `<span class="">${key}</span><br>`;
             } else if (queryDBResult[i][key] === false) {
-              dbResponse += `<span class="grey-text">${key}</span>`;
+              // dbResponse += `<span class="grey-text">${key}</span><br>`;
             } else {
               dbResponse += `<span class="">${key}: ${queryDBResult[i][
                 key
-              ]}</span>`;
+              ]}</span><br>`;
             }
           }
           resultContent += `<li class="collection-item avatar">
           <img src="${queryDBResult[i].Photo}" alt="${queryDBResult[i]
             .Date}" class="circle"><br>
           <span class="title">${queryDBResult[i].Date}</span>
-          <p>${dbResponse}</p>
+          ${dbResponse}
           <a href="#!" class="secondary-content">
               ${icon}
           </a>

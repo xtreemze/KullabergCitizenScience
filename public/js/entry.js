@@ -25,7 +25,7 @@ const updateDB = function(database = "", dataset = {}) {
       console.log("[MongoDB Stitch] Updated: ", result, dataset);
       M.toast({
         html: "Database Updated",
-        displayLength: 6000,
+        displayLength: 4000,
         classes: "green darken-2"
       });
     })
@@ -33,7 +33,7 @@ const updateDB = function(database = "", dataset = {}) {
       console.error("[MongoDB Stitch] Error: ", error);
       M.toast({
         html: "Unable to Connect",
-        displayLength: 6000,
+        displayLength: 4000,
         classes: "red darken-2"
       });
     });
@@ -98,11 +98,11 @@ window.collectInputs = function(
 
   setTimeout(() => {
     window.showMissions();
-  }, 4000);
+  }, 2000);
   // Congratulatory Message
   M.toast({
     html: congratulatoryMessage,
-    displayLength: 8000,
+    displayLength: 4000,
     classes: "blue darken-2"
   });
 };
