@@ -180,8 +180,9 @@ class Mission {
           this.monitorSuccess();
 
           navigationBreadcrumbs.innerHTML = `
-          <a onclick="showMissions()" class="pointer breadcrumb">${this
-            .title}</a>
+          <a onclick="showMissions()" class="pointer breadcrumb">${
+            this.title
+          }</a>
           <a class="pointer breadcrumb">Monitor</a>
           `;
           M.updateTextFields();
@@ -239,6 +240,12 @@ class Mission {
 
           L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
 
+          const geoJSONTrails = require("./trails.json");
+
+          L.geoJSON(geoJSONTrails, {
+            style: function(feature) {}
+          }).addTo(map);
+
           let circle = L.circle([geoReference.lat, geoReference.long], {
             color: "red",
             fillColor: "#f03",
@@ -254,16 +261,7 @@ class Mission {
             geoJSONPoints.push(queryDBResult[i].Location);
           }
 
-          // var markers = L.markerClusterGroup({
-          //   iconCreateFunction: function(cluster) {
-          //     return L.divIcon({
-          //       html: "<b>" + cluster.getChildCount() + "</>"
-          //     });
-          //   }
-          // });
-          // https://github.com/Leaflet/Leaflet.markercluster
-          // markers.addLayer(
-          L.geoJSON(geoJSONPoints, {
+          let reports = L.geoJSON(geoJSONPoints, {
             pointToLayer: function(feature, latlng) {
               return L.circleMarker(latlng, {
                 radius: 5,
@@ -274,14 +272,19 @@ class Mission {
                 fillOpacity: 0.8
               });
             }
-          }).addTo(map);
-          // );
+          });
 
-          const geoJSONTrails = require("./trails.json");
+          // .addTo(map);
+          var markers = L.markerClusterGroup({
+            iconCreateFunction: function(cluster) {
+              return L.divIcon({
+                html: "<b>" + cluster.getChildCount() + "</>"
+              });
+            }
+          });
+          // https://github.com/Leaflet/Leaflet.markercluster
+          markers.addLayer(reports);
 
-          L.geoJSON(geoJSONTrails, {
-            style: function(feature) {}
-          }).addTo(map);
           map.addLayer(markers);
           M.updateTextFields();
         },
@@ -347,17 +350,18 @@ class Mission {
             } else if (queryDBResult[i][key] === false) {
               // dbResponse += `<span class="grey-text">${key}</span><br>`;
             } else {
-              dbResponse += `<span class="">${key}: ${queryDBResult[i][
-                key
-              ]}</span><br>`;
+              dbResponse += `<span class="">${key}: ${
+                queryDBResult[i][key]
+              }</span><br>`;
             }
           }
 
           resultContent += `<li id="${queryDBResult[i]._id.id.join(
             ""
           )}" class="collection-item avatar">
-          <img src="${queryDBResult[i].Photo}" alt="${queryDBResult[i]
-            .Date}" class="circle"><br>
+          <img src="${queryDBResult[i].Photo}" alt="${
+            queryDBResult[i].Date
+          }" class="circle"><br>
           <span class="title">${queryDBResult[i].Date}</span><br>
           ${dbResponse}
           <a href="#!" class="secondary-content">
