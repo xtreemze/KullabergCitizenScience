@@ -237,10 +237,26 @@ class Mission {
 
           L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
 
+          // var Esri_WorldImagery = L.tileLayer(
+          //   "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+          //   {
+          //     attribution:
+          //       "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
+          //   }
+          // ).addTo(map);
+
           const geoJSONTrails = require("./trails.json");
 
           L.geoJSON(geoJSONTrails, {
-            style: function(feature) {}
+            style: function(feature) {
+              return {
+                color: feature.properties.stroke,
+                opacity: 0.6,
+                dashArray: [7, 5]
+              };
+              // stroke-opacity: feature.properties.stroke-opacity,
+              // stroke-width: feature.properties.stroke-width}
+            }
           }).addTo(map);
 
           let circle = L.circle([geoReference.lat, geoReference.long], {
@@ -268,10 +284,8 @@ class Mission {
                 key === "Status" ||
                 queryDBResult[i][key] === false
               ) {
-              } else if (queryDBResult[i].value === true) {
-                dbResponse += `<span>${key}</span><br>`;
               } else {
-                dbResponse += `<span>${key}: ${
+                dbResponse += `<span class="strong">${key}: </span><span>${
                   queryDBResult[i][key]
                 }</span><br>`;
               }

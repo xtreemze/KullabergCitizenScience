@@ -73,6 +73,10 @@ footer.page-footer {
   }
 }
 
+.strong {
+  font-weight: 800;
+}
+
 #map2 {
   width: 100vw;
   height: 100%;
