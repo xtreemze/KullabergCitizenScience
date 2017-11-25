@@ -20,4 +20,5 @@ require("./app/js/tumlareMission");
 require("./node_modules/material-design-icons/iconfont/material-icons.css");
 require("./node_modules/leaflet/dist/leaflet.css");
 require("./node_modules/leaflet.markercluster/dist/MarkerCluster.css");
+require("./node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css");
 require("./app/css/master.css");

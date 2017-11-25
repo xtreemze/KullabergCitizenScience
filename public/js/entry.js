@@ -283,12 +283,12 @@ class Mission {
           let reports = L.geoJSON(geoJSONPoints, {
             pointToLayer: function(feature, latlng) {
               return L.circleMarker(latlng, {
-                radius: 5,
+                // radius: 5,
                 fillColor: "#ff7800",
                 color: "#000",
                 weight: 1,
-                opacity: 1,
-                fillOpacity: 0.8
+                opacity: 0.9,
+                fillOpacity: 0.7
               });
             }
           });
@@ -510,6 +510,7 @@ __webpack_require__(7);
 __webpack_require__(77);
 __webpack_require__(78);
 __webpack_require__(79);
+__webpack_require__(80);
 
 
 /***/ }),
@@ -1454,6 +1455,13 @@ module.exports = __webpack_require__.p + "./css/tumlare.jpg?9fe4a2b3cb1b890fdbf8
 /***/ }),
 
 /***/ 79:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 80:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
