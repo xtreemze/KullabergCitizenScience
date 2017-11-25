@@ -252,7 +252,7 @@ class Mission {
             long: position.coords.longitude || 0,
             alt: position.coords.altitude || 0
           };
-          const map = L.map("map").fitWorld();
+          const map = L.map("map2").fitWorld();
 
           L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
 
@@ -273,13 +273,35 @@ class Mission {
             .openPopup();
 
           const geoJSONPoints = [];
+          let resultContent = "";
 
           for (let i = queryDBResult.length - 1; i > 0; i--) {
+            let dbResponse = "";
+            for (const key in queryDBResult[i]) {
+              if (
+                key === "_id" ||
+                key === "owner_id" ||
+                key === "Date" ||
+                key === "Location" ||
+                key === "Photo" ||
+                key === "Status" ||
+                queryDBResult[i][key] === false
+              ) {
+              } else if (queryDBResult[i].value === true) {
+                dbResponse += `<span>${key}</span><br>`;
+              } else {
+                dbResponse += `<span>${key}: ${
+                  queryDBResult[i][key]
+                }</span><br>`;
+              }
+            }
+
             queryDBResult[i].Location.properties = {
-              description: queryDBResult[i].Date,
+              description: dbResponse,
               photo: `<img class="responsive-img" src="${
                 queryDBResult[i].Photo
-              }">`,
+              }">          
+              `,
               radius: queryDBResult[i].ObservationArea
             };
             if (!queryDBResult[i].ObservationArea) {
@@ -353,15 +375,18 @@ class Mission {
         }
       );
       let content = ``;
-      content += `<div class="row">
-      <div class="">
-      <h3 class="col s12">${this.title}</h3>
-      <h5 class="col s12">Database Results</h5>
-      <div class="col s12"><div id="map"></div><div>
-      <ul class="collection" id="resultsList"></ul>
-      </div>
-      </div>
+      content += `
+      <div class="fullscreen" id="map2"></div>
       `;
+      // content += `<div class="row">
+      // <div class="">
+      // <h3 class="col s12">${this.title}</h3>
+      // <h5 class="col s12">Database Results</h5>
+      // <div class="col s12"><div class="fullscreen" id="map"></div><div>
+      // <ul class="collection" id="resultsList"></ul>
+      // </div>
+      // </div>
+      // `;
       missions.innerHTML = content;
 
       navigationBreadcrumbs.innerHTML = `
@@ -370,54 +395,54 @@ class Mission {
         `;
       let resultContent = "";
 
-      if (queryDBResult.length > 0) {
-        for (let i = queryDBResult.length - 1; i > 0; i--) {
-          let dbResponse = "";
-          let icon = "";
+      // if (queryDBResult.length > 0) {
+      //   for (let i = queryDBResult.length - 1; i > 0; i--) {
+      //     let dbResponse = "";
+      //     let icon = "";
 
-          for (const key in queryDBResult[i]) {
-            if (
-              key === "_id" ||
-              key === "owner_id" ||
-              key === "Date" ||
-              key === "Location" ||
-              key === "Photo"
-            ) {
-            } else if (key === "Status") {
-              if (queryDBResult[i][key] === "Reported") {
-                icon = `<i class="material-icons">star_outline</i>`;
-              } else if (queryDBResult[i][key] === "Asigned") {
-                icon = `<i class="material-icons">star_half</i>`;
-              } else if (queryDBResult[i][key] === "Resolved") {
-                icon = `<i class="material-icons">star</i>`;
-              }
-            } else if (queryDBResult[i][key] === true) {
-              dbResponse += `<span class="">${key}</span><br>`;
-            } else if (queryDBResult[i][key] === false) {
-              // dbResponse += `<span class="grey-text">${key}</span><br>`;
-            } else {
-              dbResponse += `<span class="">${key}: ${
-                queryDBResult[i][key]
-              }</span><br>`;
-            }
-          }
+      //     for (const key in queryDBResult[i]) {
+      //       if (
+      //         key === "_id" ||
+      //         key === "owner_id" ||
+      //         key === "Date" ||
+      //         key === "Location" ||
+      //         key === "Photo"
+      //       ) {
+      //       } else if (key === "Status") {
+      //         if (queryDBResult[i][key] === "Reported") {
+      //           icon = `<i class="material-icons">star_outline</i>`;
+      //         } else if (queryDBResult[i][key] === "Asigned") {
+      //           icon = `<i class="material-icons">star_half</i>`;
+      //         } else if (queryDBResult[i][key] === "Resolved") {
+      //           icon = `<i class="material-icons">star</i>`;
+      //         }
+      //       } else if (queryDBResult[i][key] === true) {
+      //         dbResponse += `<span class="">${key}</span><br>`;
+      //       } else if (queryDBResult[i][key] === false) {
+      //         // dbResponse += `<span class="grey-text">${key}</span><br>`;
+      //       } else {
+      //         dbResponse += `<span class="">${key}: ${
+      //           queryDBResult[i][key]
+      //         }</span><br>`;
+      //       }
+      //     }
 
-          resultContent += `<li id="${queryDBResult[i]._id.id.join(
-            ""
-          )}" class="collection-item avatar">
-          <img src="${queryDBResult[i].Photo}" alt="${
-            queryDBResult[i].Date
-          }" class="circle"><br>
-          <span class="title">${queryDBResult[i].Date}</span><br>
-          ${dbResponse}
-          <a href="#!" class="secondary-content">
-              ${icon}
-          </a>
-      </li>`;
-        }
-      }
+      //     resultContent += `<li id="${queryDBResult[i]._id.id.join(
+      //       ""
+      //     )}" class="collection-item avatar">
+      //     <img src="${queryDBResult[i].Photo}" alt="${
+      //       queryDBResult[i].Date
+      //     }" class="circle"><br>
+      //     <span class="title">${queryDBResult[i].Date}</span><br>
+      //     ${dbResponse}
+      //     <a href="#!" class="secondary-content">
+      //         ${icon}
+      //     </a>
+      // </li>`;
+      //   }
+      // }
 
-      resultsList.innerHTML = resultContent;
+      // resultsList.innerHTML = resultContent;
 
       window.scrollTo(0, 0);
     };
