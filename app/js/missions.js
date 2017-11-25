@@ -2,6 +2,12 @@ const stitch = require("mongodb-stitch");
 
 const client = new stitch.StitchClient("citizensciencestitch-oakmw");
 const db = client.service("mongodb", "mongodb-atlas").db("citizenScience");
+const loadImage = require("./../../node_modules/blueimp-load-image/js/load-image.all.min.js");
+
+window.enableBox = function() {
+  let elem = document.querySelector(".materialboxed");
+  instance = new M.Materialbox(elem);
+};
 
 const updateDB = function(database = "", dataset = {}) {
   const datasetContent = dataset;
@@ -175,7 +181,8 @@ class Mission {
           window.geoReference = {
             lat: position.coords.latitude || 0,
             long: position.coords.longitude || 0,
-            alt: position.coords.altitude || 0
+            alt: position.coords.altitude || 0,
+            accuracy: position.coords.accuracy || 0
           };
           this.monitorSuccess();
 
@@ -205,6 +212,29 @@ class Mission {
             }
           }
           window.scrollTo(0, 0);
+          // Resize, Load and Orient Photo
+          document.getElementById("Photos").onchange = function(e) {
+            console.log("Image loaded");
+            loadImage(
+              e.target.files[0],
+              function(img) {
+                let canvas = document.createElement("canvas");
+                var ctx = canvas.getContext("2d");
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img, 0, 0);
+                window.dataURL = canvas.toDataURL("image/jpeg", 0.5);
+                console.log("[Image Resizer]", canvas);
+              },
+              {
+                maxWidth: 512,
+                contain: true,
+                meta: true,
+                canvas: true,
+                orientation: true
+              }
+            );
+          };
         },
         error => {
           M.toast({
@@ -231,7 +261,8 @@ class Mission {
           window.geoReference = {
             lat: position.coords.latitude || 0,
             long: position.coords.longitude || 0,
-            alt: position.coords.altitude || 0
+            alt: position.coords.altitude || 0,
+            accuracy: position.coords.accuracy || 0
           };
           const map = L.map("map2").fitWorld();
 
@@ -263,7 +294,7 @@ class Mission {
             color: "red",
             fillColor: "#f03",
             fillOpacity: 0.5,
-            radius: 5
+            radius: geoReference.accuracy
           })
             .addTo(map)
             .bindPopup("Your Location")
@@ -293,14 +324,14 @@ class Mission {
 
             queryDBResult[i].Location.properties = {
               description: dbResponse,
-              photo: `<img class="responsive-img" src="${
+              photo: `<img class="responsive-img materialboxed" onload="enableBox()" onclick="enableBox()" src="${
                 queryDBResult[i].Photo
               }">          
               `,
               radius: queryDBResult[i].ObservationArea
             };
             if (!queryDBResult[i].ObservationArea) {
-              queryDBResult[i].Location.properties.radius = 10;
+              queryDBResult[i].Location.properties.radius = 12;
             }
             geoJSONPoints.push(queryDBResult[i].Location);
           }
@@ -308,7 +339,7 @@ class Mission {
           let trails = {
             pointToLayer: function(feature, latlng) {
               return L.circleMarker(latlng, {
-                // radius: 5,
+                radius: 12,
                 fillColor: "#ff7800",
                 color: "yellow",
                 weight: 4,
@@ -316,6 +347,10 @@ class Mission {
                 fillOpacity: 0.7
               }).bindPopup(`${feature.properties.description}<br>
               ${feature.properties.photo}`);
+            },
+            onEachFeature: function() {
+              // var elem = document.querySelector(".materialboxed");
+              // var instance = new M.Materialbox(elem);
             }
           };
           let tumlare = {
@@ -330,6 +365,10 @@ class Mission {
                 radius: feature.properties.radius
               }).bindPopup(`${feature.properties.description}<br>
               ${feature.properties.photo}`);
+            },
+            onEachFeature: function() {
+              // var elem = document.querySelector(".materialboxed");
+              // var instance = new M.Materialbox(elem);
             }
           };
           let options = {};
@@ -347,9 +386,10 @@ class Mission {
 
           map.addLayer(markers);
           M.updateTextFields();
+
           setTimeout(() => {
             map.setView([geoReference.lat, geoReference.long], 12);
-          }, 3000);
+          }, 1000);
         },
         error => {
           M.toast({
@@ -373,15 +413,6 @@ class Mission {
       content += `
       <div class="fullscreen" id="map2"></div>
       `;
-      // content += `<div class="row">
-      // <div class="">
-      // <h3 class="col s12">${this.title}</h3>
-      // <h5 class="col s12">Database Results</h5>
-      // <div class="col s12"><div class="fullscreen" id="map"></div><div>
-      // <ul class="collection" id="resultsList"></ul>
-      // </div>
-      // </div>
-      // `;
       missions.innerHTML = content;
 
       navigationBreadcrumbs.innerHTML = `
@@ -389,55 +420,6 @@ class Mission {
         <a class="pointer breadcrumb">Analyze</a>
         `;
       let resultContent = "";
-
-      // if (queryDBResult.length > 0) {
-      //   for (let i = queryDBResult.length - 1; i > 0; i--) {
-      //     let dbResponse = "";
-      //     let icon = "";
-
-      //     for (const key in queryDBResult[i]) {
-      //       if (
-      //         key === "_id" ||
-      //         key === "owner_id" ||
-      //         key === "Date" ||
-      //         key === "Location" ||
-      //         key === "Photo"
-      //       ) {
-      //       } else if (key === "Status") {
-      //         if (queryDBResult[i][key] === "Reported") {
-      //           icon = `<i class="material-icons">star_outline</i>`;
-      //         } else if (queryDBResult[i][key] === "Asigned") {
-      //           icon = `<i class="material-icons">star_half</i>`;
-      //         } else if (queryDBResult[i][key] === "Resolved") {
-      //           icon = `<i class="material-icons">star</i>`;
-      //         }
-      //       } else if (queryDBResult[i][key] === true) {
-      //         dbResponse += `<span class="">${key}</span><br>`;
-      //       } else if (queryDBResult[i][key] === false) {
-      //         // dbResponse += `<span class="grey-text">${key}</span><br>`;
-      //       } else {
-      //         dbResponse += `<span class="">${key}: ${
-      //           queryDBResult[i][key]
-      //         }</span><br>`;
-      //       }
-      //     }
-
-      //     resultContent += `<li id="${queryDBResult[i]._id.id.join(
-      //       ""
-      //     )}" class="collection-item avatar">
-      //     <img src="${queryDBResult[i].Photo}" alt="${
-      //       queryDBResult[i].Date
-      //     }" class="circle"><br>
-      //     <span class="title">${queryDBResult[i].Date}</span><br>
-      //     ${dbResponse}
-      //     <a href="#!" class="secondary-content">
-      //         ${icon}
-      //     </a>
-      // </li>`;
-      //   }
-      // }
-
-      // resultsList.innerHTML = resultContent;
 
       window.scrollTo(0, 0);
     };
@@ -455,56 +437,11 @@ class Mission {
       <div class="card-action">
         <a class="pointer" onclick="${this.shortName}.monitor()">Monitor</a>
         <a class="pointer" onclick="${this.shortName}.queryDB()">Analyze</a>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-    this.imageResize = function() {
-      if (!window.Photos.files[0] === false) {
-        // Create ObjectURL()
-        let img = new Image();
-
-        img.setAttribute("crossOrigin", "anonymous");
-
-        img.onload = function() {
-          var canvas = document.createElement("canvas");
-          canvas.width = this.width;
-          canvas.height = this.height;
-
-          var ctx = canvas.getContext("2d");
-          ctx.drawImage(this, 0, 0);
-
-          var dataURL = canvas.toDataURL("image/png");
-
-          // Resize Image
-          var MAX_WIDTH = 1024;
-          var MAX_HEIGHT = 1024;
-          var width = img.width;
-          var height = img.height;
-
-          if (width > height) {
-            if (width > MAX_WIDTH) {
-              height *= MAX_WIDTH / width;
-              width = MAX_WIDTH;
-            }
-          } else {
-            if (height > MAX_HEIGHT) {
-              width *= MAX_HEIGHT / height;
-              height = MAX_HEIGHT;
-            }
-          }
-          // Create Canvas
-          canvas.width = width;
-          canvas.height = height;
-          ctx.drawImage(img, 0, 0, width, height);
-          window.dataURL = canvas.toDataURL("image/jpeg", 0.7);
-        };
-        // Canvas to Data URL https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL
-        img.src = window.URL.createObjectURL(window.Photos.files[0]);
-      }
-    };
+        </div>
+        </div>
+        </div>
+        </div>
+        `;
 
     Missions.add(this);
     // Add Mission Cards to DOM

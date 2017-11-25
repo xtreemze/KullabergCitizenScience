@@ -112,8 +112,9 @@ trails = new Mission({
             <input id="photoFilePath" accept="image/*" class="file-path validate" type="text" placeholder="Trail Photos">
           </div>
         </div>
-        <button class="col s12 btn btn-large waves-effect waves-light" type="submit" onclick="collectInputs('${this
-          .databaseCollection}', '${this.congratulatoryMessage}')">Submit
+        <button class="col s12 btn btn-large waves-effect waves-light" type="submit" onclick="collectInputs('${
+          this.databaseCollection
+        }', '${this.congratulatoryMessage}')">Submit
           <i class="material-icons right">send</i>
         </button>
       </form>
@@ -129,18 +130,20 @@ trails = new Mission({
       color: "red",
       fillColor: "#f03",
       fillOpacity: 0.5,
-      radius: 5
+      radius: geoReference.accuracy
     })
       .addTo(map)
       .bindPopup("Your Location")
       .openPopup();
     const geoJSONTrails = require("./trails.json");
-    L.geoJSON(geoJSONTrails, {}).addTo(map);
-    const photos = document.getElementById("photoFilePath");
-    const mission = this;
-    photos.addEventListener("change", function() {
-      console.log("Image loaded");
-      mission.imageResize();
-    });
+    L.geoJSON(geoJSONTrails, {
+      style: function(feature) {
+        return {
+          color: feature.properties.stroke,
+          opacity: 0.6,
+          dashArray: [7, 5]
+        };
+      }
+    }).addTo(map);
   }
 });

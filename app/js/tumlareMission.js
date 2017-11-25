@@ -114,8 +114,9 @@ tumlare = new Mission({
               <input class="file-path validate" type="text" placeholder="Observation Photos">
             </div>
           </div>
-          <button class="section col s12 btn btn-large waves-effect waves-light" type="submit" onClick="window.collectInputs('${this
-            .databaseCollection}', '${this.congratulatoryMessage}')">Submit
+          <button class="section col s12 btn btn-large waves-effect waves-light" type="submit" onClick="window.collectInputs('${
+            this.databaseCollection
+          }', '${this.congratulatoryMessage}')">Submit
             <i class="material-icons right">send</i>
           </button>
     </form>
@@ -144,7 +145,7 @@ tumlare = new Mission({
       color: "#0288d1",
       fillColor: "#0d47a1",
       fillOpacity: 0.5,
-      radius: 20
+      radius: geoReference.accuracy
     }).addTo(map);
 
     function onMapClick(e) {

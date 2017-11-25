@@ -31,10 +31,12 @@
   "dependencies": {},
   "devDependencies": {
     "autoprefixer": "^7.1.6",
+    "blueimp-load-image": "^2.17.1",
     "browserslist": "^2.9.0",
     "css-loader": "^0.28.7",
     "cssnano": "^3.10.0",
     "cssnano-preset-advanced": "^4.0.0-rc.2",
+    "exif-orientation-image": "^1.0.1",
     "extract-loader": "^1.0.1",
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^1.1.5",
