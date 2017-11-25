@@ -252,10 +252,7 @@ class Mission {
             long: position.coords.longitude || 0,
             alt: position.coords.altitude || 0
           };
-          const map = L.map("map").setView(
-            [geoReference.lat, geoReference.long],
-            12
-          );
+          const map = L.map("map").fitWorld();
 
           L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
 
@@ -276,6 +273,7 @@ class Mission {
             .openPopup();
 
           const geoJSONPoints = [];
+
           for (let i = queryDBResult.length - 1; i > 0; i--) {
             queryDBResult[i].Location.properties = {
               description: queryDBResult[i].Date,
@@ -290,7 +288,20 @@ class Mission {
             geoJSONPoints.push(queryDBResult[i].Location);
           }
 
-          let reports = L.geoJSON(geoJSONPoints, {
+          let trails = {
+            pointToLayer: function(feature, latlng) {
+              return L.circleMarker(latlng, {
+                // radius: 5,
+                fillColor: "#ff7800",
+                color: "yellow",
+                weight: 4,
+                opacity: 1,
+                fillOpacity: 0.7
+              }).bindPopup(`${feature.properties.description}<br>
+              ${feature.properties.photo}`);
+            }
+          };
+          let tumlare = {
             pointToLayer: function(feature, latlng) {
               return L.circle(latlng, {
                 // radius: 5,
@@ -303,7 +314,15 @@ class Mission {
               }).bindPopup(`${feature.properties.description}<br>
               ${feature.properties.photo}`);
             }
-          });
+          };
+          let options = {};
+          if (!queryDBResult[0].ObservationArea === false) {
+            options = tumlare;
+          } else {
+            options = trails;
+          }
+
+          let reports = L.geoJSON(geoJSONPoints, options);
 
           var markers = L.markerClusterGroup({});
           // https://github.com/Leaflet/Leaflet.markercluster
@@ -311,6 +330,9 @@ class Mission {
 
           map.addLayer(markers);
           M.updateTextFields();
+          setTimeout(() => {
+            map.setView([geoReference.lat, geoReference.long], 12);
+          }, 3000);
         },
         error => {
           M.toast({
