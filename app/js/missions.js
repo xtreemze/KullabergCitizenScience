@@ -258,30 +258,35 @@ class Mission {
 
           const geoJSONPoints = [];
           for (let i = queryDBResult.length - 1; i > 0; i--) {
+            queryDBResult[i].Location.properties = {
+              description: queryDBResult[i].Date,
+              photo: `<img class="responsive-img" src="${
+                queryDBResult[i].Photo
+              }">`,
+              radius: queryDBResult[i].ObservationArea
+            };
+            if (!queryDBResult[i].ObservationArea) {
+              queryDBResult[i].Location.properties.radius = 10;
+            }
             geoJSONPoints.push(queryDBResult[i].Location);
           }
 
           let reports = L.geoJSON(geoJSONPoints, {
             pointToLayer: function(feature, latlng) {
-              return L.circleMarker(latlng, {
+              return L.circle(latlng, {
                 // radius: 5,
                 fillColor: "#ff7800",
-                color: "#000",
-                weight: 1,
-                opacity: 0.9,
-                fillOpacity: 0.7
-              });
+                color: "yellow",
+                weight: 4,
+                opacity: 1,
+                fillOpacity: 0.7,
+                radius: feature.properties.radius
+              }).bindPopup(`${feature.properties.description}<br>
+              ${feature.properties.photo}`);
             }
           });
 
-          // .addTo(map);
-          var markers = L.markerClusterGroup({
-            iconCreateFunction: function(cluster) {
-              return L.divIcon({
-                html: "<b>" + cluster.getChildCount() + "</>"
-              });
-            }
-          });
+          var markers = L.markerClusterGroup({});
           // https://github.com/Leaflet/Leaflet.markercluster
           markers.addLayer(reports);
 
