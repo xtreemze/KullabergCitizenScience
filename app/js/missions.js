@@ -188,7 +188,7 @@ class Mission {
           // stroke-opacity: feature.properties.stroke-opacity,
           // stroke-width: feature.properties.stroke-width}
         }
-      }).addTo(map);
+      });
 
       // Get information from Database
       client
@@ -391,6 +391,9 @@ class Mission {
       setTimeout(() => {
         map.flyToBounds(window.mappedTrails.getBounds(), { padding: [82, 82] });
       }, 3000);
+      setTimeout(() => {
+        mappedTrails.addTo(map);
+      }, 6500);
     };
     // Displays on Front Page
     this.card = `<div class="cardContainer" id="${this.title}">
