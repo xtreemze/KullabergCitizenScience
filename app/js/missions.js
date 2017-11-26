@@ -272,7 +272,9 @@ class Mission {
       const map = L.map("map2", {
         tapTolerance: 30,
         zoomControl: false
-      }).fitWorld();
+      })
+        .fitWorld()
+        .setZoom(1);
 
       L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
         detectRetina: true
@@ -327,7 +329,7 @@ class Mission {
           radius: queryDBResult[i].ObservationArea
         };
         if (!queryDBResult[i].ObservationArea) {
-          queryDBResult[i].Location.properties.radius = 12;
+          queryDBResult[i].Location.properties.radius = 16;
         }
         geoJSONPoints.push(queryDBResult[i].Location);
       }
@@ -335,7 +337,7 @@ class Mission {
       let trails = {
         pointToLayer: function(feature, latlng) {
           return L.circleMarker(latlng, {
-            radius: 12,
+            radius: 16,
             fillColor: "#ff7800",
             color: "yellow",
             weight: 4,
@@ -383,7 +385,7 @@ class Mission {
       map.addLayer(markers);
       M.updateTextFields();
       setTimeout(() => {
-        map.flyToBounds(mappedTrails.getBounds());
+        map.flyToBounds(mappedTrails.getBounds(), { padding: [82, 82] });
       }, 3000);
     };
     // Displays on Front Page
