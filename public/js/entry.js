@@ -617,9 +617,14 @@ class Mission {
       let resultContent = "";
 
       window.scrollTo(0, 0);
-      const map = L.map("map2", { tapTolerance: 24 }).fitWorld();
+      const map = L.map("map2", {
+        tapTolerance: 30,
+        zoomControl: false
+      }).fitWorld();
 
-      L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
+      L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
+        detectRetina: true
+      }).addTo(map);
 
       const geoJSONTrails = __webpack_require__(19);
 
@@ -2190,10 +2195,10 @@ trails = new Mission({
     </div>
     `;
     missions.innerHTML = content;
-    const map = L.map("map", { tapTolerance: 24 }).setView(
-      [window.Latitude.value, window.Longitude.value],
-      13
-    );
+    const map = L.map("map", {
+      tapTolerance: 30,
+      zoomControl: false
+    }).setView([window.Latitude.value, window.Longitude.value], 13);
     L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
     let circle = L.circle([window.Latitude.value, window.Longitude.value], {
       color: "red",
@@ -2348,10 +2353,10 @@ tumlare = new Mission({
   `;
     missions.innerHTML = content;
 
-    const map = L.map("map", { tapTolerance: 24 }).setView(
-      [window.Latitude.value, window.Longitude.value],
-      13
-    );
+    const map = L.map("map", {
+      tapTolerance: 30,
+      zoomControl: false
+    }).setView([window.Latitude.value, window.Longitude.value], 13);
 
     L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
     let circle = L.circle([window.Latitude.value, window.Longitude.value], {

@@ -269,9 +269,14 @@ class Mission {
       let resultContent = "";
 
       window.scrollTo(0, 0);
-      const map = L.map("map2", { tapTolerance: 24 }).fitWorld();
+      const map = L.map("map2", {
+        tapTolerance: 30,
+        zoomControl: false
+      }).fitWorld();
 
-      L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
+      L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
+        detectRetina: true
+      }).addTo(map);
 
       const geoJSONTrails = require("./trails.json");
 

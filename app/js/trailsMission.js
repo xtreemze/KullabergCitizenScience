@@ -121,10 +121,10 @@ trails = new Mission({
     </div>
     `;
     missions.innerHTML = content;
-    const map = L.map("map", { tapTolerance: 24 }).setView(
-      [window.Latitude.value, window.Longitude.value],
-      13
-    );
+    const map = L.map("map", {
+      tapTolerance: 30,
+      zoomControl: false
+    }).setView([window.Latitude.value, window.Longitude.value], 13);
     L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
     let circle = L.circle([window.Latitude.value, window.Longitude.value], {
       color: "red",
