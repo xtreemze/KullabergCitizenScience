@@ -276,7 +276,15 @@ class Mission {
         .fitWorld()
         .setZoom(1);
 
-      L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
+      var OSMMapnik = L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+          maxZoom: 19,
+          attribution:
+            '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }
+      ).addTo(map);
+      // L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
 
       const geoJSONTrails = require("./trails.json");
 

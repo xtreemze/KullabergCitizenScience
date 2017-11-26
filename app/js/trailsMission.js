@@ -125,7 +125,16 @@ trails = new Mission({
       tapTolerance: 30,
       zoomControl: false
     }).setView([window.Latitude.value, window.Longitude.value], 13);
-    L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
+
+    var OSMMapnik = L.tileLayer(
+      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      {
+        maxZoom: 19,
+        attribution:
+          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      }
+    ).addTo(map);
+    // L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
     let circle = L.circle([window.Latitude.value, window.Longitude.value], {
       color: "red",
       fillColor: "#f03",
