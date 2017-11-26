@@ -39,11 +39,15 @@ tumlare = new Mission({
       </p>
       <h5 class="col s12">Location of Sighting</h5>
       <div class="input-field col s6 m4">
-        <input id="Latitude" type="text" value="${window.geoReference.lat}">
+        <input disabled id="Latitude" type="text" value="${
+          window.geoReference.lat
+        }">
         <label for="Latitude">Latitude</label>
       </div>
       <div class="input-field col s6 m4">
-        <input id="Longitude" type="text" value="${window.geoReference.long}">
+        <input disabled id="Longitude" type="text" value="${
+          window.geoReference.long
+        }">
         <label for="Longitude">Longitude</label>
       </div>
       <div class="input-field col s6 m4">

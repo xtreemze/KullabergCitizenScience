@@ -148,6 +148,49 @@ class Mission {
         displayLength: 1000,
         classes: "green darken-2"
       });
+      missions.innerHTML = `
+      <div class="fullscreen" id="map2"></div>
+      `;
+
+      navigationBreadcrumbs.innerHTML = `
+      <a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
+        <a class="pointer breadcrumb">Analyze</a>
+        `;
+      // let resultContent = "";
+
+      window.scrollTo(0, 0);
+      window.map = L.map("map2", {
+        tapTolerance: 30,
+        zoomControl: false
+      })
+        .fitWorld()
+        .setZoom(2);
+
+      var OSMMapnik = L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+          maxZoom: 19,
+          attribution:
+            '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }
+      ).addTo(map);
+      // L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
+
+      const geoJSONTrails = require("./trails.json");
+
+      window.mappedTrails = L.geoJSON(geoJSONTrails, {
+        style: function(feature) {
+          return {
+            color: feature.properties.stroke,
+            opacity: 0.6,
+            dashArray: [7, 5]
+          };
+          // stroke-opacity: feature.properties.stroke-opacity,
+          // stroke-width: feature.properties.stroke-width}
+        }
+      }).addTo(map);
+
+      // Get information from Database
       client
         .login()
         .then(
@@ -253,56 +296,12 @@ class Mission {
       );
     };
     this.analyze = function(queryDBResult) {
-      let content = ``;
-      content += `
-      <div class="fullscreen" id="map2"></div>
-      `;
-      missions.innerHTML = content;
-
-      navigationBreadcrumbs.innerHTML = `
-      <a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
-        <a class="pointer breadcrumb">Analyze</a>
-        `;
-      let resultContent = "";
-
-      window.scrollTo(0, 0);
-      const map = L.map("map2", {
-        tapTolerance: 30,
-        zoomControl: false
-      })
-        .fitWorld()
-        .setZoom(1);
-
-      var OSMMapnik = L.tileLayer(
-        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-        {
-          maxZoom: 19,
-          attribution:
-            '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        }
-      ).addTo(map);
-      // L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
-
-      const geoJSONTrails = require("./trails.json");
-
-      let mappedTrails = L.geoJSON(geoJSONTrails, {
-        style: function(feature) {
-          return {
-            color: feature.properties.stroke,
-            opacity: 0.6,
-            dashArray: [7, 5]
-          };
-          // stroke-opacity: feature.properties.stroke-opacity,
-          // stroke-width: feature.properties.stroke-width}
-        }
-      }).addTo(map);
-
       const geoJSONPoints = [];
-      if (!resultContent) {
-        let resultContent = "";
-      } else {
-        resultContent = "";
-      }
+      // if (!resultContent) {
+      //   let resultContent = "";
+      // } else {
+      //   resultContent = "";
+      // }
 
       for (let i = queryDBResult.length - 1; i > 0; i--) {
         let dbResponse = "";
@@ -388,9 +387,9 @@ class Mission {
       markers.addLayer(reports);
 
       map.addLayer(markers);
-      M.updateTextFields();
+      // M.updateTextFields();
       setTimeout(() => {
-        map.flyToBounds(mappedTrails.getBounds(), { padding: [82, 82] });
+        map.flyToBounds(window.mappedTrails.getBounds(), { padding: [82, 82] });
       }, 3000);
     };
     // Displays on Front Page

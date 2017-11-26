@@ -85,24 +85,33 @@ trails = new Mission({
             <span class="helper-text">Example: Many people, conflicts betwen hikers, horses, bicycles.</span>
           </div>
         </div>
+        <section class="hidden">
         <h5 class="col s12">Georeference</h5>
         <div class="col s12"><div id="map"></div></div>
         <div class="input-field col s6 m3">
-          <input id="Latitude" type="text" value="${window.geoReference.lat}">
+          <input disabled id="Latitude" type="text" value="${
+            window.geoReference.lat
+          }">
           <label for="Latitude">Latitude</label>
         </div>
         <div class="input-field col s6 m3">
-          <input id="Longitude" type="text" value="${window.geoReference.long}">
+          <input disabled id="Longitude" type="text" value="${
+            window.geoReference.long
+          }">
           <label for="Longitude">Longitude</label>
         </div>
         <div class="input-field col s6 m2">
-          <input id="Altitude" type="text" value="${window.geoReference.alt}">
+          <input disabled id="Altitude" type="text" value="${
+            window.geoReference.alt
+          }">
           <label for="Altitude">Altitude</label>
         </div>
         <div class="col s6 m4">
           <label for="Date">Date</label>
-          <input id="Date" type="text" class="datepicker" value="${new Date().toDateString()}">
+          <input disabled id="Date" type="text" class="datepicker" value="${new Date().toDateString()}">
         </div>
+        
+</section>        
         <div class="file-field input-field col s12">
           <div class="btn large">
           <i class="material-icons large">add_a_photo</i>
@@ -121,38 +130,38 @@ trails = new Mission({
     </div>
     `;
     missions.innerHTML = content;
-    const map = L.map("map", {
-      tapTolerance: 30,
-      zoomControl: false
-    }).setView([window.Latitude.value, window.Longitude.value], 13);
+    // const map = L.map("map", {
+    //   tapTolerance: 30,
+    //   zoomControl: false
+    // }).setView([window.Latitude.value, window.Longitude.value], 13);
 
-    var OSMMapnik = L.tileLayer(
-      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-      {
-        maxZoom: 19,
-        attribution:
-          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-      }
-    ).addTo(map);
-    // L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
-    let circle = L.circle([window.Latitude.value, window.Longitude.value], {
-      color: "red",
-      fillColor: "#f03",
-      fillOpacity: 0.5,
-      radius: geoReference.accuracy
-    })
-      .addTo(map)
-      .bindPopup("Your Location")
-      .openPopup();
-    const geoJSONTrails = require("./trails.json");
-    L.geoJSON(geoJSONTrails, {
-      style: function(feature) {
-        return {
-          color: feature.properties.stroke,
-          opacity: 0.6,
-          dashArray: [7, 5]
-        };
-      }
-    }).addTo(map);
+    // var OSMMapnik = L.tileLayer(
+    //   "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    //   {
+    //     maxZoom: 19,
+    //     attribution:
+    //       '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    //   }
+    // ).addTo(map);
+    // // L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
+    // let circle = L.circle([window.Latitude.value, window.Longitude.value], {
+    //   color: "red",
+    //   fillColor: "#f03",
+    //   fillOpacity: 0.5,
+    //   radius: geoReference.accuracy
+    // })
+    //   .addTo(map)
+    //   .bindPopup("Your Location")
+    //   .openPopup();
+    // const geoJSONTrails = require("./trails.json");
+    // L.geoJSON(geoJSONTrails, {
+    //   style: function(feature) {
+    //     return {
+    //       color: feature.properties.stroke,
+    //       opacity: 0.6,
+    //       dashArray: [7, 5]
+    //     };
+    //   }
+    // }).addTo(map);
   }
 });
