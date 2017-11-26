@@ -47,8 +47,8 @@ window.collectInputs = function(
     Location: {
       type: "Point",
       coordinates: []
-    },
-    Status: "Reported"
+    }
+    // , Status: "Reported"
   };
   if (!window.dataURL === false) {
     window.data.Photo = window.dataURL;
@@ -228,9 +228,6 @@ class Mission {
               },
               {
                 maxWidth: 512,
-                contain: true,
-                meta: true,
-                canvas: true,
                 orientation: true
               }
             );
@@ -313,12 +310,14 @@ class Mission {
           if (
             key === "_id" ||
             key === "owner_id" ||
-            key === "Date" ||
+            // key === "Date" ||
             key === "Location" ||
             key === "Photo" ||
             key === "Status" ||
             queryDBResult[i][key] === false
           ) {
+          } else if (key === "Date") {
+            dbResponse += `<span>${queryDBResult[i][key]}</span><br>`;
           } else {
             dbResponse += `<span class="strong">${key}: </span><span>${
               queryDBResult[i][key]
