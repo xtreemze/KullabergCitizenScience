@@ -276,9 +276,7 @@ class Mission {
         .fitWorld()
         .setZoom(1);
 
-      L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
-        detectRetina: true
-      }).addTo(map);
+      L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
 
       const geoJSONTrails = require("./trails.json");
 
