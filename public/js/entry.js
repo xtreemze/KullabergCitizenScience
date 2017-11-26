@@ -604,159 +604,6 @@ class Mission {
       );
     };
     this.analyze = function(queryDBResult) {
-      navigator.geolocation.getCurrentPosition(
-        position => {
-          window.geoReference = {
-            lat: position.coords.latitude || 0,
-            long: position.coords.longitude || 0,
-            alt: position.coords.altitude || 0,
-            accuracy: position.coords.accuracy || 0
-          };
-          const map = L.map("map2", { tapTolerance: 24 }).fitWorld();
-
-          L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
-
-          // var Esri_WorldImagery = L.tileLayer(
-          //   "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-          //   {
-          //     attribution:
-          //       "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
-          //   }
-          // ).addTo(map);
-
-          const geoJSONTrails = __webpack_require__(19);
-
-          let mappedTrails = L.geoJSON(geoJSONTrails, {
-            style: function(feature) {
-              return {
-                color: feature.properties.stroke,
-                opacity: 0.6,
-                dashArray: [7, 5]
-              };
-              // stroke-opacity: feature.properties.stroke-opacity,
-              // stroke-width: feature.properties.stroke-width}
-            }
-          }).addTo(map);
-
-          let circle = L.circle([geoReference.lat, geoReference.long], {
-            color: "red",
-            fillColor: "#f03",
-            fillOpacity: 0.5,
-            radius: geoReference.accuracy
-          })
-            .addTo(map)
-            .openPopup();
-
-          const geoJSONPoints = [];
-          let resultContent = "";
-
-          for (let i = queryDBResult.length - 1; i > 0; i--) {
-            let dbResponse = "";
-            for (const key in queryDBResult[i]) {
-              if (
-                key === "_id" ||
-                key === "owner_id" ||
-                key === "Date" ||
-                key === "Location" ||
-                key === "Photo" ||
-                key === "Status" ||
-                queryDBResult[i][key] === false
-              ) {
-              } else {
-                dbResponse += `<span class="strong">${key}: </span><span>${
-                  queryDBResult[i][key]
-                }</span><br>`;
-              }
-            }
-
-            queryDBResult[i].Location.properties = {
-              description: dbResponse,
-              photo: `<img class="responsive-img materialboxed" onload="enableBox()" onclick="enableBox()" src="${
-                queryDBResult[i].Photo
-              }">          
-              `,
-              radius: queryDBResult[i].ObservationArea
-            };
-            if (!queryDBResult[i].ObservationArea) {
-              queryDBResult[i].Location.properties.radius = 12;
-            }
-            geoJSONPoints.push(queryDBResult[i].Location);
-          }
-
-          let trails = {
-            pointToLayer: function(feature, latlng) {
-              return L.circleMarker(latlng, {
-                radius: 12,
-                fillColor: "#ff7800",
-                color: "yellow",
-                weight: 4,
-                opacity: 1,
-                fillOpacity: 0.7
-              }).bindPopup(`${feature.properties.description}<br>
-              ${feature.properties.photo}`);
-            },
-            onEachFeature: function() {
-              // var elem = document.querySelector(".materialboxed");
-              // var instance = new M.Materialbox(elem);
-            }
-          };
-          let tumlare = {
-            pointToLayer: function(feature, latlng) {
-              return L.circle(latlng, {
-                // radius: 5,
-                fillColor: "#ff7800",
-                color: "yellow",
-                weight: 4,
-                opacity: 1,
-                fillOpacity: 0.7,
-                radius: feature.properties.radius
-              }).bindPopup(`${feature.properties.description}<br>
-              ${feature.properties.photo}`);
-            },
-            onEachFeature: function() {
-              // var elem = document.querySelector(".materialboxed");
-              // var instance = new M.Materialbox(elem);
-            }
-          };
-          let options = {};
-          if (!queryDBResult[0].ObservationArea === false) {
-            options = tumlare;
-          } else {
-            options = trails;
-          }
-
-          let reports = L.geoJSON(geoJSONPoints, options);
-
-          var markers = L.markerClusterGroup({});
-          // https://github.com/Leaflet/Leaflet.markercluster
-          markers.addLayer(reports);
-
-          map.addLayer(markers);
-          M.updateTextFields();
-
-          map.flyTo([geoReference.lat, geoReference.long], 12);
-          setTimeout(() => {
-            map.flyToBounds(mappedTrails.getBounds());
-          }, 3000);
-        },
-        error => {
-          M.toast({
-            html: "Position Unavailable",
-            displayLength: 4000,
-            classes: "red darken-2"
-          });
-          window.geoReference = {
-            lat: "Latitude",
-            long: "Longitude",
-            alt: "Altitude"
-          };
-        },
-        {
-          enableHighAccuracy: true,
-          timeout: 5000,
-          maximumAge: 30000
-        }
-      );
       let content = ``;
       content += `
       <div class="fullscreen" id="map2"></div>
@@ -770,6 +617,117 @@ class Mission {
       let resultContent = "";
 
       window.scrollTo(0, 0);
+      const map = L.map("map2", { tapTolerance: 24 }).fitWorld();
+
+      L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
+
+      const geoJSONTrails = __webpack_require__(19);
+
+      let mappedTrails = L.geoJSON(geoJSONTrails, {
+        style: function(feature) {
+          return {
+            color: feature.properties.stroke,
+            opacity: 0.6,
+            dashArray: [7, 5]
+          };
+          // stroke-opacity: feature.properties.stroke-opacity,
+          // stroke-width: feature.properties.stroke-width}
+        }
+      }).addTo(map);
+
+      const geoJSONPoints = [];
+      if (!resultContent) {
+        let resultContent = "";
+      } else {
+        resultContent = "";
+      }
+
+      for (let i = queryDBResult.length - 1; i > 0; i--) {
+        let dbResponse = "";
+        for (const key in queryDBResult[i]) {
+          if (
+            key === "_id" ||
+            key === "owner_id" ||
+            key === "Date" ||
+            key === "Location" ||
+            key === "Photo" ||
+            key === "Status" ||
+            queryDBResult[i][key] === false
+          ) {
+          } else {
+            dbResponse += `<span class="strong">${key}: </span><span>${
+              queryDBResult[i][key]
+            }</span><br>`;
+          }
+        }
+
+        queryDBResult[i].Location.properties = {
+          description: dbResponse,
+          photo: `<img class="responsive-img materialboxed" onload="enableBox()" onclick="enableBox()" src="${
+            queryDBResult[i].Photo
+          }">          
+              `,
+          radius: queryDBResult[i].ObservationArea
+        };
+        if (!queryDBResult[i].ObservationArea) {
+          queryDBResult[i].Location.properties.radius = 12;
+        }
+        geoJSONPoints.push(queryDBResult[i].Location);
+      }
+
+      let trails = {
+        pointToLayer: function(feature, latlng) {
+          return L.circleMarker(latlng, {
+            radius: 12,
+            fillColor: "#ff7800",
+            color: "yellow",
+            weight: 4,
+            opacity: 1,
+            fillOpacity: 0.7
+          }).bindPopup(`${feature.properties.description}<br>
+              ${feature.properties.photo}`);
+        },
+        onEachFeature: function() {
+          // var elem = document.querySelector(".materialboxed");
+          // var instance = new M.Materialbox(elem);
+        }
+      };
+      let tumlare = {
+        pointToLayer: function(feature, latlng) {
+          return L.circle(latlng, {
+            // radius: 5,
+            fillColor: "#ff7800",
+            color: "yellow",
+            weight: 4,
+            opacity: 1,
+            fillOpacity: 0.7,
+            radius: feature.properties.radius
+          }).bindPopup(`${feature.properties.description}<br>
+              ${feature.properties.photo}`);
+        },
+        onEachFeature: function() {
+          // var elem = document.querySelector(".materialboxed");
+          // var instance = new M.Materialbox(elem);
+        }
+      };
+      let options = {};
+      if (!queryDBResult[0].ObservationArea === false) {
+        options = tumlare;
+      } else {
+        options = trails;
+      }
+
+      let reports = L.geoJSON(geoJSONPoints, options);
+
+      var markers = L.markerClusterGroup({});
+      // https://github.com/Leaflet/Leaflet.markercluster
+      markers.addLayer(reports);
+
+      map.addLayer(markers);
+      M.updateTextFields();
+      setTimeout(() => {
+        map.flyToBounds(mappedTrails.getBounds());
+      }, 3000);
     };
     // Displays on Front Page
     this.card = `<div class="cardContainer" id="${this.title}">
