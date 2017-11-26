@@ -124,7 +124,7 @@ tumlare = new Mission({
   `;
     missions.innerHTML = content;
 
-    const map = L.map("map").setView(
+    const map = L.map("map", { tapTolerance: 24 }).setView(
       [window.Latitude.value, window.Longitude.value],
       13
     );

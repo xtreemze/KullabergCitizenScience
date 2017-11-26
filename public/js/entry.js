@@ -612,7 +612,7 @@ class Mission {
             alt: position.coords.altitude || 0,
             accuracy: position.coords.accuracy || 0
           };
-          const map = L.map("map2").fitWorld();
+          const map = L.map("map2", { tapTolerance: 24 }).fitWorld();
 
           L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
 
@@ -626,7 +626,7 @@ class Mission {
 
           const geoJSONTrails = __webpack_require__(19);
 
-          L.geoJSON(geoJSONTrails, {
+          let mappedTrails = L.geoJSON(geoJSONTrails, {
             style: function(feature) {
               return {
                 color: feature.properties.stroke,
@@ -645,7 +645,6 @@ class Mission {
             radius: geoReference.accuracy
           })
             .addTo(map)
-            .bindPopup("Your Location")
             .openPopup();
 
           const geoJSONPoints = [];
@@ -735,9 +734,10 @@ class Mission {
           map.addLayer(markers);
           M.updateTextFields();
 
+          map.flyTo([geoReference.lat, geoReference.long], 12);
           setTimeout(() => {
-            map.setView([geoReference.lat, geoReference.long], 12);
-          }, 1000);
+            map.flyToBounds(mappedTrails.getBounds());
+          }, 3000);
         },
         error => {
           M.toast({
@@ -2232,7 +2232,7 @@ trails = new Mission({
     </div>
     `;
     missions.innerHTML = content;
-    const map = L.map("map").setView(
+    const map = L.map("map", { tapTolerance: 24 }).setView(
       [window.Latitude.value, window.Longitude.value],
       13
     );
@@ -2390,7 +2390,7 @@ tumlare = new Mission({
   `;
     missions.innerHTML = content;
 
-    const map = L.map("map").setView(
+    const map = L.map("map", { tapTolerance: 24 }).setView(
       [window.Latitude.value, window.Longitude.value],
       13
     );
