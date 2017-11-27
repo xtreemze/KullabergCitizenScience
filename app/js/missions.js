@@ -356,7 +356,7 @@ class Mission {
           }
           return L.circleMarker(latlng, {
             radius: 10,
-            fillColor: "#0d48a1d5",
+            fillColor: "#0d48a1",
             color: "#f5f5f5",
             weight: 4,
             opacity: 1,
@@ -380,7 +380,7 @@ class Mission {
           }
           return L.circle(latlng, {
             // radius: 5,
-            fillColor: "#0d48a1d5",
+            fillColor: "#0d48a1",
             color: "#f5f5f5",
             weight: 4,
             opacity: 1,
