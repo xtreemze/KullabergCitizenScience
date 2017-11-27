@@ -1,6 +1,8 @@
 const webpack = require("webpack");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+// const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const ReloadPlugin = require("reload-html-webpack-plugin");
+
 //
 module.exports = function e(env) {
   return {
@@ -31,24 +33,44 @@ module.exports = function e(env) {
           test: /\.(ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
           loader: "file-loader?name=./img/[name].[ext]?[hash]"
         },
+        // {
+        //   test: /\.scss$/,
+        //   exclude: /node_modules/,
+        //   loader:
+        //     "style-loader!css?sourceMap!sass-loader?sourceMap&sourceComments"
+        // },
         {
           test: /\.(scss|sass|css)$/,
-          use: ExtractTextPlugin.extract({
-            fallback: "style-loader",
-            use: [
-              {
-                loader: "css-loader",
-                options: {
-                  minimize: false,
-                  sourceMap: true,
-                  importLoaders: 1
-                }
-              },
-              "postcss-loader"
-              // "sass-loader"
-            ]
-          })
+          use: [
+            {
+              loader: "style-loader" // creates style nodes from JS strings
+            },
+            {
+              loader: "css-loader" // translates CSS into CommonJS
+            },
+            {
+              loader: "sass-loader" // compiles Sass to CSS
+            }
+          ]
         },
+        // {
+        //   test: /\.(scss|sass|css)$/,
+        //   use: ExtractTextPlugin.extract({
+        //     fallback: "style-loader",
+        //     use: [
+        //       {
+        //         loader: "css-loader",
+        //         options: {
+        //           minimize: false,
+        //           sourceMap: true,
+        //           importLoaders: 1
+        //         }
+        //       },
+        //       "postcss-loader"
+        //       // "sass-loader"
+        //     ]
+        //   })
+        // },
         {
           test: /\.(gif|png|jpe?g)$/i,
           loaders: [
@@ -69,7 +91,8 @@ module.exports = function e(env) {
         title: "Kullaberg Citizen Science",
         template: "./app/index.ejs"
       }),
-      new ExtractTextPlugin("./css/[name].css?[chunkhash]")
+      new ReloadPlugin()
+      // new ExtractTextPlugin("./css/[name].css?[chunkhash]")
     ]
   };
 };

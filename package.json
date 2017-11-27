@@ -28,7 +28,9 @@
     "> 1%",
     "last 2 versions"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "reload-html-webpack-plugin": "^0.1.2"
+  },
   "devDependencies": {
     "autoprefixer": "^7.1.6",
     "blueimp-load-image": "^2.17.1",

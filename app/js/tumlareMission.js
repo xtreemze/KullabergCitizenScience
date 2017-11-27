@@ -39,13 +39,15 @@ tumlare = new Mission({
       <h5 class="col s12">Location of Sighting</h5>
       <section class="hide">
       <div class="input-field col s6 m4">
-        <input disabled id="Latitude" type="text" value="${window.geoReference
-          .lat}">
+        <input disabled id="Latitude" type="text" value="${
+          window.geoReference.lat
+        }">
         <label for="Latitude">Latitude</label>
       </div>
       <div class="input-field col s6 m4">
-        <input disabled id="Longitude" type="text" value="${window.geoReference
-          .long}">
+        <input disabled id="Longitude" type="text" value="${
+          window.geoReference.long
+        }">
         <label for="Longitude">Longitude</label>
       </div>
       <div class="input-field col s6 m4">
@@ -122,8 +124,9 @@ tumlare = new Mission({
             <input id="Photos" accept="image/*;capture=camera" type="file">
           </div>
         </div>
-          <button class="section col s12 btn btn-large waves-effect waves-light" type="submit" onClick="window.collectInputs('${this
-            .databaseCollection}', '${this.congratulatoryMessage}')">Submit
+          <button class="section col s12 btn btn-large waves-effect waves-light" type="submit" onClick="window.collectInputs('${
+            this.databaseCollection
+          }', '${this.congratulatoryMessage}')">Submit
             <i class="material-icons right">send</i>
           </button>
     </form>

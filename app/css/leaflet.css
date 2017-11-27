@@ -3,8 +3,8 @@
 }
 
 .marker-cluster-small div {
-  color: whitesmoke;
-  background-color: #0d48a1d5;
+  color: #f5f5f5;
+  background-color: rgba(13, 72, 161, 0.835);
 }
 
 .marker-cluster-medium {
@@ -12,8 +12,8 @@
 }
 
 .marker-cluster-medium div {
-  color: whitesmoke;
-  background-color: #0d48a1d5;
+  color: #f5f5f5;
+  background-color: rgba(13, 72, 161, 0.835);
 }
 
 .marker-cluster-large {
@@ -21,8 +21,8 @@
 }
 
 .marker-cluster-large div {
-  color: whitesmoke;
-  background-color: #0d48a1d5;
+  color: #f5f5f5;
+  background-color: rgba(13, 72, 161, 0.835);
 }
 
 .leaflet-oldie .marker-cluster-small {
