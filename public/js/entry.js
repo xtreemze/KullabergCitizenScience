@@ -2168,25 +2168,22 @@ trails = new Mission({
             <span class="helper-text">Example: Many people, conflicts betwen hikers, horses, bicycles.</span>
           </div>
         </div>
-        <section class="hidden">
+        <section class="hide">
         <h5 class="col s12">Georeference</h5>
         <div class="col s12"><div id="map"></div></div>
         <div class="input-field col s6 m3">
-          <input disabled id="Latitude" type="text" value="${
-            window.geoReference.lat
-          }">
+          <input disabled id="Latitude" type="text" value="${window.geoReference
+            .lat}">
           <label for="Latitude">Latitude</label>
         </div>
         <div class="input-field col s6 m3">
-          <input disabled id="Longitude" type="text" value="${
-            window.geoReference.long
-          }">
+          <input disabled id="Longitude" type="text" value="${window
+            .geoReference.long}">
           <label for="Longitude">Longitude</label>
         </div>
         <div class="input-field col s6 m2">
-          <input disabled id="Altitude" type="text" value="${
-            window.geoReference.alt
-          }">
+          <input disabled id="Altitude" type="text" value="${window.geoReference
+            .alt}">
           <label for="Altitude">Altitude</label>
         </div>
         <div class="col s6 m4">
@@ -2204,9 +2201,8 @@ trails = new Mission({
             <input id="photoFilePath" accept="image/*" class="file-path validate" type="text" placeholder="Trail Photos">
           </div>
         </div>
-        <button class="col s12 btn btn-large waves-effect waves-light" type="submit" onclick="collectInputs('${
-          this.databaseCollection
-        }', '${this.congratulatoryMessage}')">Submit
+        <button class="col s12 btn btn-large waves-effect waves-light" type="submit" onclick="collectInputs('${this
+          .databaseCollection}', '${this.congratulatoryMessage}')">Submit
           <i class="material-icons right">send</i>
         </button>
       </form>
