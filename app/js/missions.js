@@ -55,7 +55,10 @@ window.collectInputs = function(
   if (!window.dataURL === false) {
     window.data.Photo = window.dataURL;
   }
+
+  // Processing Form data then Saving to Database
   window.elements = form.elements;
+
   for (e = 0; e < elements.length; e++) {
     if (
       elements[e].id === "Photos" ||
@@ -68,17 +71,11 @@ window.collectInputs = function(
         $date: new Date(elements[e].value)
       };
     } else if (elements[e].id === "Longitude") {
-      window.data.Location.coordinates[0] = {
-        $numberDecimal: elements[e].value
-      };
+      window.data.Location.coordinates[0] = elements[e].value;
     } else if (elements[e].id === "Latitude") {
-      window.data.Location.coordinates[1] = {
-        $numberDecimal: elements[e].value
-      };
+      window.data.Location.coordinates[1] = elements[e].value;
     } else if (elements[e].id === "Altitude") {
-      window.data.Location.coordinates[2] = {
-        $numberDecimal: elements[e].value
-      };
+      window.data.Location.coordinates[2] = elements[e].value;
     } else if (elements[e].type == "checkbox") {
       window.data[elements[e].id] = elements[e].checked;
     } else if (elements[e].type == "number") {
