@@ -100,11 +100,6 @@ trails = new Mission({
           .long}">
         <label for="Longitude">Longitude</label>
       </div>
-      <div class="input-field col s6 m2">
-        <input disabled id="Altitude" type="text" value="${window.geoReference
-          .alt}">
-        <label for="Altitude">Altitude</label>
-      </div>
       <div class="col s6 m4">
         <label for="Date">Date</label>
         <input disabled id="Date" type="text" class="datepicker" value="${new Date().toDateString()}">
