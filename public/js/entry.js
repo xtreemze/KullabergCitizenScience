@@ -2759,55 +2759,55 @@ trails = new Mission({
   <form class="" onsubmit="return false">
     <h3 class="col s12">${this.title}</h3>
     <h5 class="col s12">Select All that Apply</h5>
-    <p class="col s12 m4">
+    <p class="col s12 m6 l4">
       <label>
         <input id="RootsExposed" type="checkbox">
         <span>Roots Exposed</span>
       </label>
     </p>
-    <p class="col s12 m4">
+    <p class="col s12 m6 l4">
       <label>
         <input id="Flooded" type="checkbox">
         <span>Flooded</span>
       </label>
     </p>
-    <p class="col s12 m4">
+    <p class="col s12 m6 l4">
       <label>
         <input id="Bifurcation" type="checkbox">
         <span>Bifurcation - Widening</span>
       </label>
     </p>
-    <p class="col s12 m4">
+    <p class="col s12 m6 l4">
       <label>
         <input id="FallenTrees" type="checkbox">
         <span>Fallen Trees on Trail</span>
       </label>
     </p>
-    <p class="col s12 m4">
+    <p class="col s12 m6 l4">
       <label>
         <input id="Slippery" type="checkbox">
         <span>Slippery</span>
       </label>
     </p>
-    <p class="col s12 m4">
+    <p class="col s12 m6 l4">
       <label>
         <input id="SharpStones" type="checkbox">
         <span>Sharp Stones</span>
       </label>
     </p>
-    <p class="col s12 m4">
+    <p class="col s12 m6 l4">
       <label>
         <input id="Thorns" type="checkbox">
         <span>Thorny Vegetation on the Edge</span>
       </label>
     </p>
-    <p class="col s12 m4">
+    <p class="col s12 m6 l4">
       <label>
         <input id="Risk" type="checkbox">
         <span>Risk From Fallen Trees or Branches</span>
       </label>
     </p>
-    <div class="input-field col s12 m4">
+    <div class="input-field col s12 m6 l4">
       <select id="Erosion">
         <option value="Low">Low</option>
         <option value="Medium">Medium</option>
@@ -2933,30 +2933,31 @@ tumlare = new Mission({
     content += `<div class="row">
     <form class="" onsubmit="return false">
       <h3 class="col s12">${this.title}</h3>
-      <div class="input-field col m4 s12">
+      <div class="input-field col l2 m4 s12">
         <label for="Species">Species</label>
         <input id="Species" type="text" value="Porpoise">
       </div>
-      <p class="col s6 m4">
+      <p class="col s6 m4 l2">
         <label>
           <input id="BinocularsUsed" type="checkbox">
           <span>Observation Made with Binoculars</span>
         </label>
       </p>
-      <p class="col s6 m4">
+      <p class="col s6 m4 l2">
         <label>
           <input id="UncertainQuantity" type="checkbox">
           <span>Uncertain Quantity</span>
         </label>
       </p>
-      <div class="col s10 range-field">
-        <label>Quantity</label>
-        <input id="Quantity" type="range" min="1" max="20" value="10">
+      <div class="col s8 m10 l5 range-field right">
+      <label>Quantity</label>
+      <input id="Quantity" type="range" min="1" max="20" value="10">
       </div>
-      <p class="col s2">
+      <p class="col s4 m2 l1 right-align">
         <span id="QuantityDisplay" class="helper-text">10</span>
       </p>
       <h5 class="col s12">Location of Sighting</h5>
+      <section class="hide">
       <div class="input-field col s6 m4">
         <input disabled id="Latitude" type="text" value="${window.geoReference
           .lat}">
@@ -2971,18 +2972,19 @@ tumlare = new Mission({
         <label class="" for="Date">Date</label>
         <input id="Date" type="text" class="datepicker" value="${new Date().toDateString()}">
       </div>
+      </section>
       <p class="col s12">Locate the sighting on the map.</p>
       <div class="col s12">
         <div id="map"></div>
         <div>
-          <div class="col s10 range-field">
-            <label>Area of Observation</label>
-            <input id="ObservationArea" type="range" min="1" max="200" value="20">
-          </div>
-          <p class="col s2">
-            <span id="ObservationAreaDisplay" class="helper-text">20</span>
-            <span class="meters">m</span>
-          </p>
+        <div class="col s8 m10 l5 range-field right">
+        <label>Area of Observation</label>
+        <input id="ObservationArea" type="range" min="1" max="200" value="20">
+        </div>
+        <p class="col s4 m2 l7 right-align">
+          <span id="ObservationAreaDisplay" class="helper-text">20</span>
+          <span class="meters">m</span>
+        </p>
           <h5 class="col s12">Behavior</h5>
           <div class="input-field col s12 m6">
             <select id="Behavior">
