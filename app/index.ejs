@@ -65,13 +65,14 @@ const site = {
         display: flex;
         align-items: center;
         justify-content: center;
-        position: absolute;
-        z-index: 10000;
+        position: fixed;
+        z-index: 1;
         overflow: hidden;
         margin: 0;
         padding: 0;
         left: 0;
-        top: 0;
+        bottom: 0;
+        pointer-events: none;
       }
 
       .loaderImg {
@@ -89,14 +90,13 @@ const site = {
     <main class="container section">
       <section class="row" id="missions"></section>
     </main>
-    <footer class="page-footer z12 row">
+    <footer id="foot" class="page-footer z12 row hidden">
       <div class="container">
         <section class="">
           <span onclick="showMissions()" class="brand-logo left pointer">
             ${ site.name }
           </span>
           <div class="left" id="navigationBreadcrumbs">
-            <a class="pointer breadcrumb">Missions</a>
           </div>
         </section>
       </div>

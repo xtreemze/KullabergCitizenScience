@@ -2,7 +2,7 @@ const stitch = require("mongodb-stitch");
 
 const client = new stitch.StitchClient("citizensciencestitch-oakmw");
 const db = client.service("mongodb", "mongodb-atlas").db("citizenScience");
-const loadImage = require("./../../node_modules/blueimp-load-image/js/load-image.all.min.js");
+require("./../../node_modules/blueimp-load-image/js/load-image.all.min.js");
 
 window.enableBox = function() {
   let elem = document.querySelector(".materialboxed");
@@ -89,10 +89,8 @@ window.collectInputs = function(
   }
 
   updateDB(databaseCollection, window.data);
+  window.showMissions();
 
-  setTimeout(() => {
-    window.showMissions();
-  }, 2000);
   // Congratulatory Message
   M.toast({
     html: congratulatoryMessage,
@@ -230,9 +228,8 @@ class Mission {
           this.monitorSuccess();
 
           navigationBreadcrumbs.innerHTML = `
-          <a onclick="showMissions()" class="pointer breadcrumb">${
-            this.title
-          }</a>
+          <a onclick="showMissions()" class="pointer breadcrumb">${this
+            .title}</a>
           <a class="pointer breadcrumb">Monitor</a>
           `;
           M.updateTextFields();
@@ -304,35 +301,42 @@ class Mission {
       // }
 
       for (let i = queryDBResult.length - 1; i > 0; i--) {
-        let dbResponse = "";
+        let dbResponse = `<span>${queryDBResult[i].Date}</span><br>`;
         for (const key in queryDBResult[i]) {
+          // For simplicity, do not show these database results:
           if (
             key === "_id" ||
             key === "owner_id" ||
-            // key === "Date" ||
+            key === "Date" ||
             key === "Location" ||
             key === "Photo" ||
+            key === "photoFilePath" ||
+            key === "Photos" ||
             key === "Status" ||
-            queryDBResult[i][key] === false
+            queryDBResult[i][key] === false ||
+            queryDBResult[i][key] === "Low"
           ) {
-          } else if (key === "Date") {
-            dbResponse += `<span>${queryDBResult[i][key]}</span><br>`;
           } else {
-            dbResponse += `<span class="strong">${key}: </span><span>${
-              queryDBResult[i][key]
-            }</span><br>`;
+            // Format for displaying information in map popups
+            dbResponse += `<span class="strong">${key}: </span><span>${queryDBResult[
+              i
+            ][key]}</span><br>`;
           }
         }
 
         queryDBResult[i].Location.properties = {
           description: dbResponse,
-          photo: `<img class="responsive-img materialboxed" onload="enableBox()" onclick="enableBox()" src="${
-            queryDBResult[i].Photo
-          }">          
+          photo: `<img class="responsive-img materialboxed" data-caption="${queryDBResult[
+            i
+          ]
+            .Date}" onload="enableBox()" onclick="enableBox()" src="${queryDBResult[
+            i
+          ].Photo}">          
               `,
           radius: queryDBResult[i].ObservationArea
         };
         if (!queryDBResult[i].ObservationArea) {
+          // Size of map marker for missions other than Tumalre
           queryDBResult[i].Location.properties.radius = 16;
         }
         geoJSONPoints.push(queryDBResult[i].Location);
@@ -349,11 +353,11 @@ class Mission {
             fillOpacity: 0.7
           }).bindPopup(`${feature.properties.description}<br>
               ${feature.properties.photo}`);
-        },
-        onEachFeature: function() {
-          // var elem = document.querySelector(".materialboxed");
-          // var instance = new M.Materialbox(elem);
         }
+        // onEachFeature: function() {
+        //   // var elem = document.querySelector(".materialboxed");
+        //   // var instance = new M.Materialbox(elem);
+        // }
       };
       let tumlare = {
         pointToLayer: function(feature, latlng) {
@@ -367,11 +371,11 @@ class Mission {
             radius: feature.properties.radius
           }).bindPopup(`${feature.properties.description}<br>
               ${feature.properties.photo}`);
-        },
-        onEachFeature: function() {
-          // var elem = document.querySelector(".materialboxed");
-          // var instance = new M.Materialbox(elem);
         }
+        // onEachFeature: function() {
+        //   // var elem = document.querySelector(".materialboxed");
+        //   // var instance = new M.Materialbox(elem);
+        // }
       };
       let options = {};
       if (!queryDBResult[0].ObservationArea === false) {
@@ -379,7 +383,7 @@ class Mission {
       } else {
         options = trails;
       }
-
+      // Passing all points to cluster marker with the above mission display options
       let reports = L.geoJSON(geoJSONPoints, options);
 
       var markers = L.markerClusterGroup({});
@@ -426,12 +430,33 @@ class Mission {
  *
  */
 window.showMissions = function() {
+  loading.classList.remove("fadeOut");
+  loading.classList.add("fadeIn");
+  missions.innerHTML = "";
+  setTimeout(() => {
+    window.scrollTo(0, 0);
+    missions.innerHTML = missionCardsHTML;
+    navigationBreadcrumbs.innerHTML = `
+    <a class="pointer breadcrumb">Missions</a>
+    `;
+    setTimeout(() => {
+      loading.classList.remove("fadeIn");
+      loading.classList.add("fadeOut");
+    }, 290);
+  }, 290);
+};
+
+window.addEventListener("DOMContentLoaded", function() {
+  // Add HTML Mission Cards to the DOM
   missions.innerHTML = missionCardsHTML;
   navigationBreadcrumbs.innerHTML = `
   <a class="pointer breadcrumb">Missions</a>
   `;
   window.scrollTo(0, 0);
-};
+  setTimeout(() => {
+    loading.classList.add("fadeOut");
+  }, 10);
+});
 
 // Additional missions go in separate files and require this file. Add them to ./../entry.js
 // test = new Mission({});

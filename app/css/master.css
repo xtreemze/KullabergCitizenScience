@@ -95,10 +95,45 @@ footer.page-footer {
 main {
   margin-bottom: 6rem !important;
 }
-/* 
-#preview {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  z-index: 500;
-} */
+
+.materialbox-caption,
+#material-box-overlay {
+  bottom: 4rem;
+}
+
+.fadeOut {
+  animation: fadeOut 0.3s ease-in-out forwards;
+  opacity: 1;
+}
+
+@keyframes fadeOut {
+  10% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  100% {
+    opacity: 0;
+  }
+}
+
+.hidden {
+  opacity: 0;
+}
+.fadeIn {
+  animation: fadeIn 0.3s ease-in-out forwards;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  10% {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  100% {
+    opacity: 1;
+  }
+}
