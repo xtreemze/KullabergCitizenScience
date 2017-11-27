@@ -65,7 +65,7 @@ window.collectInputs = function(
       elements[e].id === "photoFilePath" ||
       elements[e].id.length < 1
     ) {
-      console.warn("[Form1] Excluded: ", elements[e]);
+      // console.log("[Form1] Excluded: ", elements[e]);
     } else if (elements[e].value.id === "Date") {
       window.data[elements[e].id] = {
         $date: new Date(elements[e].value)
@@ -159,33 +159,9 @@ class Mission {
       window.map = L.map("map2", {
         tapTolerance: 30,
         zoomControl: false
-      })
-        .fitWorld()
-        .setZoom(2);
-
-      var OSMMapnik = L.tileLayer(
-        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-        {
-          maxZoom: 19,
-          attribution:
-            '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        }
-      ).addTo(map);
-      // L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
-
-      const geoJSONTrails = require("./trails.json");
-
-      window.mappedTrails = L.geoJSON(geoJSONTrails, {
-        style: function(feature) {
-          return {
-            color: feature.properties.stroke,
-            opacity: 0.6,
-            dashArray: [7, 5]
-          };
-          // stroke-opacity: feature.properties.stroke-opacity,
-          // stroke-width: feature.properties.stroke-width}
-        }
       });
+      // .fitWorld()
+      // .setZoom(2);
 
       // Get information from Database
       client
@@ -214,6 +190,31 @@ class Mission {
             classes: "red darken-2"
           });
         });
+      var OSMMapnik = L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+          maxZoom: 19,
+          attribution:
+            '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }
+      ).addTo(map);
+      // L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
+
+      const geoJSONTrails = require("./trails.json");
+
+      window.mappedTrails = L.geoJSON(geoJSONTrails, {
+        style: function(feature) {
+          return {
+            color: feature.properties.stroke,
+            opacity: 0.6,
+            dashArray: [7, 5]
+          };
+          // stroke-opacity: feature.properties.stroke-opacity,
+          // stroke-width: feature.properties.stroke-width}
+        }
+      });
+      map.fitBounds(window.mappedTrails.getBounds(), { padding: [82, 82] });
+      mappedTrails.addTo(map);
     };
     this.monitor = function() {
       navigator.geolocation.getCurrentPosition(
@@ -391,13 +392,18 @@ class Mission {
       markers.addLayer(reports);
 
       // M.updateTextFields();
-      setTimeout(() => {
-        map.flyToBounds(window.mappedTrails.getBounds(), { padding: [82, 82] });
-      }, 100);
-      setTimeout(() => {
-        mappedTrails.addTo(map);
-        map.addLayer(markers);
-      }, 4000);
+      // map.fitBounds(window.mappedTrails.getBounds(), { padding: [82, 82] });
+      // setTimeout(() => {
+      // map.flyToBounds(window.mappedTrails.getBounds(), { padding: [82, 82] });
+      // }, 100);
+      // setTimeout(() => {
+      //   mappedTrails.addTo(map);
+      //   map.addLayer(markers);
+      // }, 4000);
+
+      map.addLayer(markers);
+      // setTimeout(() => {
+      // }, 100);
     };
     // Displays on Front Page
     this.card = `<div class="cardContainer" id="${this.title}">
