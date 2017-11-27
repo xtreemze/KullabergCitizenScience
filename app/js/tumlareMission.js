@@ -4,8 +4,7 @@ tumlare = new Mission({
   shortName: "tumlare",
   title: "Porpoise Observation",
   databaseCollection: "Tumlare",
-  congratulatoryMessage:
-    "Thank you for your participation with adaptive management in the Kullaberg Nature Reserve!",
+  congratulatoryMessage: "Thanks for you help with wildlife research!",
   description:
     "Engage in the collection of visual harbor porpoise observations (both living and dead) in the north-western parts of Scania. Observations are used in scientific research to help increase the knowledge about this threatened species.",
   image: require("../img/tumlare.jpg"),
@@ -39,15 +38,13 @@ tumlare = new Mission({
       </p>
       <h5 class="col s12">Location of Sighting</h5>
       <div class="input-field col s6 m4">
-        <input disabled id="Latitude" type="text" value="${
-          window.geoReference.lat
-        }">
+        <input disabled id="Latitude" type="text" value="${window.geoReference
+          .lat}">
         <label for="Latitude">Latitude</label>
       </div>
       <div class="input-field col s6 m4">
-        <input disabled id="Longitude" type="text" value="${
-          window.geoReference.long
-        }">
+        <input disabled id="Longitude" type="text" value="${window.geoReference
+          .long}">
         <label for="Longitude">Longitude</label>
       </div>
       <div class="input-field col s6 m4">
@@ -109,18 +106,22 @@ tumlare = new Mission({
             <label for="Comments">Additional Comments</label>
             <span class="helper-text">(optional)</span>
           </div>
-          <div class="file-field input-field col s12">
-            <div class="btn large">
-            <i class="large material-icons">add_a_photo</i>
-              <input id="Photos" accept="image/*;capture=camera" type="file">
-            </div>
-            <div class="file-path-wrapper">
-              <input class="file-path validate" type="text" placeholder="Observation Photos">
-            </div>
+          <section class="col s12 m6">
+          <div class="row">
+            <canvas height="64" class="col s12" id="photoPreview"></canvas>
           </div>
-          <button class="section col s12 btn btn-large waves-effect waves-light" type="submit" onClick="window.collectInputs('${
-            this.databaseCollection
-          }', '${this.congratulatoryMessage}')">Submit
+        </section>
+        <div class="file-field input-field col s12 m6">
+          <div class="file-path-wrapper col s12">
+            <input id="photoFilePath" accept="image/*" class="file-path validate" type="text" placeholder="Observation Photos">
+          </div>
+          <div class="btn large col s12">
+            <i class="material-icons large">add_a_photo</i>
+            <input id="Photos" accept="image/*;capture=camera" type="file">
+          </div>
+        </div>
+          <button class="section col s12 btn btn-large waves-effect waves-light" type="submit" onClick="window.collectInputs('${this
+            .databaseCollection}', '${this.congratulatoryMessage}')">Submit
             <i class="material-icons right">send</i>
           </button>
     </form>

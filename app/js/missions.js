@@ -2,7 +2,9 @@ const stitch = require("mongodb-stitch");
 
 const client = new stitch.StitchClient("citizensciencestitch-oakmw");
 const db = client.service("mongodb", "mongodb-atlas").db("citizenScience");
-require("./../../node_modules/blueimp-load-image/js/load-image.all.min.js");
+// require("./../../node_modules/blueimp-load-image/js/load-image.all.min.js");
+// require("./../../node_modules/blueimp-load-image/js/index.js");
+const loadImage = require("blueimp-load-image");
 
 window.enableBox = function() {
   let elem = document.querySelector(".materialboxed");
@@ -258,7 +260,8 @@ class Mission {
             loadImage(
               e.target.files[0],
               function(img) {
-                let canvas = document.createElement("canvas");
+                // let canvas = document.createElement("canvas");
+                let canvas = document.getElementById("photoPreview");
                 var ctx = canvas.getContext("2d");
                 canvas.width = img.width;
                 canvas.height = img.height;
@@ -267,7 +270,7 @@ class Mission {
                 console.log("[Image Resizer]", canvas);
               },
               {
-                maxWidth: 512,
+                maxWidth: 256,
                 orientation: true
               }
             );

@@ -98,7 +98,7 @@ main {
 
 .materialbox-caption,
 #material-box-overlay {
-  bottom: 4rem;
+  bottom: 4rem !important;
 }
 
 .fadeOut {
