@@ -648,7 +648,7 @@ class Mission {
       //   resultContent = "";
       // }
 
-      for (let i = queryDBResult.length - 1; i > 0; i--) {
+      for (let i = queryDBResult.length - 1; i > -1; i--) {
         let dbResponse = `<span>${queryDBResult[i].Date}</span><br>`;
         for (const key in queryDBResult[i]) {
           // For simplicity, do not show these database results:
@@ -738,14 +738,14 @@ class Mission {
       // https://github.com/Leaflet/Leaflet.markercluster
       markers.addLayer(reports);
 
-      map.addLayer(markers);
       // M.updateTextFields();
       setTimeout(() => {
         map.flyToBounds(window.mappedTrails.getBounds(), { padding: [82, 82] });
-      }, 3000);
+      }, 1000);
       setTimeout(() => {
+        map.addLayer(markers);
         mappedTrails.addTo(map);
-      }, 6500);
+      }, 5000);
     };
     // Displays on Front Page
     this.card = `<div class="cardContainer" id="${this.title}">
