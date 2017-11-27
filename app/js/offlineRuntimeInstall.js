@@ -5,7 +5,7 @@ OfflinePluginRuntime.install({
   onInstalled: function() {
     M.toast({
       html: "App Installed",
-      displayLength: 1000,
+      displayLength: 500,
       classes: "blue darken-2"
     });
   },
@@ -13,26 +13,27 @@ OfflinePluginRuntime.install({
   onUpdating: function() {
     M.toast({
       html: "Updating...",
-      displayLength: 1000,
+      displayLength: 500,
       classes: "blue darken-2"
     });
   },
 
   onUpdateReady: function() {
     OfflinePluginRuntime.applyUpdate();
+    foot.classList.add("fadeIn");
     M.toast({
       html: "Update Ready",
-      displayLength: 1000,
+      displayLength: 500,
       classes: "blue darken-2"
     });
   },
   onUpdated: function() {
     setTimeout(function() {
       window.location.reload();
-    }, 4000);
+    }, 500);
     M.toast({
       html: "Reloading",
-      displayLength: 3500,
+      displayLength: 500,
       classes: "blue darken-2"
     });
   }
