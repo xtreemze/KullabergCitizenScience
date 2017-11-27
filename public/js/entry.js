@@ -648,7 +648,7 @@ class Mission {
       //   resultContent = "";
       // }
 
-      for (let i = queryDBResult.length; i > 0; i--) {
+      for (let i = queryDBResult.length - 1; i > 0; i--) {
         let dbResponse = `<span>${queryDBResult[i].Date}</span><br>`;
         for (const key in queryDBResult[i]) {
           // For simplicity, do not show these database results:
