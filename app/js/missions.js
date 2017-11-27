@@ -300,7 +300,7 @@ class Mission {
       //   resultContent = "";
       // }
 
-      for (let i = queryDBResult.length - 1; i > 0; i--) {
+      for (let i = queryDBResult.length - 1; i > -1; i--) {
         let dbResponse = `<span>${queryDBResult[i].Date}</span><br>`;
         for (const key in queryDBResult[i]) {
           // For simplicity, do not show these database results:
@@ -385,7 +385,7 @@ class Mission {
       }
       // Passing all points to cluster marker with the above mission display options
       let reports = L.geoJSON(geoJSONPoints, options);
-
+      console.log("[Mapped Points]", geoJSONPoints);
       var markers = L.markerClusterGroup({});
       // https://github.com/Leaflet/Leaflet.markercluster
       markers.addLayer(reports);
