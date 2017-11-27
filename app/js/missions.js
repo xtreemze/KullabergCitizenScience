@@ -393,11 +393,11 @@ class Mission {
       // M.updateTextFields();
       setTimeout(() => {
         map.flyToBounds(window.mappedTrails.getBounds(), { padding: [82, 82] });
-      }, 1000);
+      }, 100);
       setTimeout(() => {
-        map.addLayer(markers);
         mappedTrails.addTo(map);
-      }, 5000);
+        map.addLayer(markers);
+      }, 4000);
     };
     // Displays on Front Page
     this.card = `<div class="cardContainer" id="${this.title}">
