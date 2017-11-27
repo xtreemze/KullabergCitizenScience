@@ -1,0 +1,74 @@
+.marker-cluster-small {
+  background-color: rgba(245, 245, 245, 0.685);
+}
+
+.marker-cluster-small div {
+  color: whitesmoke;
+  background-color: #0d48a1d5;
+}
+
+.marker-cluster-medium {
+  background-color: rgba(245, 245, 245, 0.685);
+}
+
+.marker-cluster-medium div {
+  color: whitesmoke;
+  background-color: #0d48a1d5;
+}
+
+.marker-cluster-large {
+  background-color: rgba(245, 245, 245, 0.685);
+}
+
+.marker-cluster-large div {
+  color: whitesmoke;
+  background-color: #0d48a1d5;
+}
+
+.leaflet-oldie .marker-cluster-small {
+  background-color: #b5e28c;
+}
+
+.leaflet-oldie .marker-cluster-small div {
+  background-color: #6ecc39;
+}
+
+.leaflet-oldie .marker-cluster-medium {
+  background-color: #f1d357;
+}
+
+.leaflet-oldie .marker-cluster-medium div {
+  background-color: #f0c20c;
+}
+
+.leaflet-oldie .marker-cluster-large {
+  background-color: #fd9c73;
+}
+
+.leaflet-oldie .marker-cluster-large div {
+  background-color: #f18017;
+}
+
+.marker-cluster {
+  background-clip: padding-box;
+  border-radius: 20px;
+}
+
+.marker-cluster div {
+  width: 30px;
+  height: 30px;
+  margin-left: 5px;
+  margin-top: 5px;
+  text-align: center;
+  border-radius: 15px;
+  font: 14px Roboto, Helvetica Neue, Arial, Helvetica, sans-serif;
+  font-weight: 500;
+}
+
+.marker-cluster span {
+  line-height: 30px;
+}
+/* .leaflet-marker-icon.leaflet-div-icon {
+  background: #f37315de;
+  border-radius: 10px;
+} */

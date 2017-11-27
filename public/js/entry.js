@@ -576,8 +576,9 @@ class Mission {
           this.monitorSuccess();
 
           navigationBreadcrumbs.innerHTML = `
-          <a onclick="showMissions()" class="pointer breadcrumb">${this
-            .title}</a>
+          <a onclick="showMissions()" class="pointer breadcrumb">${
+            this.title
+          }</a>
           <a class="pointer breadcrumb">Monitor</a>
           `;
           M.updateTextFields();
@@ -660,48 +661,55 @@ class Mission {
             key === "Location" ||
             key === "Photo" ||
             key === "photoFilePath" ||
-            key === "Photos" ||
+            // key === "Photos" ||
             key === "Status" ||
             queryDBResult[i][key] === false ||
             queryDBResult[i][key] === "Low"
           ) {
+          } else if (key === "Photos") {
+            queryDBResult[
+              i
+            ].Location.properties.photo = `<img class="responsive-img materialboxed" data-caption="${
+              queryDBResult[i].Date
+            }" onload="enableBox()" onclick="enableBox()" src="${
+              queryDBResult[i].Photo
+            }">`;
           } else {
             // Format for displaying information in map popups
-            dbResponse += `<span class="strong">${key}: </span><span>${queryDBResult[
-              i
-            ][key]}</span><br>`;
+            dbResponse += `<span class="strong">${key}: </span><span>${
+              queryDBResult[i][key]
+            }</span><br>`;
           }
         }
 
-        queryDBResult[i].Location.properties = {
-          description: dbResponse,
-          photo: `<img class="responsive-img materialboxed" data-caption="${queryDBResult[
-            i
-          ]
-            .Date}" onload="enableBox()" onclick="enableBox()" src="${queryDBResult[
-            i
-          ].Photo}">          
-              `,
-          radius: queryDBResult[i].ObservationArea
-        };
+        queryDBResult[i].Location.properties = { description: dbResponse };
         if (!queryDBResult[i].ObservationArea) {
           // Size of map marker for missions other than Tumalre
-          queryDBResult[i].Location.properties.radius = 16;
+          queryDBResult[i].Location.properties.radius = 10;
+        } else {
+          queryDBResult[i].Location.properties.radius =
+            queryDBResult[i].ObservationArea;
         }
         geoJSONPoints.push(queryDBResult[i].Location);
       }
-
       let trails = {
         pointToLayer: function(feature, latlng) {
+          let popInfo = "";
+          if (!feature.properties.photo) {
+            popInfo = `${feature.properties.description}`;
+          } else {
+            popInfo = `${feature.properties.description}<br>``${
+              feature.properties.photo
+            }`;
+          }
           return L.circleMarker(latlng, {
-            radius: 16,
-            fillColor: "#ff7800",
-            color: "yellow",
+            radius: 10,
+            fillColor: "#0d48a1d5",
+            color: "#f5f5f5",
             weight: 4,
             opacity: 1,
-            fillOpacity: 0.7
-          }).bindPopup(`${feature.properties.description}<br>
-              ${feature.properties.photo}`);
+            fillOpacity: 0.8
+          }).bindPopup(`${popInfo}`);
         }
         // onEachFeature: function() {
         //   // var elem = document.querySelector(".materialboxed");
@@ -710,16 +718,23 @@ class Mission {
       };
       let tumlare = {
         pointToLayer: function(feature, latlng) {
+          let popInfo = "";
+          if (!feature.properties.photo) {
+            popInfo = `${feature.properties.description}`;
+          } else {
+            popInfo = `${feature.properties.description}<br>``${
+              feature.properties.photo
+            }`;
+          }
           return L.circle(latlng, {
             // radius: 5,
-            fillColor: "#ff7800",
-            color: "yellow",
+            fillColor: "#0d48a1d5",
+            color: "#f5f5f5",
             weight: 4,
             opacity: 1,
             fillOpacity: 0.7,
             radius: feature.properties.radius
-          }).bindPopup(`${feature.properties.description}<br>
-              ${feature.properties.photo}`);
+          }).bindPopup(`${popInfo}`);
         }
         // onEachFeature: function() {
         //   // var elem = document.querySelector(".materialboxed");
@@ -735,24 +750,25 @@ class Mission {
       // Passing all points to cluster marker with the above mission display options
       let reports = L.geoJSON(geoJSONPoints, options);
       console.log("[Mapped Points]", geoJSONPoints);
-      var markers = L.markerClusterGroup({});
+      var markers = L.markerClusterGroup({
+        spiderLegPolylineOptions: {
+          weight: 2.4,
+          color: "#f5f5f5",
+          opacity: 1
+        },
+        // singleMarkerMode: true,
+        spiderfyDistanceMultiplier: 2.2,
+        maxClusterRadius: 80,
+        showCoverageOnHover: false
+      });
       // https://github.com/Leaflet/Leaflet.markercluster
       markers.addLayer(reports);
-
-      // M.updateTextFields();
-      // map.fitBounds(window.mappedTrails.getBounds(), { padding: [82, 82] });
-      // setTimeout(() => {
-      // map.flyToBounds(window.mappedTrails.getBounds(), { padding: [82, 82] });
-      // }, 100);
-      // setTimeout(() => {
-      //   mappedTrails.addTo(map);
-      //   map.addLayer(markers);
-      // }, 4000);
 
       map.addLayer(markers);
       // setTimeout(() => {
       // }, 100);
     };
+
     // Displays on Front Page
     this.card = `<div class="cardContainer" id="${this.title}">
   <div class="col s12 m6 l6">
@@ -1532,6 +1548,7 @@ __webpack_require__(83);
 __webpack_require__(9);
 __webpack_require__(85);
 __webpack_require__(86);
+// require("./node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css");
 __webpack_require__(87);
 __webpack_require__(88);
 
