@@ -15,7 +15,8 @@ window.enableBox = function() {
 };
 
 const updateDB = function(database = "", dataset = {}) {
-  const datasetContent = dataset;
+  let datasetContent = dataset;
+  const storageVariable = `${database}OfflineData`;
   datasetContent["owner_id"] = client.authedId();
   client
     .login()
@@ -29,13 +30,59 @@ const updateDB = function(database = "", dataset = {}) {
       });
     })
     .catch(error => {
-      console.error("[MongoDB Stitch] Error: ", error);
+      // console.error("[MongoDB Stitch] Error: ", error);
+      // Save offline if offline
+      let offlineData = [dataset];
+      let combinedData = [];
+      // let datasetContent = dataset;
+      if (!window.localStorage[storageVariable] === false) {
+        let parsedOfflineStorage = JSON.parse(
+          window.localStorage.getItem(storageVariable)
+        );
+        console.log("[OfflineDB]", offlineData, parsedOfflineStorage);
+        combinedData = offlineData.concat(parsedOfflineStorage);
+        console.log("[OfflineDB]", combinedData);
+        window.localStorage.setItem(
+          storageVariable,
+          JSON.stringify(combinedData)
+        );
+      } else {
+        window.localStorage.setItem(
+          storageVariable,
+          JSON.stringify(offlineData)
+        );
+      }
       M.toast({
-        html: "Unable to Connect",
+        html: "Saved Offline",
         displayLength: 4000,
-        classes: "red darken-2"
+        classes: "yellow darken-2"
       });
     });
+
+  let offlineData;
+  if (window.localStorage[storageVariable] && navigator.onLine) {
+    let offlineData = JSON.parse(window.localStorage.getItem(storageVariable));
+    client
+      .login()
+      .then(() => db.collection(database).insertMany(offlineData))
+      .then(result => {
+        window.localStorage.removeItem(storageVariable);
+        console.log("[MongoDB Stitch] Offline Updated: ", result, dataset);
+        M.toast({
+          html: "Offline Data Uploaded",
+          displayLength: 1000,
+          classes: "green darken-2"
+        });
+      })
+      .catch(error => {
+        console.error("[MongoDB Stitch] Error: ", error);
+        M.toast({
+          html: "Unable to Upload",
+          displayLength: 4000,
+          classes: "red darken-2"
+        });
+      });
+  }
 };
 /**
  *  Function to Collect Data, send to Database and Congratulate User
@@ -85,7 +132,7 @@ window.collectInputs = function(
     } else if (elements[e].value.length > 0) {
       window.data[elements[e].id] = elements[e].value;
     } else {
-      console.warn("[Form2] Excluded: ", elements[e]);
+      console.log("[Form2] Excluded: ", elements[e]);
     }
   }
 
