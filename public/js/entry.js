@@ -736,9 +736,8 @@ class Mission {
             opacity: 1,
             fillOpacity: 0.7,
             radius: feature.properties.radius
-          })
-            .bindPopup(`${popInfo}`)
-            .on("click", window.enableBox());
+          }).bindPopup(`${popInfo}`);
+          // .on("click", window.enableBox());
         }
       };
       let options = {};
@@ -2756,9 +2755,9 @@ window.addEventListener("DOMContentLoaded", function() {
   foot.classList.add("fadeIn");
 });
 
-window.addEventListener("load", function test() {
-  tumlare.queryDB();
-});
+// window.addEventListener("load", function test() {
+//   tumlare.queryDB();
+// });
 
 
 /***/ }),

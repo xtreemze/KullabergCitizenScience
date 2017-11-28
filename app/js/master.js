@@ -4,6 +4,6 @@ window.addEventListener("DOMContentLoaded", function() {
   foot.classList.add("fadeIn");
 });
 
-window.addEventListener("load", function test() {
-  tumlare.queryDB();
-});
+// window.addEventListener("load", function test() {
+//   tumlare.queryDB();
+// });

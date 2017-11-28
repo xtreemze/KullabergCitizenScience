@@ -388,9 +388,8 @@ class Mission {
             opacity: 1,
             fillOpacity: 0.7,
             radius: feature.properties.radius
-          })
-            .bindPopup(`${popInfo}`)
-            .on("click", window.enableBox());
+          }).bindPopup(`${popInfo}`);
+          // .on("click", window.enableBox());
         }
       };
       let options = {};
