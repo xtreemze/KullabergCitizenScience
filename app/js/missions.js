@@ -161,7 +161,9 @@ class Mission {
       });
       // .fitWorld()
       // .setZoom(2);
-
+      if (window.localStorage[database]) {
+        this.analyze(JSON.parse(localStorage.getItem(database)));
+      }
       // Get information from Database
       client
         .login()
@@ -181,7 +183,7 @@ class Mission {
           });
           localStorage.setItem(database, JSON.stringify(queryDBResult));
           console.log(["LocalDB Updated"]);
-          this.analyze(queryDBResult);
+          this.analyze(JSON.parse(localStorage.getItem(database)));
         })
         .catch(err => {
           if (window.localStorage[database]) {
