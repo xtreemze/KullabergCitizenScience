@@ -91,19 +91,27 @@ trails = new Mission({
         <div id="map"></div>
       </div>
       <div class="input-field col s6 m3">
-        <input disabled id="Latitude" type="text" value="${window.geoReference
-          .lat}">
+        <input disabled id="Latitude" type="text" value="${
+          window.geoReference.lat
+        }">
         <label for="Latitude">Latitude</label>
       </div>
       <div class="input-field col s6 m3">
-        <input disabled id="Longitude" type="text" value="${window.geoReference
-          .long}">
+        <input disabled id="Longitude" type="text" value="${
+          window.geoReference.long
+        }">
         <label for="Longitude">Longitude</label>
       </div>
       <div class="col s6 m4">
         <label for="Date">Date</label>
         <input disabled id="Date" type="text" class="datepicker" value="${new Date().toDateString()}">
       </div>
+      <p class="col s12 m6 l4">
+      <label>
+        <input id="Resolved" type="checkbox">
+        <span>Resolved</span>
+      </label>
+    </p>
     </section>
     <section class="col s12 m6">
       <div class="row">
@@ -119,8 +127,9 @@ trails = new Mission({
         <input id="Photos" accept="image/*;capture=camera" type="file">
       </div>
     </div>
-    <button class="col s12 btn btn-large waves-effect waves-light" type="submit" onclick="collectInputs('${this
-      .databaseCollection}', '${this.congratulatoryMessage}')">Submit
+    <button class="col s12 btn btn-large waves-effect waves-light" type="submit" onclick="collectInputs('${
+      this.databaseCollection
+    }', '${this.congratulatoryMessage}')">Submit
       <i class="material-icons right">send</i>
     </button>
   </form>

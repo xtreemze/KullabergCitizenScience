@@ -350,13 +350,13 @@ const stitch = __webpack_require__(11);
 
 const client = new stitch.StitchClient("citizensciencestitch-oakmw");
 const db = client.service("mongodb", "mongodb-atlas").db("citizenScience");
-// require("./../../node_modules/blueimp-load-image/js/load-image.all.min.js");
-// require("./../../node_modules/blueimp-load-image/js/index.js");
 const loadImage = __webpack_require__(76);
 
 window.enableBox = function() {
-  let elem = document.querySelector(".materialboxed");
-  instance = new M.Materialbox(elem);
+  setTimeout(() => {
+    let elem = document.querySelector(".materialboxed");
+    instance = new M.Materialbox(elem);
+  }, 300);
   // instance.open();
 };
 
@@ -399,7 +399,6 @@ window.collectInputs = function(
       type: "Point",
       coordinates: []
     }
-    // , Status: "Reported"
   };
   if (!window.dataURL === false) {
     window.data.Photo = window.dataURL;
@@ -456,8 +455,6 @@ window.geoReference = {};
 // The DOM element that holds the mission cards
 const missionsElement = document.getElementById("missions");
 module.exports = missionsElement;
-// window.missionsElement = missionsElement;
-// missionsElement.innerHTML += `<h5 class=" ">Choose Your Mission</h3>`;
 
 // Collecting all Missions in a Set
 let Missions = new Set();
@@ -502,7 +499,6 @@ class Mission {
       <a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
         <a class="pointer breadcrumb">Analyze</a>
         `;
-      // let resultContent = "";
 
       window.scrollTo(0, 0);
       window.map = L.map("map2", {
@@ -547,7 +543,6 @@ class Mission {
             '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }
       ).addTo(map);
-      // L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
 
       const geoJSONTrails = __webpack_require__(80);
 
@@ -558,8 +553,6 @@ class Mission {
             opacity: 0.6,
             dashArray: [7, 5]
           };
-          // stroke-opacity: feature.properties.stroke-opacity,
-          // stroke-width: feature.properties.stroke-width}
         }
       });
       map.fitBounds(window.mappedTrails.getBounds(), { padding: [82, 82] });
@@ -645,11 +638,6 @@ class Mission {
     };
     this.analyze = function(queryDBResult) {
       const geoJSONPoints = [];
-      // if (!resultContent) {
-      //   let resultContent = "";
-      // } else {
-      //   resultContent = "";
-      // }
 
       for (let i = queryDBResult.length - 1; i > -1; i--) {
         let dbResponse = `<span>${queryDBResult[i].Date}</span><br>`;
@@ -716,10 +704,6 @@ class Mission {
             fillOpacity: 0.8
           }).bindPopup(`${popInfo}`);
         }
-        // onEachFeature: function() {
-        //   // var elem = document.querySelector(".materialboxed");
-        //   // var instance = new M.Materialbox(elem);
-        // }
       };
       let tumlare = {
         pointToLayer: function(feature, latlng) {
@@ -727,62 +711,18 @@ class Mission {
           if (!feature.properties.photo === false) {
             popInfo += `${feature.properties.photo}`;
           }
-          let count = "";
-          // Creates the center dots to represent the species quantity
-          if (feature.properties.radius > 40) {
-            count =
-              //   `<span class="col s12 center-align marker-label">${
-              //   feature.properties.quantity
-              // }</span>`
 
-              `<div style="margin: 0; padding: 0; width: ${feature.properties
-                .quantity * 2}px; height: ${feature.properties.quantity *
-                2}px; border-radius:${
-                feature.properties.quantity
-              }px; background-color: rgba(245, 245, 245, 0.88);"></div>`;
-          }
-          return L.marker(latlng, {
-            icon: new L.DivIcon({
-              className: "marker-cluster-small marker-cluster",
-              html: `<div class="valign-wrapper" style="display: flex !important; align-items: center; justify-content: center; width:${
-                feature.properties.radius
-              }px; height: ${
-                feature.properties.radius
-              }px; border-radius:${feature.properties.radius /
-                2}px; margin-left: -${feature.properties.radius /
-                2}px; margin-top: -${feature.properties.radius /
-                2}px; border: 5px solid rgb(245, 245, 245);">${count}</div>`
-              // fillColor: "#0d48a1",
-              // color: "#f5f5f5",
-              // weight: 4,
-              // opacity: 1,
-              // fillOpacity: 0.7,
-              // radius: feature.properties.radius
-            })
+          return L.circle(latlng, {
+            // radius: 5,
+            fillColor: "#0d48a1",
+            color: "#f5f5f5",
+            weight: 4,
+            opacity: 1,
+            fillOpacity: 0.7,
+            radius: feature.properties.radius
           }).bindPopup(`${popInfo}`);
-          // .on("preclick", function() {
-          //   window.enableBox();
-          // });
-          // return L.circle(latlng, {
-          //   // radius: 5,
-          //   fillColor: "#0d48a1",
-          //   color: "#f5f5f5",
-          //   weight: 4,
-          //   opacity: 1,
-          //   fillOpacity: 0.7,
-          //   radius: feature.properties.radius
-          // }).bindPopup(`${popInfo}`);
+          // .on("click", window.enableBox());
         }
-        // onEachFeature: function(feature, latlng) {
-        //   new L.Marker([latlng], {
-        //     icon: new L.DivIcon({
-        //       className: "marker-cluster-small",
-        //       html: "<b>${feature.properties.quantity}</b>"
-        //     })
-        //   });
-        //   // var elem = document.querySelector(".materialboxed");
-        //   // var instance = new M.Materialbox(elem);
-        // }
       };
       let options = {};
       if (!queryDBResult[0].ObservationArea === false) {
@@ -808,8 +748,6 @@ class Mission {
       markers.addLayer(reports);
 
       map.addLayer(markers);
-      // setTimeout(() => {
-      // }, 100);
     };
 
     // Displays on Front Page
@@ -2903,19 +2841,27 @@ trails = new Mission({
         <div id="map"></div>
       </div>
       <div class="input-field col s6 m3">
-        <input disabled id="Latitude" type="text" value="${window.geoReference
-          .lat}">
+        <input disabled id="Latitude" type="text" value="${
+          window.geoReference.lat
+        }">
         <label for="Latitude">Latitude</label>
       </div>
       <div class="input-field col s6 m3">
-        <input disabled id="Longitude" type="text" value="${window.geoReference
-          .long}">
+        <input disabled id="Longitude" type="text" value="${
+          window.geoReference.long
+        }">
         <label for="Longitude">Longitude</label>
       </div>
       <div class="col s6 m4">
         <label for="Date">Date</label>
         <input disabled id="Date" type="text" class="datepicker" value="${new Date().toDateString()}">
       </div>
+      <p class="col s12 m6 l4">
+      <label>
+        <input id="Resolved" type="checkbox">
+        <span>Resolved</span>
+      </label>
+    </p>
     </section>
     <section class="col s12 m6">
       <div class="row">
@@ -2931,8 +2877,9 @@ trails = new Mission({
         <input id="Photos" accept="image/*;capture=camera" type="file">
       </div>
     </div>
-    <button class="col s12 btn btn-large waves-effect waves-light" type="submit" onclick="collectInputs('${this
-      .databaseCollection}', '${this.congratulatoryMessage}')">Submit
+    <button class="col s12 btn btn-large waves-effect waves-light" type="submit" onclick="collectInputs('${
+      this.databaseCollection
+    }', '${this.congratulatoryMessage}')">Submit
       <i class="material-icons right">send</i>
     </button>
   </form>
