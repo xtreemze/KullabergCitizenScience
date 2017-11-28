@@ -9,6 +9,7 @@ const loadImage = require("blueimp-load-image");
 window.enableBox = function() {
   let elem = document.querySelector(".materialboxed");
   instance = new M.Materialbox(elem);
+  // instance.open();
 };
 
 const updateDB = function(database = "", dataset = {}) {
@@ -304,6 +305,7 @@ class Mission {
 
       for (let i = queryDBResult.length - 1; i > -1; i--) {
         let dbResponse = `<span>${queryDBResult[i].Date}</span><br>`;
+
         for (const key in queryDBResult[i]) {
           // For simplicity, do not show these database results:
           if (
@@ -311,21 +313,13 @@ class Mission {
             key === "owner_id" ||
             key === "Date" ||
             key === "Location" ||
-            // key === "Photo" ||
+            key === "Photo" ||
             key === "photoFilePath" ||
             key === "Photos" ||
             key === "Status" ||
             queryDBResult[i][key] === false ||
             queryDBResult[i][key] === "Low"
           ) {
-          } else if (key === "Photo") {
-            queryDBResult[
-              i
-            ].Location.properties.photo = `<img class="responsive-img materialboxed" data-caption="${
-              queryDBResult[i].Date
-            }" onload="enableBox()" onclick="enableBox()" src="${
-              queryDBResult[i].Photo
-            }">`;
           } else {
             // Format for displaying information in map popups
             dbResponse += `<span class="strong">${key}: </span><span>${
@@ -335,10 +329,22 @@ class Mission {
         }
 
         queryDBResult[i].Location.properties = { description: dbResponse };
+        if (!queryDBResult[i].Photo === false && queryDBResult[i].Photo.length > 20) {
+          queryDBResult[
+            i
+          ].Location.properties.photo = `<img class="responsive-img materialboxed" data-caption="${
+            queryDBResult[i].Date
+          }"
+             onload="enableBox()" onclick="enableBox()"
+            
+           src="${queryDBResult[i].Photo}">`;
+        }
         if (!queryDBResult[i].ObservationArea) {
           // Size of map marker for missions other than Tumalre
           queryDBResult[i].Location.properties.radius = 10;
         } else {
+          queryDBResult[i].Location.properties.quantity =
+            queryDBResult[i].Quantity;
           queryDBResult[i].Location.properties.radius =
             queryDBResult[i].ObservationArea;
         }
@@ -346,13 +352,9 @@ class Mission {
       }
       let trails = {
         pointToLayer: function(feature, latlng) {
-          let popInfo = "";
-          if (!feature.properties.photo) {
-            popInfo = `${feature.properties.description}`;
-          } else {
-            popInfo = `${feature.properties.description}<br>``${
-              feature.properties.photo
-            }`;
+          let popInfo = `${feature.properties.description}<br>`;
+          if (!feature.properties.photo === false) {
+            popInfo += `${feature.properties.photo}`;
           }
           return L.circleMarker(latlng, {
             radius: 10,
@@ -370,25 +372,52 @@ class Mission {
       };
       let tumlare = {
         pointToLayer: function(feature, latlng) {
-          let popInfo = "";
-          if (!feature.properties.photo) {
-            popInfo = `${feature.properties.description}`;
-          } else {
-            popInfo = `${feature.properties.description}<br>``${
-              feature.properties.photo
-            }`;
+          let popInfo = `${feature.properties.description}<br>`;
+          if (!feature.properties.photo === false) {
+            popInfo += `${feature.properties.photo}`;
           }
-          return L.circle(latlng, {
-            // radius: 5,
-            fillColor: "#0d48a1",
-            color: "#f5f5f5",
-            weight: 4,
-            opacity: 1,
-            fillOpacity: 0.7,
-            radius: feature.properties.radius
-          }).bindPopup(`${popInfo}`);
+          let count = '';
+          // Creates the center dots to represent the species quantity
+          if (feature.properties.radius > 30){count = 
+          //   `<span class="col s12 center-align marker-label">${
+          //   feature.properties.quantity
+          // }</span>`
+
+          `<div style="margin: 0; padding: 0; width: ${feature.properties.quantity*2}px; height: ${feature.properties.quantity*2}px; border-radius:${feature.properties.quantity}px; background-color: rgba(245, 245, 245, 0.88);"></div>`
         }
-        // onEachFeature: function() {
+          return L.marker(latlng, {
+            icon: new L.DivIcon({
+              className:
+                "marker-cluster-small marker-cluster",
+              html: `<div class="valign-wrapper" style="display: flex !important; align-items: center; justify-content: center; width:${feature.properties.radius}px; height: ${feature.properties.radius}px; border-radius:${feature.properties.radius/2}px; margin-left: -${(feature.properties.radius/2)}px; margin-top: -${(feature.properties.radius/2)}px; border: 5px solid rgb(245, 245, 245);">${count}</div>`,
+              // fillColor: "#0d48a1",
+              // color: "#f5f5f5",
+              // weight: 4,
+              // opacity: 1,
+              // fillOpacity: 0.7,
+              // radius: feature.properties.radius
+            })
+          }).bindPopup(`${popInfo}`);
+          // .on("preclick", function() {
+          //   window.enableBox();
+          // });
+          // return L.circle(latlng, {
+          //   // radius: 5,
+          //   fillColor: "#0d48a1",
+          //   color: "#f5f5f5",
+          //   weight: 4,
+          //   opacity: 1,
+          //   fillOpacity: 0.7,
+          //   radius: feature.properties.radius
+          // }).bindPopup(`${popInfo}`);
+        }
+        // onEachFeature: function(feature, latlng) {
+        //   new L.Marker([latlng], {
+        //     icon: new L.DivIcon({
+        //       className: "marker-cluster-small",
+        //       html: "<b>${feature.properties.quantity}</b>"
+        //     })
+        //   });
         //   // var elem = document.querySelector(".materialboxed");
         //   // var instance = new M.Materialbox(elem);
         // }

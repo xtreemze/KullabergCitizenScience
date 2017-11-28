@@ -3,3 +3,7 @@ window.addEventListener("DOMContentLoaded", function() {
   foot.classList.remove("hidden");
   foot.classList.add("fadeIn");
 });
+
+window.addEventListener("load", function test() {
+  tumlare.queryDB();
+});
