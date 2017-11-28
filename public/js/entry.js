@@ -677,7 +677,10 @@ class Mission {
         }
 
         queryDBResult[i].Location.properties = { description: dbResponse };
-        if (!queryDBResult[i].Photo === false && queryDBResult[i].Photo.length > 20) {
+        if (
+          !queryDBResult[i].Photo === false &&
+          queryDBResult[i].Photo.length > 20
+        ) {
           queryDBResult[
             i
           ].Location.properties.photo = `<img class="responsive-img materialboxed" data-caption="${
@@ -724,20 +727,31 @@ class Mission {
           if (!feature.properties.photo === false) {
             popInfo += `${feature.properties.photo}`;
           }
-          let count = '';
+          let count = "";
           // Creates the center dots to represent the species quantity
-          if (feature.properties.radius > 30){count = 
-          //   `<span class="col s12 center-align marker-label">${
-          //   feature.properties.quantity
-          // }</span>`
+          if (feature.properties.radius > 40) {
+            count =
+              //   `<span class="col s12 center-align marker-label">${
+              //   feature.properties.quantity
+              // }</span>`
 
-          `<div style="margin: 0; padding: 0; width: ${feature.properties.quantity*2}px; height: ${feature.properties.quantity*2}px; border-radius:${feature.properties.quantity}px; background-color: rgba(245, 245, 245, 0.88);"></div>`
-        }
+              `<div style="margin: 0; padding: 0; width: ${feature.properties
+                .quantity * 2}px; height: ${feature.properties.quantity *
+                2}px; border-radius:${
+                feature.properties.quantity
+              }px; background-color: rgba(245, 245, 245, 0.88);"></div>`;
+          }
           return L.marker(latlng, {
             icon: new L.DivIcon({
-              className:
-                "marker-cluster-small marker-cluster",
-              html: `<div class="valign-wrapper" style="display: flex !important; align-items: center; justify-content: center; width:${feature.properties.radius}px; height: ${feature.properties.radius}px; border-radius:${feature.properties.radius/2}px; margin-left: -${(feature.properties.radius/2)}px; margin-top: -${(feature.properties.radius/2)}px; border: 5px solid rgb(245, 245, 245);">${count}</div>`,
+              className: "marker-cluster-small marker-cluster",
+              html: `<div class="valign-wrapper" style="display: flex !important; align-items: center; justify-content: center; width:${
+                feature.properties.radius
+              }px; height: ${
+                feature.properties.radius
+              }px; border-radius:${feature.properties.radius /
+                2}px; margin-left: -${feature.properties.radius /
+                2}px; margin-top: -${feature.properties.radius /
+                2}px; border: 5px solid rgb(245, 245, 245);">${count}</div>`
               // fillColor: "#0d48a1",
               // color: "#f5f5f5",
               // weight: 4,
