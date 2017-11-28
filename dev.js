@@ -1,7 +1,7 @@
 const webpack = require("webpack");
 // const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const ReloadPlugin = require("reload-html-webpack-plugin");
+// const ReloadPlugin = require("reload-html-webpack-plugin");
 
 //
 module.exports = function e(env) {
@@ -90,8 +90,8 @@ module.exports = function e(env) {
       new HtmlWebpackPlugin({
         title: "Kullaberg Citizen Science",
         template: "./app/index.ejs"
-      }),
-      new ReloadPlugin()
+      })
+      // new ReloadPlugin()
       // new ExtractTextPlugin("./css/[name].css?[chunkhash]")
     ]
   };

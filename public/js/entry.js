@@ -352,10 +352,12 @@ const client = new stitch.StitchClient("citizensciencestitch-oakmw");
 const db = client.service("mongodb", "mongodb-atlas").db("citizenScience");
 const loadImage = __webpack_require__(76);
 
+window.storedDB;
+
 window.enableBox = function() {
   setTimeout(() => {
-    let elem = document.querySelector(".materialboxed");
-    instance = new M.Materialbox(elem);
+    window.elem = document.querySelector(".materialboxed");
+    window.instance = new M.Materialbox(elem);
   }, 300);
   // instance.open();
 };
@@ -525,15 +527,27 @@ class Mission {
             displayLength: 1000,
             classes: "green darken-2"
           });
+          localStorage.setItem(database, JSON.stringify(queryDBResult));
+          console.log(["LocalDB Updated"]);
           this.analyze(queryDBResult);
         })
         .catch(err => {
-          console.error(err);
-          M.toast({
-            html: "Unable to Connect",
-            displayLength: 4000,
-            classes: "red darken-2"
-          });
+          if (window.localStorage[database]) {
+            console.log(["LocalDB Exists"], database);
+            this.analyze(JSON.parse(localStorage.getItem(database)));
+            M.toast({
+              html: "Using offline data",
+              displayLength: 4000,
+              classes: "yellow darken-2"
+            });
+          } else {
+            console.error(err);
+            M.toast({
+              html: "Unable to Connect",
+              displayLength: 4000,
+              classes: "red darken-2"
+            });
+          }
         });
       var OSMMapnik = L.tileLayer(
         "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
@@ -720,8 +734,9 @@ class Mission {
             opacity: 1,
             fillOpacity: 0.7,
             radius: feature.properties.radius
-          }).bindPopup(`${popInfo}`);
-          // .on("click", window.enableBox());
+          })
+            .bindPopup(`${popInfo}`)
+            .on("click", window.enableBox());
         }
       };
       let options = {};
