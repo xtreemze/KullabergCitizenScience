@@ -659,14 +659,14 @@ class Mission {
             key === "owner_id" ||
             key === "Date" ||
             key === "Location" ||
-            key === "Photo" ||
+            // key === "Photo" ||
             key === "photoFilePath" ||
-            // key === "Photos" ||
+            key === "Photos" ||
             key === "Status" ||
             queryDBResult[i][key] === false ||
             queryDBResult[i][key] === "Low"
           ) {
-          } else if (key === "Photos") {
+          } else if (key === "Photo") {
             queryDBResult[
               i
             ].Location.properties.photo = `<img class="responsive-img materialboxed" data-caption="${
