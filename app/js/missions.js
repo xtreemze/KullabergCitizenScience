@@ -156,7 +156,7 @@ class Mission {
 
       window.scrollTo(0, 0);
       window.map = L.map("map2", {
-        tapTolerance: 30,
+        tapTolerance: 64,
         zoomControl: false
       });
       // .fitWorld()
