@@ -97,32 +97,39 @@ main {
 }
 
 .fadeOut {
-  animation: fadeOut 0.3s ease-in-out forwards;
+  animation: fadeOut 0.3s ease-out forwards;
   opacity: 1;
+  pointer-events: none;
 }
 
 @keyframes fadeOut {
-  10% {
+  0% {
     opacity: 1;
+    pointer-events: none;
   }
 }
 
 @keyframes fadeOut {
   100% {
     opacity: 0;
+    pointer-events: none;
   }
 }
 
-.hidden {
+.hidden,
+.hidden div {
   opacity: 0;
+  pointer-events: none;
+  z-index: 0;
 }
+
 .fadeIn {
-  animation: fadeIn 0.3s ease-in-out forwards;
-  opacity: 0;
+  animation: fadeIn 0.3s ease-in forwards !important;
+  opacity: 0 !important;
 }
 
 @keyframes fadeIn {
-  10% {
+  0% {
     opacity: 0;
   }
 }

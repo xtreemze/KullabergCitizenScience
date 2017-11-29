@@ -556,9 +556,7 @@ class Mission {
       });
       // .fitWorld()
       // .setZoom(2);
-      if (window.localStorage[database]) {
-        this.analyze(JSON.parse(localStorage.getItem(database)));
-      }
+
       // Get information from Database
       client
         .login()
@@ -576,9 +574,9 @@ class Mission {
             displayLength: 1000,
             classes: "green darken-2"
           });
+          this.analyze(queryDBResult);
           localStorage.setItem(database, JSON.stringify(queryDBResult));
           console.log(["LocalDB Updated"]);
-          this.analyze(JSON.parse(localStorage.getItem(database)));
         })
         .catch(err => {
           if (window.localStorage[database]) {
@@ -762,9 +760,9 @@ class Mission {
             radius: 10,
             fillColor: "#0d48a1",
             color: "#f5f5f5",
-            weight: 4,
+            weight: 3,
             opacity: 1,
-            fillOpacity: 0.8
+            fillOpacity: 0.7
           }).bindPopup(`${popInfo}`);
         }
       };
@@ -779,7 +777,7 @@ class Mission {
             // radius: 5,
             fillColor: "#0d48a1",
             color: "#f5f5f5",
-            weight: 4,
+            weight: 3,
             opacity: 1,
             fillOpacity: 0.7,
             radius: feature.properties.radius
@@ -803,14 +801,47 @@ class Mission {
           opacity: 1
         },
         // singleMarkerMode: true,
-        spiderfyDistanceMultiplier: 2.2,
-        maxClusterRadius: 80,
-        showCoverageOnHover: false
+        spiderfyDistanceMultiplier: 1,
+        maxClusterRadius: 92,
+        showCoverageOnHover: false,
+        iconCreateFunction: function(cluster) {
+          var childCount = cluster.getChildCount();
+
+          var c = " marker-cluster-";
+          if (childCount < 10) {
+            c += "small";
+          } else if (childCount < 20) {
+            c += "medium";
+          } else {
+            c += "large";
+          }
+
+          return new L.DivIcon({
+            html: "<div><span>" + childCount + "</span></div>",
+            className:
+              "marker-cluster" + c + " fadeIn scale-transition scale-out",
+            iconSize: new L.Point(32, 32)
+          });
+        }
       });
       // https://github.com/Leaflet/Leaflet.markercluster
+
       markers.addLayer(reports);
 
       map.addLayer(markers);
+      markers.on("spiderfied", function(a) {
+        // a.layer is actually a cluster
+        console.log("cluster ", a);
+        // a.cluster._icon.classList.add("hidden");
+        a.cluster._icon.classList.remove("fadeIn");
+        a.cluster._icon.classList.add("fadeOut");
+      });
+      markers.on("unspiderfied", function(a) {
+        // a.layer is actually a cluster
+        console.log("cluster ", a);
+        a.cluster._icon.classList.remove("fadeOut");
+        a.cluster._icon.classList.add("fadeIn");
+      });
     };
 
     // Displays on Front Page

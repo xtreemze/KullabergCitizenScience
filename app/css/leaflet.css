@@ -1,5 +1,6 @@
 .marker-cluster-small {
   background-color: rgba(245, 245, 245, 0.685);
+  /* background-color: red; */
 }
 
 .marker-cluster-small div {
@@ -55,14 +56,15 @@
 }
 
 .marker-cluster div {
-  width: 30px;
-  height: 30px;
-  margin-left: 5px;
-  margin-top: 5px;
+  width: 34px;
+  height: 34px;
+  /* margin-left: 3px; */
+  /* margin-top: 3px; */
   text-align: center;
-  border-radius: 15px;
-  font: 14px Roboto, Helvetica Neue, Arial, Helvetica, sans-serif;
+  border-radius: 18px;
+  font: 16px Roboto, Helvetica Neue, Arial, Helvetica, sans-serif;
   font-weight: 500;
+  border: 2px solid whitesmoke;
 }
 
 .marker-cluster span {
@@ -73,6 +75,11 @@
 .leaflet-popup-tip {
   background: #f5f5f5;
   color: #333;
+}
+
+.spiderfied {
+  opacity: 0 !important;
+  pointer-events: none;
 }
 
 /* .leaflet-marker-icon.leaflet-div-icon {
