@@ -494,6 +494,9 @@ class Mission {
         a.cluster._icon.classList.remove("fadeOut");
         a.cluster._icon.classList.add("fadeIn");
       });
+      markers.on("clusterclick", function(a) {
+        a.layer.zoomToBounds({ padding: [48, 48], maxZoom: 16 });
+      });
     };
 
     // Displays on Front Page
