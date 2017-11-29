@@ -17,48 +17,50 @@ window.enableBox = function() {
 const updateDB = function(database = "", dataset = {}) {
   let datasetContent = dataset;
   const storageVariable = `${database}OfflineData`;
-  datasetContent["owner_id"] = client.authedId();
-  client
-    .login()
-    .then(() => db.collection(database).insertOne(datasetContent))
-    .then(result => {
-      console.log("[MongoDB Stitch] Updated: ", result, dataset);
-      M.toast({
-        html: "Database Updated",
-        displayLength: 1000,
-        classes: "green darken-2"
+  if (dataset !== {}) {
+    datasetContent["owner_id"] = client.authedId();
+    client
+      .login()
+      .then(() => db.collection(database).insertOne(datasetContent))
+      .then(result => {
+        console.log("[MongoDB Stitch] Updated: ", result, dataset);
+        M.toast({
+          html: "Database Updated",
+          displayLength: 1000,
+          classes: "green darken-2"
+        });
+      })
+      .catch(error => {
+        // console.error("[MongoDB Stitch] Error: ", error);
+        // Save offline if offline
+        let offlineData = [dataset];
+        let combinedData = [];
+        // let datasetContent = dataset;
+        if (!window.localStorage[storageVariable] === false) {
+          let parsedOfflineStorage = JSON.parse(
+            window.localStorage.getItem(storageVariable)
+          );
+          console.log("[OfflineDB]", offlineData, parsedOfflineStorage);
+          combinedData = offlineData.concat(parsedOfflineStorage);
+          console.log("[OfflineDB]", combinedData);
+          window.localStorage.setItem(
+            storageVariable,
+            JSON.stringify(combinedData)
+          );
+        } else {
+          window.localStorage.setItem(
+            storageVariable,
+            JSON.stringify(offlineData)
+          );
+        }
+        M.toast({
+          html: "Saved Offline",
+          displayLength: 4000,
+          classes: "yellow darken-2"
+        });
       });
-    })
-    .catch(error => {
-      // console.error("[MongoDB Stitch] Error: ", error);
-      // Save offline if offline
-      let offlineData = [dataset];
-      let combinedData = [];
-      // let datasetContent = dataset;
-      if (!window.localStorage[storageVariable] === false) {
-        let parsedOfflineStorage = JSON.parse(
-          window.localStorage.getItem(storageVariable)
-        );
-        console.log("[OfflineDB]", offlineData, parsedOfflineStorage);
-        combinedData = offlineData.concat(parsedOfflineStorage);
-        console.log("[OfflineDB]", combinedData);
-        window.localStorage.setItem(
-          storageVariable,
-          JSON.stringify(combinedData)
-        );
-      } else {
-        window.localStorage.setItem(
-          storageVariable,
-          JSON.stringify(offlineData)
-        );
-      }
-      M.toast({
-        html: "Saved Offline",
-        displayLength: 4000,
-        classes: "yellow darken-2"
-      });
-    });
-
+  }
+  // try to upload offline data to DB when online
   let offlineData;
   if (window.localStorage[storageVariable] && navigator.onLine) {
     let offlineData = JSON.parse(window.localStorage.getItem(storageVariable));
@@ -77,10 +79,13 @@ const updateDB = function(database = "", dataset = {}) {
       .catch(error => {
         console.error("[MongoDB Stitch] Error: ", error);
         M.toast({
-          html: "Unable to Upload",
+          html: "Will Retry in 60 Seconds",
           displayLength: 4000,
           classes: "red darken-2"
         });
+        window.offlineUploadAttempt = setTimeout(() => {
+          updateDB(database);
+        }, 60000);
       });
   }
 };
