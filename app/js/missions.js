@@ -415,7 +415,7 @@ class Mission {
           if (!feature.properties.photo === false) {
             popInfo += `${feature.properties.photo}`;
           }
-          return L.circleMarker(latlng, {
+          return new L.circleMarker(latlng, {
             radius: 16,
             fillColor: "#0d48a1",
             color: "#f5f5f5",
@@ -431,8 +431,8 @@ class Mission {
           if (!feature.properties.photo === false) {
             popInfo += `${feature.properties.photo}`;
           }
-          if (feature.properties.radius < 16) {
-            return L.circleMarker(latlng, {
+          if (feature.properties.radius < 64) {
+            return new L.circleMarker(latlng, {
               radius: 16,
               fillColor: "#0d48a1",
               color: "#f5f5f5",
@@ -441,7 +441,7 @@ class Mission {
               fillOpacity: 0.7
             }).bindPopup(`${popInfo}`);
           } else {
-            return L.circle(latlng, {
+            return new L.circle(latlng, {
               // radius: 5,
               fillColor: "#0d48a1",
               color: "#f5f5f5",
@@ -475,7 +475,7 @@ class Mission {
         showCoverageOnHover: false,
         iconCreateFunction: function(cluster) {
           var childCount = cluster.getChildCount();
-
+          // different styles for the cluster depending on the area covered
           var c = " marker-cluster-";
           if (childCount < 10) {
             c += "small";
