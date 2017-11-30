@@ -746,7 +746,7 @@ class Mission {
         }
         if (!queryDBResult[i].ObservationArea) {
           // Size of map marker for missions other than Tumalre
-          queryDBResult[i].Location.properties.radius = 10;
+          queryDBResult[i].Location.properties.radius = 16;
         } else {
           queryDBResult[i].Location.properties.quantity =
             queryDBResult[i].Quantity;
@@ -762,7 +762,7 @@ class Mission {
             popInfo += `${feature.properties.photo}`;
           }
           return L.circleMarker(latlng, {
-            radius: 10,
+            radius: 16,
             fillColor: "#0d48a1",
             color: "#f5f5f5",
             weight: 3,
@@ -777,17 +777,27 @@ class Mission {
           if (!feature.properties.photo === false) {
             popInfo += `${feature.properties.photo}`;
           }
-
-          return L.circle(latlng, {
-            // radius: 5,
-            fillColor: "#0d48a1",
-            color: "#f5f5f5",
-            weight: 3,
-            opacity: 1,
-            fillOpacity: 0.7,
-            radius: feature.properties.radius
-          }).bindPopup(`${popInfo}`);
-          // .on("click", window.enableBox());
+          if (feature.properties.radius < 16) {
+            return L.circleMarker(latlng, {
+              radius: 16,
+              fillColor: "#0d48a1",
+              color: "#f5f5f5",
+              weight: 3,
+              opacity: 1,
+              fillOpacity: 0.7
+            }).bindPopup(`${popInfo}`);
+          } else {
+            return L.circle(latlng, {
+              // radius: 5,
+              fillColor: "#0d48a1",
+              color: "#f5f5f5",
+              weight: 3,
+              opacity: 1,
+              fillOpacity: 0.7,
+              radius: feature.properties.radius
+            }).bindPopup(`${popInfo}`);
+            // .on("click", window.enableBox());
+          }
         }
       };
       let options = {};
@@ -806,7 +816,7 @@ class Mission {
           opacity: 1
         },
         // singleMarkerMode: true,
-        spiderfyDistanceMultiplier: 1,
+        spiderfyDistanceMultiplier: 1.8,
         maxClusterRadius: 92,
         showCoverageOnHover: false,
         iconCreateFunction: function(cluster) {
@@ -825,7 +835,7 @@ class Mission {
             html: "<div><span>" + childCount + "</span></div>",
             className:
               "marker-cluster" + c + " fadeIn scale-transition scale-out",
-            iconSize: new L.Point(32, 32)
+            iconSize: new L.Point(36, 36)
           });
         }
       });
