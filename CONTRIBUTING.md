@@ -4,9 +4,7 @@
 
 The following is a set of guidelines for contributing to this project. These are
 mostly guidelines, not rules. Use your best judgment, and feel free to propose
-changes to this document in a pull request.
-
-## Styleguides
+changes to this document.
 
 ### Git Commit Messages
 
@@ -14,8 +12,6 @@ changes to this document in a pull request.
 * Use the imperative mood ("Move cursor to..." not "Moves cursor to...")
 * Limit the first line to 72 characters or less
 * Reference issues and pull requests liberally after the first line
-* When only changing documentation, include `[ci skip]` in the commit
-  description
 * Consider starting the commit message with an applicable emoji:
   * :art: `:art:` when improving the format/structure of the code
   * :racehorse: `:racehorse:` when improving performance
