@@ -227,7 +227,7 @@ class Mission {
           console.log("[MongoDB Stitch] Connected to Stitch");
           console.log("[MongoDB Stitch] Found: ", queryDBResult);
           M.toast({
-            html: "Data Obtained ",
+            html: "Data Obtained",
             displayLength: 1000,
             classes: "green darken-2"
           });
@@ -236,6 +236,7 @@ class Mission {
           console.log(["LocalDB Updated"]);
         })
         .catch(err => {
+          console.log("[Error]", err);
           if (window.localStorage[database]) {
             console.log(["LocalDB Exists"], database);
             this.analyze(JSON.parse(localStorage.getItem(database)));
@@ -383,6 +384,7 @@ class Mission {
         }
 
         queryDBResult[i].Location.properties = { description: dbResponse };
+
         if (
           !queryDBResult[i].Photo === false &&
           queryDBResult[i].Photo.length > 20
@@ -497,21 +499,18 @@ class Mission {
 
       map.addLayer(markers);
       markers.on("spiderfied", function(a) {
-        // a.layer is actually a cluster
-        console.log("cluster ", a);
-        // a.cluster._icon.classList.add("hidden");
+        // console.log("cluster ", a);
         a.cluster._icon.classList.remove("fadeIn");
         a.cluster._icon.classList.add("fadeOut");
       });
       markers.on("unspiderfied", function(a) {
-        // a.layer is actually a cluster
-        console.log("cluster ", a);
+        // console.log("cluster ", a);
         a.cluster._icon.classList.remove("fadeOut");
         a.cluster._icon.classList.add("fadeIn");
       });
-      markers.on("clusterclick", function(a) {
-        a.layer.zoomToBounds({ padding: [48, 48], maxZoom: 16 });
-      });
+      // markers.on("clusterclick", function(a) {
+      //   a.layer.zoomToBounds({ padding: [48, 48], maxZoom: 16 });
+      // });
     };
 
     // Displays on Front Page
@@ -540,10 +539,7 @@ class Mission {
   }
 }
 
-/**
- * Show the Missions in Front Page
- *
- */
+// Show missinos in the front page
 window.showMissions = function() {
   loading.classList.remove("fadeOut");
   loading.classList.add("fadeIn");
