@@ -44,7 +44,20 @@ to explain what is going on.
 VS Code is recommended but you can use your own development environment as long
 as merging is possible with the master branch. You can also build your own
 prototype using this one as a reference, however we would prefer a unified
-solution.
+solution. Please do not make extended git commits! Keep them short and precise
+so that the tasks completed can be fit into five words or less for the commit
+message (plus an emoji as explained in CONTRIBUTING.md). Please test your
+solutions thoroughly before publishing and check Travis to make sure your build
+passed without errors.
+
+You will see console.log used here and there. In production these will be
+commented out but in the meantime we are keeping these online to make debugging
+easier. Feel free to add yours but please label them like so:
+
+```javascript
+console.log("[Identifier]", variable);
+console.warn("[OtherIdentifier]", otherVariable);
+```
 
 #### Production Export
 
@@ -77,13 +90,15 @@ You are motivated to use
 npm run dev
 ```
 
-to run a localhost test and ensure there are no errors before publishing.
+to run a localhost test and ensure there are no errors before publishing. CSS
+changes will update without the need to reload. Javascript changes will cause a
+reload and HTML changes will require a manual reload.
 
 ## Feature Requests
 
 See https://github.com/xtreemze/KullabergCitizenScience/projects/2 Take
 ownership of any of the cards in the To Do section. Feel free to split them into
-smaller tasks or add your own task. Make sure to move it to the adecuate zone
+smaller tasks or add your own task. Make sure to move it to the adequate zone
 when the task is in progress or done.
 
 Some of the requests:
@@ -146,7 +161,8 @@ whenever possible.
 ### Design Philosophy
 
 Design should be mobile first and should generally adhere to the Progressive Web
-App philosophy whenever possible.
+App philosophy whenever possible. These are only guidelines so if you know the
+rules and have a good reason to break them, go ahead!
 https://developers.google.com/web/progressive-web-apps/
 
 ### Front-End Framework
@@ -154,13 +170,14 @@ https://developers.google.com/web/progressive-web-apps/
 Materialize-CSS is chosen for the front end
 http://materializecss.com/getting-started.html Alpha Version 1.0 is currently
 used which removes the jQuery dependency. Please report any bugs to the
-materialize team.
+Materialize CSS team. So far the errors are not critical and some workarounds
+have been used until the bugs are fixed.
 
 # Back End
 
 ### Database Server
 
-A free tier MongoDB is available with 512 MB storage. See
+A free tier Mongo Database is available with 512 MB storage. See
 
 ```javascript
 ./app/js/missions.js
@@ -171,7 +188,8 @@ Connect to the citizenScience database and use the collections for each mission:
 * Tumlare
 * TrailCondition
 
-Alternatively you can connect using MongoDB Compass.
+Alternatively you can connect using MongoDB Compass which you can download on
+the Mongo website.
 
 The nodeJS instance is powered by Stitch.
 https://www.npmjs.com/package/mongodb-stitch
@@ -188,12 +206,15 @@ with localStorage.
 
 ### Continuous Integration
 
-Configured for automatic Travis CI deployment to gh-pages branch if webpack
-compiles without errors.
+Configured for automatic Travis CI deployment to gh-pages branch only when
+webpack compiles without errors. If the build is broken please revert the commit
+immediately or undo your previous changes so the build passes. Always keep an
+eye on Travis so your team does not start to pull and work with broken code.
 
 ### License
 
-The app is to be open source according to the GNU GENERAL PUBLIC LICENSE 3.
+The app is to be open source according to the GNU GENERAL PUBLIC LICENSE 3. Let
+us know how we should credit your work.
 
 ### NPM Dependencies
 
