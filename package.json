@@ -34,7 +34,7 @@
   "devDependencies": {
     "autoprefixer": "^7.1.6",
     "blueimp-load-image": "^2.17.1",
-    "browserslist": "^2.9.0",
+    "browserslist": "^2.9.1",
     "css-loader": "^0.28.7",
     "cssnano": "^3.10.0",
     "cssnano-preset-advanced": "^4.0.0-rc.2",
@@ -49,23 +49,23 @@
     "leaflet": "^1.2.0",
     "leaflet.markercluster": "^1.2.0",
     "material-design-icons": "^3.0.1",
-    "materialize-css": "^1.0.0-alpha.1",
+    "materialize-css": "^1.0.0-alpha.2",
     "materialize-loader": "^2.0.2",
     "mongodb-stitch": "^1.2.0",
     "node-sass": "^4.7.2",
     "offline-plugin": "^4.8.4",
     "postcss": "^6.0.14",
-    "postcss-loader": "^2.0.8",
+    "postcss-loader": "^2.0.9",
     "postcss-scss": "^1.0.2",
     "postcss-uncss": "^0.15.0",
     "precss": "^2.0.0",
     "rimraf": "^2.6.2",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.19.0",
-    "uglifyjs-webpack-plugin": "^1.1.0",
+    "uglifyjs-webpack-plugin": "^1.1.2",
     "uncss": "^0.15.0",
     "url-loader": "^0.6.2",
-    "webpack": "^3.8.1",
-    "webpack-dev-server": "^2.9.4"
+    "webpack": "^3.9.1",
+    "webpack-dev-server": "^2.9.5"
   }
 }
