@@ -32,12 +32,12 @@ welcome.
 
 #### Code Style
 
-Javascript ES6 style is preferred. Note that jquery code is possible but jquery
-will be phased out soon in an upcoming version of the materialize-css framework.
-Prettier is used to format code and keep a consistent yet flexible style.
-https://prettier.io/ Try to use descriptive names for variables, objects and
-functions using camelCase. If this is not possible, comment your code thoroughly
-to explain what is going on.
+Javascript ES6 style is preferred. We will not be using jQuery and will try to
+avoid using React, Angular to try and achieve what those frameworks do by using
+JavaScript ES6. Prettier is used to format code and keep a consistent yet
+flexible style. https://prettier.io/ Try to use descriptive names for variables,
+objects and functions using camelCase. If this is not possible, comment your
+code thoroughly to explain what is going on.
 
 ### Development
 
