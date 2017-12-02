@@ -493,7 +493,6 @@ const updateDB = function(database = "", dataset = {}) {
           classes: "yellow darken-2"
         });
         // try to upload offline data to DB when online
-        let offlineData;
         if (window.localStorage[storageVariable] && navigator.onLine) {
           offlineData = JSON.parse(
             window.localStorage.getItem(storageVariable)
