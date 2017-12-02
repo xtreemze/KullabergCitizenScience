@@ -144,34 +144,40 @@ const updateDB = function(database = "", dataset = {}) {
           displayLength: 4000,
           classes: "yellow darken-2"
         });
-      });
-  }
-  // try to upload offline data to DB when online
-  let offlineData;
-  if (window.localStorage[storageVariable] && navigator.onLine) {
-    let offlineData = JSON.parse(window.localStorage.getItem(storageVariable));
-    client
-      .login()
-      .then(() => db.collection(database).insertMany(offlineData))
-      .then(result => {
-        window.localStorage.removeItem(storageVariable);
-        console.log("[MongoDB Stitch] Offline Updated: ", result, dataset);
-        M.toast({
-          html: "Offline Data Uploaded",
-          displayLength: 1000,
-          classes: "green darken-2"
-        });
-      })
-      .catch(error => {
-        console.error("[MongoDB Stitch] Error: ", error);
-        M.toast({
-          html: "Will Retry in 30 Seconds",
-          displayLength: 4000,
-          classes: "yellow darken-2"
-        });
-        window.offlineUploadAttempt = setTimeout(() => {
-          updateDB(database);
-        }, 30000);
+        // try to upload offline data to DB when online
+        let offlineData;
+        if (window.localStorage[storageVariable] && navigator.onLine) {
+          let offlineData = JSON.parse(
+            window.localStorage.getItem(storageVariable)
+          );
+          client
+            .login()
+            .then(() => db.collection(database).insertMany(offlineData))
+            .then(result => {
+              window.localStorage.removeItem(storageVariable);
+              console.log(
+                "[MongoDB Stitch] Offline Updated: ",
+                result,
+                dataset
+              );
+              M.toast({
+                html: "Offline Data Uploaded",
+                displayLength: 1000,
+                classes: "green darken-2"
+              });
+            })
+            .catch(error => {
+              console.error("[MongoDB Stitch] Error: ", error);
+              M.toast({
+                html: "Will Retry in 30 Seconds",
+                displayLength: 4000,
+                classes: "yellow darken-2"
+              });
+              window.offlineUploadAttempt = setTimeout(() => {
+                updateDB(database);
+              }, 30000);
+            });
+        }
       });
   }
 };
