@@ -33,12 +33,12 @@ var __wpo = {
     "559545652ec37bbaab1dcb493c84471649489292": "./js/entry.js?3876f4f4b8f5f8437b23",
     "da4f4006b462b0dc42de9af73edcc51a71452824": "./js/manifest.js?985b4e984c195cb2407f",
     "d9fb46a65239346d6df1e9dfe603fac56d16c09c": "./css/vendor.css?046e983a60fe216d7f56",
-    "b19656c448562a954032067a403650b64cf1067d": "./css/entry.css?3876f4f4b8f5f8437b23",
+    "d4cd65cfb5873d212ff9a243286018d08b92ab28": "./css/entry.css?3876f4f4b8f5f8437b23",
     "fdc2ee74315f5a2745ee05c8aa7aad033d011899": "./"
   },
   "strategy": "changed",
   "responseStrategy": "network-first",
-  "version": "2017-12-2 18:14:08",
+  "version": "2017-12-2 18:16:54",
   "name": "webpack-offline",
   "pluginVersion": "4.8.4",
   "relativePaths": true
