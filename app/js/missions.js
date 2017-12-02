@@ -72,7 +72,6 @@ window.confetti = function() {
       ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
 
       ctx.restore();
-
     });
 
     requestAnimationFrame(draw);
@@ -97,8 +96,6 @@ window.confetti = function() {
     );
   }
 
-  
-    
   update();
   draw();
 };
@@ -239,9 +236,8 @@ window.collectInputs = function(
 
   // Celebrate in style with cofetti
   window.confetti();
-  setTimeout(() => {
-    window.showMissions();
-  }, 6000);
+
+  window.showMissions(6000);
 
   // Congratulatory Message
   M.toast({
@@ -639,7 +635,7 @@ class Mission {
 }
 
 // Show missinos in the front page
-window.showMissions = function() {
+window.showMissions = function(seconds = 290) {
   loading.classList.remove("fadeOut");
   loading.classList.add("fadeIn");
   missions.innerHTML = "";
@@ -653,7 +649,7 @@ window.showMissions = function() {
       loading.classList.remove("fadeIn");
       loading.classList.add("fadeOut");
     }, 290);
-  }, 290);
+  }, seconds);
 };
 
 window.addEventListener("DOMContentLoaded", function() {

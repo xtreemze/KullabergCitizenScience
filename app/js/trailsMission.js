@@ -134,7 +134,6 @@ trails = new Mission({
     </button>
   </form>
 </div>
-<canvas class="fullScreenCeleb" id="confettiId"> </canvas>
 `;
     missions.innerHTML = content;
     // const map = L.map("map", {

@@ -124,12 +124,13 @@ tumlare = new Mission({
             <input id="Photos" accept="image/*;capture=camera" type="file">
           </div>
         </div>
-          <button class="section col s12 btn btn-large waves-effect waves-light" type="submit" onclick="window.collectInputs('${this.databaseCollection}', '${this.congratulatoryMessage}')">Submit
+          <button class="section col s12 btn btn-large waves-effect waves-light" type="submit" onclick="window.collectInputs('${
+            this.databaseCollection
+          }', '${this.congratulatoryMessage}')">Submit
             <i class="material-icons right">send</i>
           </button>
     </form>
     </div>
-    <canvas class="fullScreenCeleb" id="confettiId"> </canvas>
   `;
     missions.innerHTML = content;
 
