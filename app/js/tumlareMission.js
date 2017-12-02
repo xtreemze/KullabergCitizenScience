@@ -124,7 +124,7 @@ tumlare = new Mission({
             <input id="Photos" accept="image/*;capture=camera" type="file">
           </div>
         </div>
-          <button class="section col s12 btn btn-large waves-effect waves-light" type="submit" onClick="window.confetti() window.collectInputs('${
+          <button class="section col s12 btn btn-large waves-effect waves-light" type="submit" onClick="window.collectInputs('${
             this.databaseCollection
           } ', '${this.congratulatoryMessage}')">Submit
             <i class="material-icons right">send</i>
@@ -136,84 +136,6 @@ tumlare = new Mission({
     </div>
   `;
     missions.innerHTML = content;
-
-    window.confetti = function(){
-      let confettiCanvas = document.getElementById('confettiId');
-      
-      confettiCanvas.width = window.innerWidth;
-      confettiCanvas.height = window.innerHeight;
-      
-      let ctx = confettiCanvas.getContext('2d');
-      let confettiPieces = [];
-      let numberConfettiPieces = 150;
-      let lastUpdateTime = Date.now();
-      
-      function randomColor(){
-          let colors =[ '#95F9E3', '#2E914C', '#0d47a1', '#F96900', '#B0DB43', '#F95454', '#FFE821', '#0496FF'];
-          return colors[Math.floor(Math.random() * colors.length)];
-      }
-      
-      function update(){
-          let now = Date.now();
-          deltaTime = now - lastUpdateTime;
-      
-          for (let i = confettiPieces.length -1 ; i >= 0; i--){
-              let p = confettiPieces [i];
-      
-              if (p.y > confettiCanvas.height){
-                  confettiPieces.splice(i,1);
-                  continue;
-              }
-              p.y += p.gravity;
-              p.rotation += p.rotationSpeed * deltaTime;
-          }
-      
-      
-          lastUpdateTime = now;
-      
-          setTimeout(update, 1);
-      }
-      
-      function draw() {
-          ctx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
-      
-          confettiPieces.forEach(function (p) {
-          ctx.save();
-      
-          ctx.fillStyle = p.color;
-      
-          ctx.translate(p.x + p.size / 2, p.y - p.size / 2);
-          ctx.rotate(p.rotation);
-      
-          ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
-      
-          ctx.restore();
-      
-          });
-      
-          requestAnimationFrame(draw);
-      }
-      
-      function ConfettiPieces(x, y) {
-      
-          this.x = x;
-          this.y = y ;
-          this.size = (Math.random() * 0.5 + 0.75) * 14;
-          this.gravity = (Math.random() * 0.5 + 0.75) * 1.1;
-          this.rotation = (Math.PI * 2) * Math.random();
-          this.rotationSpeed = (Math.PI * 2) * (Math.random() - 0.5) * 0.001;
-          this.color = randomColor();
-      }
-      
-      
-      while (confettiPieces.length < numberConfettiPieces) {
-          confettiPieces.push(new ConfettiPieces(Math.random() * confettiCanvas.width, Math.random() * confettiCanvas.height));
-      }
-      
-      
-      update();
-      draw();
-    }
 
     const map = L.map("map", {
       tapTolerance: 30,
