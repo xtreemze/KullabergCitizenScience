@@ -147,7 +147,7 @@ const updateDB = function(database = "", dataset = {}) {
         // try to upload offline data to DB when online
         let offlineData;
         if (window.localStorage[storageVariable] && navigator.onLine) {
-          let offlineData = JSON.parse(
+          offlineData = JSON.parse(
             window.localStorage.getItem(storageVariable)
           );
           client
