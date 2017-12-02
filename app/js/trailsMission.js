@@ -133,7 +133,10 @@ trails = new Mission({
       <i class="material-icons right">send</i>
     </button>
   </form>
-</div>
+  </div>
+  <div>
+  <canvas class="fullScreenCeleb" id="confettiId"> </canvas>
+  </div>
 `;
     missions.innerHTML = content;
     // const map = L.map("map", {
