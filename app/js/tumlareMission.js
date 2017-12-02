@@ -131,9 +131,7 @@ tumlare = new Mission({
           </button>
     </form>
     </div>
-    <div>
     <canvas class="fullScreenCeleb" id="confettiId"> </canvas>
-    </div>
   `;
     missions.innerHTML = content;
 

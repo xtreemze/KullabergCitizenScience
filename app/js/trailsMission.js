@@ -107,11 +107,11 @@ trails = new Mission({
         <input disabled id="Date" type="text" class="datepicker" value="${new Date().toDateString()}">
       </div>
       <p class="col s12 m6 l4">
-      <label>
-        <input id="Resolved" type="checkbox">
-        <span>Resolved</span>
-      </label>
-    </p>
+        <label>
+          <input id="Resolved" type="checkbox">
+          <span>Resolved</span>
+        </label>
+      </p>
     </section>
     <section class="col s12 m6">
       <div class="row">
@@ -133,10 +133,8 @@ trails = new Mission({
       <i class="material-icons right">send</i>
     </button>
   </form>
-  </div>
-  <div>
-  <canvas class="fullScreenCeleb" id="confettiId"> </canvas>
-  </div>
+</div>
+<canvas class="fullScreenCeleb" id="confettiId"> </canvas>
 `;
     missions.innerHTML = content;
     // const map = L.map("map", {
