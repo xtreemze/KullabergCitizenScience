@@ -27,14 +27,13 @@ window.confetti = function() {
 
   function randomColor() {
     let colors = [
-      "#95F9E3",
-      "#2E914C",
-      "#0d47a1",
-      "#F96900",
-      "#B0DB43",
-      "#F95454",
+      "#a1670d",
+      "#0D47A1",
+      "#ffab40",
+      "#0496FF",
       "#FFE821",
-      "#0496FF"
+      "#B0DB43",
+      "#475c12"
     ];
     return colors[Math.floor(Math.random() * colors.length)];
   }
