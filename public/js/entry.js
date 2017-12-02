@@ -513,13 +513,13 @@ const updateDB = function(database = "", dataset = {}) {
       .catch(error => {
         console.error("[MongoDB Stitch] Error: ", error);
         M.toast({
-          html: "Will Retry in 60 Seconds",
+          html: "Will Retry in 30 Seconds",
           displayLength: 4000,
-          classes: "red darken-2"
+          classes: "yellow darken-2"
         });
         window.offlineUploadAttempt = setTimeout(() => {
           updateDB(database);
-        }, 60000);
+        }, 30000);
       });
   }
 };
@@ -576,7 +576,7 @@ window.collectInputs = function(
   }
 
   updateDB(databaseCollection, window.data);
-  
+
   // Celebrate in style with cofetti
   window.confetti();
   setTimeout(() => {
