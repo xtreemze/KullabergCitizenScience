@@ -1560,9 +1560,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 /* 20 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-module.exports = __webpack_require__.p + "./css/trail.jpg?08ddc5a7ed82e346a61bd0c1e7fc99ea";
+throw new Error("Module build failed: Error: dyld: Library not loaded: /usr/local/opt/libpng/lib/libpng16.16.dylib\n  Referenced from: /Users/AmeeraDarwish/Desktop/KullabergCitizenScience/node_modules/mozjpeg/vendor/cjpeg\n  Reason: image not found\n\n    at Promise.all.then.arr (/Users/AmeeraDarwish/Desktop/KullabergCitizenScience/node_modules/execa/index.js:231:11)\n    at <anonymous>\n    at process._tickCallback (internal/process/next_tick.js:188:7)");
 
 /***/ }),
 /* 21 */,
@@ -3161,15 +3161,96 @@ tumlare = new Mission({
             <input id="Photos" accept="image/*;capture=camera" type="file">
           </div>
         </div>
-          <button class="section col s12 btn btn-large waves-effect waves-light" type="submit" onClick="window.collectInputs('${
+          <button class="section col s12 btn btn-large waves-effect waves-light" type="submit" onClick="window.confetti() window.collectInputs('${
             this.databaseCollection
-          }', '${this.congratulatoryMessage}')">Submit
+          } ', '${this.congratulatoryMessage}')">Submit
             <i class="material-icons right">send</i>
           </button>
     </form>
     </div>
+    <div>
+    <canvas class="fullScreenCeleb" id="confetti"></canvas>
+    </div>
   `;
     missions.innerHTML = content;
+
+    window.confetti = function(){
+      let canvas = document.getElementById('confetti');
+      
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      
+      let ctx = canvas.getContext('2d');
+      let confettiPieces = [];
+      let numberConfettiPieces = 150;
+      let lastUpdateTime = Date.now();
+      
+      function randomColor(){
+          let colors =[ '#95F9E3', '#2E914C', '#0d47a1', '#F96900', '#B0DB43', '#F95454', '#FFE821', '#0496FF'];
+          return colors[Math.floor(Math.random() * colors.length)];
+      }
+      
+      function update(){
+          let now = Date.now();
+          deltaTime = now - lastUpdateTime;
+      
+          for (let i = confettiPieces.length -1 ; i >= 0; i--){
+              let p = confettiPieces [i];
+      
+              if (p.y > canvas.height){
+                  confettiPieces.splice(i,1);
+                  continue;
+              }
+              p.y += p.gravity;
+              p.rotation += p.rotationSpeed * deltaTime;
+          }
+      
+      
+          lastUpdateTime = now;
+      
+          setTimeout(update, 1);
+      }
+      
+      function draw() {
+          ctx.clearRect(0,0,canvas.width,canvas.height);
+      
+          confettiPieces.forEach(function (p) {
+          ctx.save();
+      
+          ctx.fillStyle = p.color;
+      
+          ctx.translate(p.x + p.size / 2, p.y - p.size / 2);
+          ctx.rotate(p.rotation);
+      
+          ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+      
+          ctx.restore();
+      
+          });
+      
+          requestAnimationFrame(draw);
+      }
+      
+      function ConfettiPieces(x, y) {
+      
+          this.x = x;
+          this.y = y ;
+          this.size = (Math.random() * 0.5 + 0.75) * 14;
+          this.gravity = (Math.random() * 0.5 + 0.75) * 0.25;
+          this.rotation = (Math.PI * 2) * Math.random();
+          this.rotationSpeed = (Math.PI * 2) * (Math.random() - 0.5) * 0.001;
+          this.color = randomColor();
+      }
+      
+      
+      while (confettiPieces.length < numberConfettiPieces) {
+          confettiPieces.push(new ConfettiPieces(Math.random() * canvas.width, Math.random() * canvas.height));
+      }
+      
+      
+      update();
+      draw();
+    }
 
     const map = L.map("map", {
       tapTolerance: 30,
@@ -3269,9 +3350,9 @@ tumlare = new Mission({
 
 /***/ }),
 /* 84 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-module.exports = __webpack_require__.p + "./css/tumlare.jpg?9fe4a2b3cb1b890fdbf85c83122b620e";
+throw new Error("Module build failed: Error: dyld: Library not loaded: /usr/local/opt/libpng/lib/libpng16.16.dylib\n  Referenced from: /Users/AmeeraDarwish/Desktop/KullabergCitizenScience/node_modules/mozjpeg/vendor/cjpeg\n  Reason: image not found\n\n    at Promise.all.then.arr (/Users/AmeeraDarwish/Desktop/KullabergCitizenScience/node_modules/execa/index.js:231:11)\n    at <anonymous>\n    at process._tickCallback (internal/process/next_tick.js:188:7)");
 
 /***/ }),
 /* 85 */

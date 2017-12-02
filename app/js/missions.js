@@ -96,9 +96,12 @@ const updateDB = function(database = "", dataset = {}) {
  * @param {string} A Congratulatory Message
  */
 window.collectInputs = function(
+  
   databaseCollection = {},
   congratulatoryMessage = ""
 ) {
+  window.confetti();
+  
   window.form = parent.document.getElementsByTagName("form")[0];
   window.data = {
     Location: {
@@ -142,7 +145,10 @@ window.collectInputs = function(
   }
 
   updateDB(databaseCollection, window.data);
-  window.showMissions();
+  setTimeout(() => {
+    window.showMissions();
+  }, 6000);
+  
 
   // Congratulatory Message
   M.toast({
