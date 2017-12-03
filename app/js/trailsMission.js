@@ -1,18 +1,55 @@
 const Mission = require("./missions");
 
-trails = new Mission({
-  shortName: "trails",
-  title: "Trail Condition",
-  databaseCollection: "TrailCondition",
-  congratulatoryMessage: "Thanks for helping us keep Kullaberg in top shape!",
-  description:
-    "Engage in the monitoring of Trail Conditions and participate in adaptive management by reporting incidents while walking in the trails system. Kullaberg Management will analyze measures to execute to resolve the reports.",
-  image: require("../img/trail.jpg"),
-  monitorSuccess: function() {
-    let content = ``;
-    content += `<div class="row">
+class TrailsMission {
+  constructor({
+      shortName = "trails",
+      title = "Trail Condition",
+      image = require("../img/trail.jpg"),
+      description = "Engage in the monitoring of Trail Conditions and participate in adaptive management by reporting incidents while walking in the trails system. Kullaberg Management will analyze measures to execute to resolve the reports.",
+      mission_area
+  }) {
+    this.mission_area = mission_area;
+    this.mission = new Mission({
+        shortName: shortName,
+        title: title,
+        databaseCollection: "TrailCondition",
+        congratulatoryMessage: "Thanks for helping us keep Kullaberg in top shape!",
+        description: description,
+        image: image,
+        mission_area: mission_area,
+        monitorSuccess: function() {
+            let content = ``;
+            content += `<div class="row">
   <form class="" onsubmit="return false">
-    <h3 class="col s12">${this.title}</h3>
+    <h3 class="col s12">${this.formattedTitle}</h3>
+    <section class="">
+      <h5 class="col s12">Georeference</h5>
+      <div class="col s12">
+        <div id="map"></div>
+      </div>
+      <div class="input-field col s6 m3">
+        <input disabled id="Latitude" type="text" value="${
+                window.geoReference.lat
+                }">
+        <label for="Latitude">Latitude</label>
+      </div>
+      <div class="input-field col s6 m3">
+        <input disabled id="Longitude" type="text" value="${
+                window.geoReference.long
+                }">
+        <label for="Longitude">Longitude</label>
+      </div>
+      <div class="input-field col s6 m4">
+        <label for="Date">Date</label>
+        <input disabled id="Date" type="text" class="datepicker" value="${new Date().toDateString()}">
+      </div>
+      <p class="col s12 m6 l4">
+      <label>
+        <input id="Resolved" type="checkbox">
+        <span>Resolved</span>
+      </label>
+    </p>
+    </section>
     <h5 class="col s12">Select All that Apply</h5>
     <p class="col s12 m6 l4">
       <label>
@@ -85,34 +122,6 @@ trails = new Mission({
         <span class="helper-text">Example: Many people, conflicts betwen hikers, horses, bicycles.</span>
       </div>
     </div>
-    <section class="hide">
-      <h5 class="col s12">Georeference</h5>
-      <div class="col s12">
-        <div id="map"></div>
-      </div>
-      <div class="input-field col s6 m3">
-        <input disabled id="Latitude" type="text" value="${
-          window.geoReference.lat
-        }">
-        <label for="Latitude">Latitude</label>
-      </div>
-      <div class="input-field col s6 m3">
-        <input disabled id="Longitude" type="text" value="${
-          window.geoReference.long
-        }">
-        <label for="Longitude">Longitude</label>
-      </div>
-      <div class="col s6 m4">
-        <label for="Date">Date</label>
-        <input disabled id="Date" type="text" class="datepicker" value="${new Date().toDateString()}">
-      </div>
-      <p class="col s12 m6 l4">
-      <label>
-        <input id="Resolved" type="checkbox">
-        <span>Resolved</span>
-      </label>
-    </p>
-    </section>
     <section class="col s12 m6">
       <div class="row">
         <canvas height="64" class="col s12" id="photoPreview"></canvas>
@@ -128,46 +137,82 @@ trails = new Mission({
       </div>
     </div>
     <button class="col s12 btn btn-large waves-effect waves-light" type="submit" onclick="collectInputs('${
-      this.databaseCollection
-    }', '${this.congratulatoryMessage}')">Submit
+                this.databaseCollection
+                }', '${this.congratulatoryMessage}')">Submit
       <i class="material-icons right">send</i>
     </button>
   </form>
 </div>
 `;
-    missions.innerHTML = content;
-    // const map = L.map("map", {
-    //   tapTolerance: 30,
-    //   zoomControl: false
-    // }).setView([window.Latitude.value, window.Longitude.value], 13);
+            missions.innerHTML = content;
 
-    // var OSMMapnik = L.tileLayer(
-    //   "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    //   {
-    //     maxZoom: 19,
-    //     attribution:
-    //       '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    //   }
-    // ).addTo(map);
-    // // L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
-    // let circle = L.circle([window.Latitude.value, window.Longitude.value], {
-    //   color: "red",
-    //   fillColor: "#f03",
-    //   fillOpacity: 0.5,
-    //   radius: geoReference.accuracy
-    // })
-    //   .addTo(map)
-    //   .bindPopup("Your Location")
-    //   .openPopup();
-    // const geoJSONTrails = require("./trails.json");
-    // L.geoJSON(geoJSONTrails, {
-    //   style: function(feature) {
-    //     return {
-    //       color: feature.properties.stroke,
-    //       opacity: 0.6,
-    //       dashArray: [7, 5]
-    //     };
-    //   }
-    // }).addTo(map);
+            const map = L.map("map", {
+                tapTolerance: 30,
+                zoomControl: false
+            }).setView([window.Latitude.value, window.Longitude.value], 13);
+
+            var OSMMapnik = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+                    maxZoom: 19,
+                    attribution:
+                        '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                }
+            ).addTo(map);
+
+            // L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
+            let circle = L.circle([window.Latitude.value, window.Longitude.value], {
+                color: "red",
+                fillColor: "#f03",
+                fillOpacity: 0.5,
+                radius: 5
+            })
+                .addTo(map)
+                .bindPopup("Your Location")
+                .openPopup();
+            let popup = L.popup();
+
+            if (mission_area) {
+                window.missionPolygons = [];
+                for (let i = 0; i < mission_area.geometry.coordinates.length; i++) {
+                    window.missionPolygons.push(
+                        L.circle([mission_area.geometry.coordinates[i][1],
+                                  mission_area.geometry.coordinates[i][0]],
+                                  mission_area.properties.radius, {
+                                opacity: 0.00,
+                                fillColor: "green",
+                                fillOpacity: 0.35,
+                            }).addTo(map));
+                }
+
+                let mission_trails = L.geoJSON(mission_area, {
+                    style: function (feature) {
+                        return {
+                            color: "white",
+                            opacity: 0.0,
+                            dashArray: [7, 5]
+                        };
+                    }
+                });
+                map.fitBounds(mission_trails.getBounds(), {padding: [40, 40]});
+                mission_trails.addTo(map);
+            }
+
+            const geoJSONTrails = require("./trails.json");
+            L.geoJSON(geoJSONTrails, {
+                style: function (feature) {
+                    return {
+                        color: feature.properties.stroke,
+                        opacity: 0.6,
+                        dashArray: [7, 5]
+                    };
+                }
+            }).addTo(map);
+        }
+    });
   }
-});
+}
+
+trails = new TrailsMission({}).mission;
+
+module.exports = TrailsMission;

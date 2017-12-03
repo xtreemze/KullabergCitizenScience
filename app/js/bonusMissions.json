@@ -1,0 +1,64 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "shortName": "tumlare",
+      "title": "DAILY SPOTLIGHT: Verify Porpoise Spotting",
+      "description": "There've been a couple of reports of Porpoise in the ... area very recently and we'd like you to go out and verify it - take some pictures, share them with us and secure yourself that little extra progression towards your next towel!",
+      "properties": {
+        "name": "Mission Area",
+        "radius": 250
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [12.993539460003378, 55.61291160017523],
+          [12.99182988703251, 55.6142204180832],
+          [12.991701140999796, 55.61645015538507],
+          [12.98908330500126, 55.6190311603233],
+          [12.985070720314981, 55.618498008908574],
+          [12.984298244118692, 55.620885016756624],
+          [12.978018522262573, 55.61966351091109],
+          [12.975100278854372, 55.61757936595319],
+          [12.971066236495973, 55.6147680181684],
+          [12.97166705131531, 55.611859515219834]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "shortName": "trails",
+      "title": "WEEKLY SPOTLIGHT: Review Trail Condition",
+      "description": "This week we gonna need your help reviewing the trail at ... (see the attached map for more details) - and as every other week, your help will be rewarded with a bunch of bonus points, getting you closer to your next free coffee!",
+      "properties": {
+        "name": "Mission Trail",
+        "radius": 50
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [12.502471, 56.287391, 123.67],
+          [12.502619, 56.287542, 123.67],
+          [12.50304, 56.287657, 123.67],
+          [12.503553, 56.287691, 123.19],
+          [12.503924, 56.287838, 123.19],
+          [12.504228, 56.287972, 123.19],
+          [12.504397, 56.288008, 123.19],
+          [12.50473, 56.288049, 123.19],
+          [12.505214, 56.288161, 123.19],
+          [12.505396, 56.288184, 123.19],
+          [12.505757, 56.288253, 123.19],
+          [12.506116, 56.288286, 123.19],
+          [12.506456, 56.288357, 123.19],
+          [12.506666, 56.288426, 123.19],
+          [12.506822, 56.288481, 123.19],
+          [12.507208, 56.288623, 123.19],
+          [12.507456, 56.288734, 123.19],
+          [12.507609, 56.288829, 123.19],
+          [12.507823, 56.288998, 123.19]
+        ]
+      }
+    }
+  ]
+}

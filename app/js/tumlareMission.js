@@ -1,18 +1,27 @@
 const Mission = require("./missions");
 
-tumlare = new Mission({
-  shortName: "tumlare",
-  title: "Porpoise Observation",
-  databaseCollection: "Tumlare",
-  congratulatoryMessage: "Thanks for you help with wildlife research!",
-  description:
-    "Engage in the collection of visual harbor porpoise observations (both living and dead) in the north-western parts of Scania. Observations are used in scientific research to help increase the knowledge about this threatened species.",
-  image: require("../img/tumlare.jpg"),
-  monitorSuccess: function() {
-    let content = ``;
-    content += `<div class="row">
+class TumlareMission {
+  constructor({
+      shortName = "tumlare",
+      title = "Porpoise Observation",
+      description = "Engage in the collection of visual harbor porpoise observations (both living and dead) in the north-western parts of Scania. Observations are used in scientific research to help increase the knowledge about this threatened species.",
+      image = require("../img/tumlare.jpg"),
+      mission_area
+  }) {
+      this.mission_area = mission_area;
+      this.mission = new Mission({
+          shortName: shortName,
+          title: title,
+          databaseCollection: "Tumlare",
+          congratulatoryMessage: "Thanks for you help with wildlife research!",
+          description: description,
+          image: image,
+          mission_area: mission_area,
+          monitorSuccess: function() {
+              let content = ``;
+              content += `<div class="row">
     <form class="" onsubmit="return false">
-      <h3 class="col s12">${this.title}</h3>
+      <h3 class="col s12">${this.formattedTitle}</h3>
       <div class="input-field col l2 m4 s12">
         <label for="Species">Species</label>
         <input id="Species" type="text" value="Porpoise">
@@ -40,14 +49,14 @@ tumlare = new Mission({
       <section class="hide">
       <div class="input-field col s6 m4">
         <input disabled id="Latitude" type="text" value="${
-          window.geoReference.lat
-        }">
+                  window.geoReference.lat
+                  }">
         <label for="Latitude">Latitude</label>
       </div>
       <div class="input-field col s6 m4">
         <input disabled id="Longitude" type="text" value="${
-          window.geoReference.long
-        }">
+                  window.geoReference.long
+                  }">
         <label for="Longitude">Longitude</label>
       </div>
       <div class="input-field col s6 m4">
@@ -125,106 +134,149 @@ tumlare = new Mission({
           </div>
         </div>
           <button class="section col s12 btn btn-large waves-effect waves-light" type="submit" onClick="window.collectInputs('${
-            this.databaseCollection
-          }', '${this.congratulatoryMessage}')">Submit
+                  this.databaseCollection
+                  }', '${this.congratulatoryMessage}')">Submit
             <i class="material-icons right">send</i>
           </button>
     </form>
     </div>
   `;
-    missions.innerHTML = content;
+              missions.innerHTML = content;
 
-    const map = L.map("map", {
-      tapTolerance: 30,
-      zoomControl: false
-    }).setView([window.Latitude.value, window.Longitude.value], 13);
+              const map = L.map("map", {
+                  tapTolerance: 30,
+                  zoomControl: false
+              }).setView([window.Latitude.value, window.Longitude.value], 13);
 
-    var OSMMapnik = L.tileLayer(
-      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-      {
-        maxZoom: 19,
-        attribution:
-          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-      }
-    ).addTo(map);
+              var OSMMapnik = L.tileLayer(
+                  "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                  {
+                      maxZoom: 19,
+                      attribution:
+                          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                  }
+              ).addTo(map);
 
-    // L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
-    let circle = L.circle([window.Latitude.value, window.Longitude.value], {
-      color: "red",
-      fillColor: "#f03",
-      fillOpacity: 0.5,
-      radius: 5
-    })
-      .addTo(map)
-      .bindPopup("Your Location")
-      .openPopup();
-    let popup = L.popup();
+              // L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
+              let circle = L.circle([window.Latitude.value, window.Longitude.value], {
+                  color: "red",
+                  fillColor: "#f03",
+                  fillOpacity: 0.5,
+                  radius: 5
+              })
+                  .addTo(map)
+                  .bindPopup("Your Location")
+                  .openPopup();
+              let popup = L.popup();
 
-    window.radius = L.circle([window.Latitude.value, window.Longitude.value], {
-      color: "#0288d1",
-      fillColor: "#0d47a1",
-      fillOpacity: 0.5,
-      radius: geoReference.accuracy
-    }).addTo(map);
+              window.radius = L.circle([window.Latitude.value, window.Longitude.value], {
+                  color: "#0288d1",
+                  fillColor: "#0d47a1",
+                  fillOpacity: 0.5,
+                  radius: geoReference.accuracy
+              }).addTo(map);
 
-    function onMapClick(e) {
-      window.Latitude.value = e.latlng.lat;
-      window.Longitude.value = e.latlng.lng;
-      radius.setLatLng(e.latlng);
-      popup
-        .setLatLng(e.latlng)
-        .setContent(window.Species.value)
-        .openOn(map);
-    }
+              if (mission_area) {
+                  window.missionPolygons = [];
+                  for (let i = 0; i < mission_area.geometry.coordinates.length; i++) {
+                      window.missionPolygons.push(
+                          L.circle([mission_area.geometry.coordinates[i][1],
+                                  mission_area.geometry.coordinates[i][0]],
+                              mission_area.properties.radius, {
+                                  opacity: 0.00,
+                                  fillColor: "green",
+                                  fillOpacity: 0.35,
+                              }).addTo(map));
+                  }
 
-    map.on("click", onMapClick);
+                  let mission_trails = L.geoJSON(mission_area, {
+                      style: function (feature) {
+                          return {
+                              color: "white",
+                              opacity: 0.0,
+                              dashArray: [7, 5]
+                          };
+                      }
+                  });
+                  map.fitBounds(mission_trails.getBounds(), {padding: [40, 40]});
+                  mission_trails.addTo(map);
+              }
 
-    ObservationArea.addEventListener(
-      "mousemove",
-      function() {
-        ObservationAreaDisplay.innerHTML = ObservationArea.value;
-        radius.setRadius(ObservationArea.value);
-      },
-      { passive: true }
-    );
-    ObservationArea.addEventListener(
-      "touchmove",
-      function() {
-        ObservationAreaDisplay.innerHTML = ObservationArea.value;
-        radius.setRadius(ObservationArea.value);
-      },
-      { passive: true }
-    );
-    ObservationArea.addEventListener(
-      "change",
-      function() {
-        ObservationAreaDisplay.innerHTML = ObservationArea.value;
-        radius.setRadius(ObservationArea.value);
-      },
-      { passive: true }
-    );
-    let number = document.getElementById("Quantity");
-    let display = document.getElementById("QuantityDisplay");
-    number.addEventListener(
-      "mousemove",
-      function() {
-        display.innerHTML = number.value;
-      },
-      { passive: true }
-    );
-    number.addEventListener(
-      "touchmove",
-      function() {
-        display.innerHTML = number.value;
-      },
-      { passive: true }
-    );
-    number.addEventListener(
-      "change",
-      function() {
-        display.innerHTML = number.value;
-      },
-      { passive: true }
-    );
+              const geoJSONTrails = require("./trails.json");
+              L.geoJSON(geoJSONTrails, {
+                  style: function (feature) {
+                      return {
+                          color: feature.properties.stroke,
+                          opacity: 0.6,
+                          dashArray: [7, 5]
+                      };
+                  }
+              }).addTo(map);
+
+              function onMapClick(e) {
+                  window.Latitude.value = e.latlng.lat;
+                  window.Longitude.value = e.latlng.lng;
+                  radius.setLatLng(e.latlng);
+                  popup
+                      .setLatLng(e.latlng)
+                      .setContent(window.Species.value)
+                      .openOn(map);
+              }
+
+              map.on("click", onMapClick);
+
+              ObservationArea.addEventListener(
+                  "mousemove",
+                  function() {
+                      ObservationAreaDisplay.innerHTML = ObservationArea.value;
+                      radius.setRadius(ObservationArea.value);
+                  },
+                  { passive: true }
+              );
+              ObservationArea.addEventListener(
+                  "touchmove",
+                  function() {
+                      ObservationAreaDisplay.innerHTML = ObservationArea.value;
+                      radius.setRadius(ObservationArea.value);
+                  },
+                  { passive: true }
+              );
+              ObservationArea.addEventListener(
+                  "change",
+                  function() {
+                      ObservationAreaDisplay.innerHTML = ObservationArea.value;
+                      radius.setRadius(ObservationArea.value);
+                  },
+                  { passive: true }
+              );
+              let number = document.getElementById("Quantity");
+              let display = document.getElementById("QuantityDisplay");
+              number.addEventListener(
+                  "mousemove",
+                  function() {
+                      display.innerHTML = number.value;
+                  },
+                  { passive: true }
+              );
+              number.addEventListener(
+                  "touchmove",
+                  function() {
+                      display.innerHTML = number.value;
+                  },
+                  { passive: true }
+              );
+              number.addEventListener(
+                  "change",
+                  function() {
+                      display.innerHTML = number.value;
+                  },
+                  { passive: true }
+              );
+          }
+      });
   }
-});
+}
+
+tumlare = new TumlareMission({}).mission;
+
+module.exports = TumlareMission;

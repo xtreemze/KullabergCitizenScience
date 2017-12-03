@@ -97,7 +97,8 @@ const updateDB = function(database = "", dataset = {}) {
  */
 window.collectInputs = function(
   databaseCollection = {},
-  congratulatoryMessage = ""
+  congratulatoryMessage = "",
+  invalidSubmissionMessage = "Sorry, but the only way to contribute is from inside the marked area!"
 ) {
   window.form = parent.document.getElementsByTagName("form")[0];
   window.data = {
@@ -141,15 +142,34 @@ window.collectInputs = function(
     }
   }
 
-  updateDB(databaseCollection, window.data);
-  window.showMissions();
+  // Verify user location (if applicable for the current mission)
+    let valid = true;
+    if (window.missionPolygons) {
+      valid = false;
+      for (let p of window.missionPolygons) {
+        if (locationInsideCircularPoly(new L.LatLng(window.data.Location.coordinates[1], window.data.Location.coordinates[0]), p)) {
+          valid = true; break;
+        }
+      }
+    }
+    if (valid) {
+        updateDB(databaseCollection, window.data);
+        window.showMissions();
 
-  // Congratulatory Message
-  M.toast({
-    html: congratulatoryMessage,
-    displayLength: 4000,
-    classes: "blue darken-2"
-  });
+        // Congratulatory Message
+        M.toast({
+            html: congratulatoryMessage,
+            displayLength: 4000,
+            classes: "blue darken-2"
+        });
+    }
+    else {
+        M.toast({
+            html: invalidSubmissionMessage,
+            displayLength: 4000,
+            classes: "red darken-2"
+        });
+    }
 };
 
 // Empty variable to gather and hold html for mission cards in memory
@@ -162,8 +182,8 @@ window.geoReference = {};
 const missionsElement = document.getElementById("missions");
 module.exports = missionsElement;
 
-// Collecting all Missions in a Set
-let Missions = new Set();
+// Collecting all Missions in an Array
+window.availableMissions = [];
 
 class Mission {
   constructor({
@@ -181,10 +201,15 @@ class Mission {
     image = require("../img/trail.jpg"),
     monitorSuccess,
     analyzeSuccess,
-    queryDB
+    queryDB,
+    card,
+    mission_area
   }) {
+    this.id = window.availableMissions.length;
+    this.mission_area = mission_area;
     this.shortName = shortName;
     this.title = title;
+    this.formattedTitle = this.title.indexOf(":") !== -1 ? "<strong>" + this.title.replace(":", "</strong><br>") : this.title;
     this.description = description;
     this.image = image;
     this.databaseCollection = databaseCollection;
@@ -276,6 +301,20 @@ class Mission {
       });
       map.fitBounds(window.mappedTrails.getBounds(), { padding: [82, 82] });
       mappedTrails.addTo(map);
+
+      if (this.mission_area) {
+          window.mission_trails = L.geoJSON(mission_area, {
+              style: function(feature) {
+                  return {
+                      color: feature.properties.stroke,
+                      opacity: 0.6,
+                      dashArray: [7, 5]
+                  };
+              }
+          });
+          map.fitBounds(window.mission_trails.getBounds(), { padding: [82, 82] });
+          mission_trails.addTo(map);
+      }
     };
     this.monitor = function() {
       navigator.geolocation.getCurrentPosition(
@@ -514,26 +553,26 @@ class Mission {
     };
 
     // Displays on Front Page
-    this.card = `<div class="cardContainer" id="${this.title}">
+  this.card = card ? card : `<div class="cardContainer" id="${"<strong>"+this.title.replace(":", "</strong><br>")}">
   <div class="col s12 m6 l6">
     <div class="card">
       <div class="card-image">
         <img src="${this.image}">
-        <span class="card-title">${this.title}</span>
+        <span class="card-title">${this.formattedTitle}</span>
       </div>
       <div class="card-content">
         <div>${this.description}</div>
       </div>
       <div class="card-action">
-        <a class="pointer" onclick="${this.shortName}.monitor()">Monitor</a>
-        <a class="pointer" onclick="${this.shortName}.queryDB()">Analyze</a>
+        <a class="pointer" onclick="window.availableMissions[${this.id}].monitor()">Monitor</a>
+        ${this.mission_area ? '' : '<a class="pointer" onclick="window.availableMissions[${this.id}].queryDB()">Analyze</a>'}
         </div>
         </div>
         </div>
         </div>
         `;
 
-    Missions.add(this);
+    window.availableMissions.push(this);
     // Add Mission Cards to DOM
     missionCardsHTML += this.card;
   }
@@ -568,6 +607,10 @@ window.addEventListener("DOMContentLoaded", function() {
     loading.classList.add("fadeOut");
   }, 10);
 });
+
+const locationInsideCircularPoly = function(loc, polygon) {
+    return loc.distanceTo(polygon.getBounds().getCenter()) <= polygon.options.radius;
+};
 
 // Additional missions go in separate files and require this file. Add them to ./../entry.js
 // test = new Mission({});

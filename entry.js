@@ -14,6 +14,7 @@ require("./app/js/missions");
 require("./app/js/master");
 require("./app/js/trailsMission");
 require("./app/js/tumlareMission");
+require("./app/js/bonusMissions");
 // require("./node_modules/materialize-css/sass/materialize.scss");
 // require("materialize-css/sass/materialize.scss");
 // require("./app/css/variables.scss");
