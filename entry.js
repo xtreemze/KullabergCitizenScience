@@ -12,6 +12,7 @@ require("./node_modules/leaflet/dist/leaflet.js");
 require("./node_modules/leaflet.markercluster/dist/leaflet.markercluster");
 require("./app/js/missions");
 require("./app/js/master");
+require("./app/js/profileMission");
 require("./app/js/trailsMission");
 require("./app/js/tumlareMission");
 require("./app/js/bonusMissions");
