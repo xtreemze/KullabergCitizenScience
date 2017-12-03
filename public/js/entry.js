@@ -418,6 +418,8 @@ window.collectInputs = function(
             displayLength: 4000,
             classes: "blue darken-2"
         });
+        if (this.mission_area) window.userprofile.addExperience(200);
+        else window.userprofile.addExperience();
     }
     else {
         M.toast({
@@ -1959,7 +1961,7 @@ class TumlareMission {
       shortName = "tumlare",
       title = "Porpoise Observation",
       description = "Engage in the collection of visual harbor porpoise observations (both living and dead) in the north-western parts of Scania. Observations are used in scientific research to help increase the knowledge about this threatened species.",
-      image = __webpack_require__(89),
+      image = __webpack_require__(88),
       mission_area
   }) {
       this.mission_area = mission_area;
@@ -2303,16 +2305,16 @@ __webpack_require__(83);
 __webpack_require__(84);
 __webpack_require__(23);
 __webpack_require__(24);
-__webpack_require__(90);
+__webpack_require__(89);
 // require("./node_modules/materialize-css/sass/materialize.scss");
 // require("materialize-css/sass/materialize.scss");
 // require("./app/css/variables.scss");
 __webpack_require__(10);
+__webpack_require__(91);
 __webpack_require__(92);
-__webpack_require__(93);
 // require("./node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css");
+__webpack_require__(93);
 __webpack_require__(94);
-__webpack_require__(95);
 
 
 /***/ }),
@@ -3514,26 +3516,33 @@ const loadImage = __webpack_require__(19);
 
 const experienceTable = [100, 125, 160, 200, 260, 340, 450, 600, 820, 1100, 1500, 2000, 3000, 4500, 6000, 9000, 13000, 18000, 25000];
 
+window.profileImage = window.localStorage.getItem("profileImage");
+let imageExists = window.profileImage;
+let src = "./../img/Portrait_Placeholder.png";
+if (imageExists) {
+    src = window.profileImage;
+}
+
 class ProfileMission {
     constructor() {
         this.shortName = "profile";
         this.profileImage = localStorage.getItem("profileImage");
         this.username = localStorage.getItem("username");
-        this.userExperience = localStorage.getItem("userExperience");
-        this.userLevel = [1, 0];
+        this.userExperience = parseInt(localStorage.getItem("userExperience"));
+        this.userLevel = [4, 65];
+        this.calculateLevel();
         this.mission = new Mission({
             card: `
 <div class="cardContainer" id="${this.shortname}">
   <div class="col s12 m6 l6">
     <div class="card">
       <div class="card-content" style="text-align: center;">
-           <input id="photoFilePath" accept="image/*" class="file-path validate" type="file" class="circle imageChanger ${(this.profileImage ? "hide" : "")}" onchange="profile.uploadImage(this)" style="background-image: url(${__webpack_require__(85)});width: 150px;height: 150px;background-size: 150px;">
-            <canvas id="profileCanvas" width="150px" height="150px" class="${(this.profileImage ? "" : "hide")}" style="margin: -200px 0 16px 0;"></canvas>
+           <input id="photoFilePath" accept="image/*" class="file-path validate circular" type="file" class="circle imageChanger" onchange="profile.uploadImage(this)" style="background-image: url(${src});width: 150px;height: 150px;background-size: 150px;margin-bottom: 20px;">
         <div id="profile_username" style="font-size: 30px">${this.username}</div>
           <div class="progress">
-              <div class="determinate" style="width: ${this.userLevel[1]}%;"></div>
+              <div id="profile_progress" class="determinate" style="width: ${this.userLevel[1]}%;"></div>
       </div>
-      <div> Level ${this.userLevel[0]}</div>
+      <div id="profile_level">Level ${this.userLevel[0]}</div>
   <div class="card-content ${(this.username ? "hide" : "")}" style="text-align: center;" id="personalExperience">
       <h6>Personalize Your Experience!</h6>
    
@@ -3545,10 +3554,10 @@ class ProfileMission {
    </div>
       <div><h6>Badge Collection</h6></div>
       <div class="card-action" style="padding-left: 0; padding-right:0;">
-       <img id="profile_trail" src=${__webpack_require__(86)} class="circle badge">
-       <img id="profile_scientist" src=${__webpack_require__(87)} class="circle badge">
-       <img id="profile_sight" src=${__webpack_require__(88)} class="circle badge">
-       
+       <img id="profile_trail" src=${__webpack_require__(85)} class="circle badge">
+       <img id="profile_scientist" src=${__webpack_require__(86)} class="circle badge">
+       <img id="profile_sight" src=${__webpack_require__(87)} class="circle badge">
+       <canvas id="profileCanvas" width="150px" height="150px" style="margin: -200px 0 16px 0; display: none;"></canvas>
        </div>
        </div>
        </div>
@@ -3557,27 +3566,25 @@ class ProfileMission {
         <script>
         </script>`
         });
-
-
     }
+
     uploadImage(e) {
         let reader = new FileReader();
         reader.onload = function (f) {
             console.log(reader);
             console.log(f);
-                let profileCanvas = document.getElementById("profileCanvas");
-                let ctx = profileCanvas.getContext("2d");
-                let img = new Image();
-                img.height = profileCanvas.height;
-                img.width = profileCanvas.width;
-                img.src = reader.result;
-                img.onload = function () {
-                    this.profileImage = img;
-                    ctx.drawImage(this.profileImage,0,0,150,150);
-                    localStorage.setItem("profileImage", profileCanvas.toDataURL("image/jpeg", 0.5));
-                };
-
-                e.classList.add("hide");
+            let profileCanvas = document.getElementById("profileCanvas");
+            let ctx = profileCanvas.getContext("2d");
+            let img = new Image();
+            img.height = profileCanvas.height;
+            img.width = profileCanvas.width;
+            img.src = reader.result;
+            img.onload = function () {
+                ctx.drawImage(img, 0, 0, 150, 150);
+                localStorage.setItem("profileImage", profileCanvas.toDataURL("image/jpeg", 0.5));
+                document.getElementById("photoFilePath").style.backgroundImage = "url(" + localStorage.getItem("profileImage") + ")";
+                localStorage.getItem("profileImage")+")";
+            }
         };
         reader.readAsDataURL(e.files[0]);
     };
@@ -3589,14 +3596,16 @@ class ProfileMission {
         document.getElementById("profile_username").innerHTML = this.username;
     };
 
-    addXp(exp = 100, multiplier = 1) {
-        let xp = localStorage.getItem("userExperience");
+    addExperience({exp = 100, multiplier = 1}) {
+        let xp = parseInt(localStorage.getItem("userExperience"));
         this.userExperience = (xp ? xp : 0) + exp * multiplier;
         localStorage.setItem("userExperience", this.userExperience);
         this.calculateLevel();
     }
 
     calculateLevel() {
+        console.log(this.userExperience);
+        console.log(this.userLevel);
         for (let i = 0; i < 20; i++) {
             if (!((this.userExperience - experienceTable[i]) < 0)) {
                 this.userExperience -= experienceTable[i];
@@ -3606,49 +3615,49 @@ class ProfileMission {
                 break;
             }
         }
+        let div = document.getElementById("profile_level");
+        let prg = document.getElementById("profile_progress");
+        if (div) div.innerHTML = "Level " + this.userLevel[0];
+        if (prg) prg.style.width = this.userLevel[1] + "%";
+        console.log(this.userLevel);
     }
 }
 
 profile = new ProfileMission();
+window.userprofile = profile;
 
 /***/ }),
 /* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "./css/Portrait_Placeholder.png?34ccc85af910f46b8d18087f780dac89";
+module.exports = __webpack_require__.p + "./img/gold_trail_00.svg?7df32e29c2db49ed3808aeeeea6f8866";
 
 /***/ }),
 /* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "./img/gold_trail_00.svg?7df32e29c2db49ed3808aeeeea6f8866";
+module.exports = __webpack_require__.p + "./img/citizen_scientist_01.svg?78f50279d3494e294ef95d8fa47a5c58";
 
 /***/ }),
 /* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "./img/citizen_scientist_01.svg?78f50279d3494e294ef95d8fa47a5c58";
+module.exports = __webpack_require__.p + "./img/gold_sight_00.svg?8b9881ffb8bd477e6c1d0d6cc6d676a6";
 
 /***/ }),
 /* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "./img/gold_sight_00.svg?8b9881ffb8bd477e6c1d0d6cc6d676a6";
+module.exports = __webpack_require__.p + "./css/tumlare.jpg?8d6797997739aba3aa4467df2d0fcc56";
 
 /***/ }),
 /* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "./css/tumlare.jpg?8d6797997739aba3aa4467df2d0fcc56";
-
-/***/ }),
-/* 90 */
-/***/ (function(module, exports, __webpack_require__) {
-
 const TrailsMission = __webpack_require__(23);
 const TumlareMission = __webpack_require__(24);
 
-const bonusMissionTrails = __webpack_require__(91);
+const bonusMissionTrails = __webpack_require__(90);
 
 for (let bmt of bonusMissionTrails.features) {
     switch (bmt.shortName) {
@@ -3676,10 +3685,16 @@ for (let bmt of bonusMissionTrails.features) {
 
 
 /***/ }),
-/* 91 */
+/* 90 */
 /***/ (function(module, exports) {
 
 module.exports = {"type":"FeatureCollection","features":[{"type":"Feature","shortName":"tumlare","title":"DAILY SPOTLIGHT: Verify Porpoise Spotting","description":"There've been a couple of reports of Porpoise in the ... area very recently and we'd like you to go out and verify it - take some pictures, share them with us and secure yourself that little extra progression towards your next towel!","properties":{"name":"Mission Area","radius":250},"geometry":{"type":"LineString","coordinates":[[12.993539460003378,55.61291160017523],[12.99182988703251,55.6142204180832],[12.991701140999796,55.61645015538507],[12.98908330500126,55.6190311603233],[12.985070720314981,55.618498008908574],[12.984298244118692,55.620885016756624],[12.978018522262573,55.61966351091109],[12.975100278854372,55.61757936595319],[12.971066236495973,55.6147680181684],[12.97166705131531,55.611859515219834]]}},{"type":"Feature","shortName":"trails","title":"WEEKLY SPOTLIGHT: Review Trail Condition","description":"This week we gonna need your help reviewing the trail at ... (see the attached map for more details) - and as every other week, your help will be rewarded with a bunch of bonus points, getting you closer to your next free coffee!","properties":{"name":"Mission Trail","radius":50},"geometry":{"type":"LineString","coordinates":[[12.502471,56.287391,123.67],[12.502619,56.287542,123.67],[12.50304,56.287657,123.67],[12.503553,56.287691,123.19],[12.503924,56.287838,123.19],[12.504228,56.287972,123.19],[12.504397,56.288008,123.19],[12.50473,56.288049,123.19],[12.505214,56.288161,123.19],[12.505396,56.288184,123.19],[12.505757,56.288253,123.19],[12.506116,56.288286,123.19],[12.506456,56.288357,123.19],[12.506666,56.288426,123.19],[12.506822,56.288481,123.19],[12.507208,56.288623,123.19],[12.507456,56.288734,123.19],[12.507609,56.288829,123.19],[12.507823,56.288998,123.19]]}}]}
+
+/***/ }),
+/* 91 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ }),
 /* 92 */
@@ -3695,12 +3710,6 @@ module.exports = {"type":"FeatureCollection","features":[{"type":"Feature","shor
 
 /***/ }),
 /* 94 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 95 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

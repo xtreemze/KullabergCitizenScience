@@ -22363,8 +22363,7 @@ module.exports = exports['default'];
 /* 92 */,
 /* 93 */,
 /* 94 */,
-/* 95 */,
-/* 96 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*

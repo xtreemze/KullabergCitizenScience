@@ -259,6 +259,8 @@ window.collectInputs = function(
             displayLength: 4000,
             classes: "blue darken-2"
         });
+        if (this.mission_area) window.userprofile.addExperience(200);
+        else window.userprofile.addExperience();
     }
     else {
         M.toast({
