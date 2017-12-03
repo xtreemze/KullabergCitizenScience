@@ -16,7 +16,7 @@ class ProfileMission {
         this.profileImage = localStorage.getItem("profileImage");
         this.username = localStorage.getItem("username");
         this.userExperience = parseInt(localStorage.getItem("userExperience"));
-        this.userLevel = [4, 65];
+        this.userLevel = this.username ? [4, 65] : [1, 0];
         this.calculateLevel();
         this.mission = new Mission({
             card: `
@@ -24,8 +24,8 @@ class ProfileMission {
   <div class="col s12 m6 l6">
     <div class="card">
       <div class="card-content" style="text-align: center;">
-           <input id="photoFilePath" accept="image/*" class="file-path validate circular" type="file" class="circle imageChanger" onchange="profile.uploadImage(this)" style="background-image: url(${src});width: 150px;height: 150px;background-size: 150px;margin-bottom: 20px;">
-        <div id="profile_username" style="font-size: 30px">${this.username}</div>
+           <input id="photoFilePath" accept="image/*" class="file-path validate circular" type="file" class="circle imageChanger" onchange="profile.uploadImage(this)" style="background-image: url(${src}); background-color: transparent;width: 150px;height: 150px;background-size: 150px;margin-bottom: 20px;">
+        <div id="profile_username" style="font-size: 30px">${this.username ? this.username : "Anonymous"}</div>
           <div class="progress">
               <div id="profile_progress" class="determinate" style="width: ${this.userLevel[1]}%;"></div>
       </div>
@@ -41,9 +41,9 @@ class ProfileMission {
    </div>
       <div><h6>Badge Collection</h6></div>
       <div class="card-action" style="padding-left: 0; padding-right:0;">
-       <img id="profile_trail" src=${require("./../img/Badges/gold_trail_00.svg")} class="circle badge">
-       <img id="profile_scientist" src=${require("./../img/Badges/citizen_scientist_01.svg")} class="circle badge">
-       <img id="profile_sight" src=${require("./../img/Badges/gold_sight_00.svg")} class="circle badge">
+       <img id="profile_trail" src=${this.username ? require("./../img/Badges/gold_trail_00.svg") : require("./../img/Badges/bronze_trail_00.svg")} class="circle badge">
+       <img id="profile_scientist" src=${this.username ? require("./../img/Badges/citizen_scientist_01.svg") : require("./../img/Flag_of_None.svg.png")} class="circle badge">
+       <img id="profile_sight" src=${this.username ? require("./../img/Badges/gold_sight_00.svg") : require("./../img/Badges/bronze_sight_00.svg")} class="circle badge">
        <canvas id="profileCanvas" width="150px" height="150px" style="margin: -200px 0 16px 0; display: none;"></canvas>
        </div>
        </div>
