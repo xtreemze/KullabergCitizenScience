@@ -161,6 +161,7 @@ class TrailsMission {
             ).addTo(map);
 
             // L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
+
             let circle = L.circle([window.Latitude.value, window.Longitude.value], {
                 color: "red",
                 fillColor: "#f03",

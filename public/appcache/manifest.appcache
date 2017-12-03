@@ -1,5 +1,5 @@
 CACHE MANIFEST
-#ver:2017-12-3 10:42:46
+#ver:2017-12-3 11:59:37
 #plugin:4.8.4
 
 CACHE:
@@ -9,15 +9,17 @@ CACHE:
 ../css/layers.png?2156800e3e3c1bb5b5f3793342668530
 ../css/layers-2x.png?a9c09ba7579071b3717569945a7078ec
 ../css/marker-icon.png?a10361fc5ac75a02e8b8c48d031c264a
-../css/Flag_of_None.svg.png?7b1c82cdd331ace4c53f7c2b1fab71ac
 ../css/trail.jpg?36249ccb9624905b8836bb15b041397a
 ../css/Portrait_Placeholder.png?34ccc85af910f46b8d18087f780dac89
+../img/gold_trail_00.svg?7df32e29c2db49ed3808aeeeea6f8866
+../img/citizen_scientist_01.svg?78f50279d3494e294ef95d8fa47a5c58
+../img/gold_sight_00.svg?8b9881ffb8bd477e6c1d0d6cc6d676a6
 ../css/tumlare.jpg?8d6797997739aba3aa4467df2d0fcc56
-../js/vendor.js?62ac966cdda86379bb35
-../js/entry.js?b26afbc82b4bd15e54f4
-../js/manifest.js?48d71dc4475c90baed55
-../css/vendor.css?62ac966cdda86379bb35
-../css/entry.css?b26afbc82b4bd15e54f4
+../js/vendor.js?2a1961ee477b4a9bc80d
+../js/entry.js?be38ab4d6d30c29de627
+../js/manifest.js?70c310899ef2413711fd
+../css/vendor.css?2a1961ee477b4a9bc80d
+../css/entry.css?be38ab4d6d30c29de627
 ../
 
 NETWORK:

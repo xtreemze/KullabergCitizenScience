@@ -151,3 +151,7 @@ main {
   margin: 0;
   padding: 0;
 }
+
+.badge {
+  width: 50px; margin: 4px 4px 0 4px;
+}
