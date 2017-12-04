@@ -105,7 +105,7 @@ const updateDB = function(database = "", dataset = {}) {
   const storageVariable = `${database}OfflineData`;
   if (dataset !== {}) {
     datasetContent["owner_id"] = client.authedId();
-    datasetContent["timestamp"] = new Date().getTime();
+    datasetContent["timestamp"] = { $date: new Date().getTime() };
 
     client
       .login()
