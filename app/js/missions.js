@@ -22,7 +22,7 @@ window.confetti = function() {
 
   let ctx = confettiId.getContext("2d");
   let confettiPieces = [];
-  let numberConfettiPieces = 150;
+  let numberConfettiPieces = 90;
   let lastUpdateTime = Date.now();
 
   function randomColor() {
