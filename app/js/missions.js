@@ -232,20 +232,17 @@ window.collectInputs = function(
     }
   }
 
+  window.showMissions(6000);
   updateDB(databaseCollection, window.data);
-
-  // Celebrate in style with cofetti
-  window.confetti();
-  setTimeout(() => {
-    window.showMissions();
-  }, 6000);
-
   // Congratulatory Message
   M.toast({
     html: congratulatoryMessage,
     displayLength: 4000,
     classes: "blue darken-2"
   });
+
+  // Celebrate in style with cofetti
+  window.confetti();
 };
 
 // Empty variable to gather and hold html for mission cards in memory
@@ -636,7 +633,7 @@ class Mission {
 }
 
 // Show missinos in the front page
-window.showMissions = function() {
+window.showMissions = function(seconds = 290) {
   loading.classList.remove("fadeOut");
   loading.classList.add("fadeIn");
   missions.innerHTML = "";
@@ -650,7 +647,7 @@ window.showMissions = function() {
       loading.classList.remove("fadeIn");
       loading.classList.add("fadeOut");
     }, 290);
-  }, 290);
+  }, seconds);
 };
 
 window.addEventListener("DOMContentLoaded", function() {

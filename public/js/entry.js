@@ -363,25 +363,25 @@ window.enableBox = function() {
 };
 
 window.confetti = function() {
-  // window.confettiId = document.getElementById("confettiId");
+  window.confettiId = document.getElementById("confettiId");
   console.log("[Confetti]", confettiId);
   confettiId.width = window.innerWidth;
   confettiId.height = window.innerHeight;
 
-  let ctx = confettiId.getContext("2d");
+  let ctx = window.confettiId.getContext("2d");
   let confettiPieces = [];
-  let numberConfettiPieces = 150;
+  let numberConfettiPieces = 90;
   let lastUpdateTime = Date.now();
 
   function randomColor() {
     let colors = [
-      "#a1670d",
+      "#d78a11",
       "#0D47A1",
       "#ffab40",
       "#0496FF",
       "#FFE821",
-      "#B0DB43",
-      "#475c12"
+      "#b7e94d",
+      "#90a913"
     ];
     return colors[Math.floor(Math.random() * colors.length)];
   }
@@ -428,8 +428,8 @@ window.confetti = function() {
   function ConfettiPieces(x, y) {
     this.x = x;
     this.y = y;
-    this.size = (Math.random() * 0.5 + 0.75) * 14;
-    this.gravity = (Math.random() * 0.5 + 0.75) * 1.1;
+    this.size = (Math.random() * 0.5 + 0.75) * 25;
+    this.gravity = (Math.random() * 0.5 + 0.75) * 1.4;
     this.rotation = Math.PI * 2 * Math.random();
     this.rotationSpeed = Math.PI * 2 * (Math.random() - 0.5) * 0.001;
     this.color = randomColor();
@@ -439,7 +439,7 @@ window.confetti = function() {
     confettiPieces.push(
       new ConfettiPieces(
         Math.random() * confettiId.width,
-        Math.random() * confettiId.height
+        Math.random() * -confettiId.height
       )
     );
   }
@@ -492,34 +492,39 @@ const updateDB = function(database = "", dataset = {}) {
           displayLength: 4000,
           classes: "yellow darken-2"
         });
-      });
-  }
-  // try to upload offline data to DB when online
-  let offlineData;
-  if (window.localStorage[storageVariable] && navigator.onLine) {
-    let offlineData = JSON.parse(window.localStorage.getItem(storageVariable));
-    client
-      .login()
-      .then(() => db.collection(database).insertMany(offlineData))
-      .then(result => {
-        window.localStorage.removeItem(storageVariable);
-        console.log("[MongoDB Stitch] Offline Updated: ", result, dataset);
-        M.toast({
-          html: "Offline Data Uploaded",
-          displayLength: 1000,
-          classes: "green darken-2"
-        });
-      })
-      .catch(error => {
-        console.error("[MongoDB Stitch] Error: ", error);
-        M.toast({
-          html: "Will Retry in 60 Seconds",
-          displayLength: 4000,
-          classes: "red darken-2"
-        });
-        window.offlineUploadAttempt = setTimeout(() => {
-          updateDB(database);
-        }, 60000);
+        // try to upload offline data to DB when online
+        if (window.localStorage[storageVariable] && navigator.onLine) {
+          offlineData = JSON.parse(
+            window.localStorage.getItem(storageVariable)
+          );
+          client
+            .login()
+            .then(() => db.collection(database).insertMany(offlineData))
+            .then(result => {
+              window.localStorage.removeItem(storageVariable);
+              console.log(
+                "[MongoDB Stitch] Offline Updated: ",
+                result,
+                dataset
+              );
+              M.toast({
+                html: "Offline Data Uploaded",
+                displayLength: 1000,
+                classes: "green darken-2"
+              });
+            })
+            .catch(error => {
+              console.error("[MongoDB Stitch] Error: ", error);
+              M.toast({
+                html: "Will Retry in 30 Seconds",
+                displayLength: 4000,
+                classes: "yellow darken-2"
+              });
+              window.offlineUploadAttempt = setTimeout(() => {
+                updateDB(database);
+              }, 30000);
+            });
+        }
       });
   }
 };
@@ -575,20 +580,17 @@ window.collectInputs = function(
     }
   }
 
+  window.showMissions(6000);
   updateDB(databaseCollection, window.data);
-  
-  // Celebrate in style with cofetti
-  window.confetti();
-  setTimeout(() => {
-    window.showMissions();
-  }, 6000);
-
   // Congratulatory Message
   M.toast({
     html: congratulatoryMessage,
     displayLength: 4000,
     classes: "blue darken-2"
   });
+
+  // Celebrate in style with cofetti
+  window.confetti();
 };
 
 // Empty variable to gather and hold html for mission cards in memory
@@ -979,7 +981,7 @@ class Mission {
 }
 
 // Show missinos in the front page
-window.showMissions = function() {
+window.showMissions = function(seconds = 290) {
   loading.classList.remove("fadeOut");
   loading.classList.add("fadeIn");
   missions.innerHTML = "";
@@ -993,7 +995,7 @@ window.showMissions = function() {
       loading.classList.remove("fadeIn");
       loading.classList.add("fadeOut");
     }, 290);
-  }, 290);
+  }, seconds);
 };
 
 window.addEventListener("DOMContentLoaded", function() {
@@ -3086,39 +3088,6 @@ trails = new Mission({
 <canvas class="fullScreenCeleb" id="confettiId"> </canvas>
 `;
     missions.innerHTML = content;
-    // const map = L.map("map", {
-    //   tapTolerance: 30,
-    //   zoomControl: false
-    // }).setView([window.Latitude.value, window.Longitude.value], 13);
-
-    // var OSMMapnik = L.tileLayer(
-    //   "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    //   {
-    //     maxZoom: 19,
-    //     attribution:
-    //       '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    //   }
-    // ).addTo(map);
-    // // L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
-    // let circle = L.circle([window.Latitude.value, window.Longitude.value], {
-    //   color: "red",
-    //   fillColor: "#f03",
-    //   fillOpacity: 0.5,
-    //   radius: geoReference.accuracy
-    // })
-    //   .addTo(map)
-    //   .bindPopup("Your Location")
-    //   .openPopup();
-    // const geoJSONTrails = require("./trails.json");
-    // L.geoJSON(geoJSONTrails, {
-    //   style: function(feature) {
-    //     return {
-    //       color: feature.properties.stroke,
-    //       opacity: 0.6,
-    //       dashArray: [7, 5]
-    //     };
-    //   }
-    // }).addTo(map);
   }
 });
 
