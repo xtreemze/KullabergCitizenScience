@@ -224,8 +224,14 @@ window.collectInputs = function(
       window.data.Location.coordinates[2] = { $decimal128: elements[e].value };
     } else if (elements[e].type == "checkbox") {
       window.data[elements[e].id] = elements[e].checked;
-    } else if (elements[e].type == "number") {
-      window.data[elements[e].id] = parseInt(elements[e].value, 10);
+    } else if (
+      elements[e].type == "number" ||
+      elements[e].id == "Quantity" ||
+      elements[e].id == "ObservationArea"
+    ) {
+      window.data[elements[e].id] = {
+        $double: parseInt(elements[e].value, 10)
+      };
     } else if (elements[e].value.length > 0) {
       window.data[elements[e].id] = elements[e].value;
     } else {
