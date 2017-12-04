@@ -153,5 +153,7 @@ main {
 }
 
 .badge {
-  width: 50px; margin: 4px 4px 0 4px;
+  width: 4rem;
+  height: 4rem;
+  margin: 1rem 0.5rem 0 0.5rem;
 }
