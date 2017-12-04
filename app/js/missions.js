@@ -343,7 +343,7 @@ class Mission {
           localStorage.setItem(database, JSON.stringify(queryDBResult));
           console.log("[LocalDB Updated]", queryDBResult);
           // Track time of last local DB update
-          window.lastUpdateLocalDB = Date();
+          window.lastUpdateLocalDB = Date().getTime();
           window.localStorage.setItem("lastUpdateLocalDB", lastUpdateLocalDB);
           window.lastUpdateLocalDB = window.localStorage.getItem(
             "lastUpdateLocalDB"
