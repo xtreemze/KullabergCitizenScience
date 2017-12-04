@@ -32,6 +32,8 @@
     "reload-html-webpack-plugin": "^0.1.2"
   },
   "devDependencies": {
+    "@types/leaflet": "^1.2.3",
+    "@types/materialize-css": "^1.0.0",
     "autoprefixer": "^7.1.6",
     "blueimp-load-image": "^2.17.1",
     "browserslist": "^2.9.1",
