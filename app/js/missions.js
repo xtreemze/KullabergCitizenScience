@@ -326,12 +326,12 @@ class Mission {
           });
           this.analyze(queryDBResult);
           localStorage.setItem(database, JSON.stringify(queryDBResult));
-          console.log(["LocalDB Updated"]);
+          console.log("[LocalDB Updated]", queryDBResult);
         })
         .catch(err => {
           console.log("[Error]", err);
           if (window.localStorage[database]) {
-            console.log(["LocalDB Exists"], database);
+            console.log("[LocalDB Exists]", database);
             this.analyze(JSON.parse(localStorage.getItem(database)));
             M.toast({
               html: "Using offline data",
@@ -409,7 +409,7 @@ class Mission {
           window.scrollTo(0, 0);
           // Resize, Load and Orient Photo
           document.getElementById("Photos").onchange = function(e) {
-            console.log("Image loaded");
+            console.log("[Image Loaded]", e.target.files[0]);
             loadImage(
               e.target.files[0],
               function(img) {
