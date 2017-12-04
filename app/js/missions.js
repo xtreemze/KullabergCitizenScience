@@ -340,6 +340,12 @@ class Mission {
           this.analyze(queryDBResult);
           localStorage.setItem(database, JSON.stringify(queryDBResult));
           console.log("[LocalDB Updated]", queryDBResult);
+          // Track time of last local DB update
+          window.lastUpdateLocalDB = Date();
+          window.localStorage.setItem("lastUpdateLocalDB", lastUpdateLocalDB);
+          window.lastUpdateLocalDB = window.localStorage.getItem(
+            "lastUpdateLocalDB"
+          );
         })
         .catch(err => {
           console.log("[Error]", err);
