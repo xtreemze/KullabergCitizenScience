@@ -27,13 +27,13 @@ window.confetti = function() {
 
   function randomColor() {
     let colors = [
-      "#a1670d",
+      "#d78a11",
       "#0D47A1",
       "#ffab40",
       "#0496FF",
       "#FFE821",
-      "#B0DB43",
-      "#475c12"
+      "#b7e94d",
+      "#90a913"
     ];
     return colors[Math.floor(Math.random() * colors.length)];
   }
@@ -80,8 +80,8 @@ window.confetti = function() {
   function ConfettiPieces(x, y) {
     this.x = x;
     this.y = y;
-    this.size = (Math.random() * 0.5 + 0.75) * 14;
-    this.gravity = (Math.random() * 0.5 + 0.75) * 1.1;
+    this.size = (Math.random() * 0.5 + 0.75) * 25;
+    this.gravity = (Math.random() * 0.5 + 0.75) * 1.4;
     this.rotation = Math.PI * 2 * Math.random();
     this.rotationSpeed = Math.PI * 2 * (Math.random() - 0.5) * 0.001;
     this.color = randomColor();
@@ -91,7 +91,7 @@ window.confetti = function() {
     confettiPieces.push(
       new ConfettiPieces(
         Math.random() * confettiId.width,
-        Math.random() * confettiId.height
+        Math.random() * -confettiId.height
       )
     );
   }
@@ -228,7 +228,7 @@ window.collectInputs = function(
   }
 
   updateDB(databaseCollection, window.data);
-  
+
   // Celebrate in style with cofetti
   window.confetti();
   setTimeout(() => {
