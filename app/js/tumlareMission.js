@@ -39,20 +39,20 @@ tumlare = new Mission({
       <h5 class="col s12">Location of Sighting</h5>
       <section class="hide">
       <div class="input-field col s6 m4">
-        <input disabled id="Latitude" type="number" value="${
+        <input disabled id="Latitude" type="text" value="${
           window.geoReference.lat
         }">
         <label for="Latitude">Latitude</label>
       </div>
       <div class="input-field col s6 m4">
-        <input disabled id="Longitude" type="number" value="${
+        <input disabled id="Longitude" type="text" value="${
           window.geoReference.long
         }">
         <label for="Longitude">Longitude</label>
       </div>
       <div class="input-field col s6 m4">
         <label class="" for="Date">Date</label>
-        <input id="Date" type="date" class="datepicker" value="${new Date()}">
+        <input id="Date" type="text" class="datepicker" value="${new Date()}">
       </div>
       </section>
       <p class="col s12">Locate the sighting on the map.</p>

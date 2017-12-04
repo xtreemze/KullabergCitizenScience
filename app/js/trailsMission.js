@@ -91,20 +91,20 @@ trails = new Mission({
         <div id="map"></div>
       </div>
       <div class="input-field col s6 m3">
-        <input disabled id="Latitude" type="number" value="${
+        <input disabled id="Latitude" type="text" value="${
           window.geoReference.lat
         }">
         <label for="Latitude">Latitude</label>
       </div>
       <div class="input-field col s6 m3">
-        <input disabled id="Longitude" type="number" value="${
+        <input disabled id="Longitude" type="text" value="${
           window.geoReference.long
         }">
         <label for="Longitude">Longitude</label>
       </div>
       <div class="col s6 m4">
         <label for="Date">Date</label>
-        <input disabled id="Date" type="date" class="datepicker" value="${new Date()}">
+        <input disabled id="Date" type="text" class="datepicker" value="${new Date()}">
       </div>
       <p class="col s12 m6 l4">
         <label>
