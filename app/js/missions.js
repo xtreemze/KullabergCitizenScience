@@ -217,11 +217,11 @@ window.collectInputs = function(
         // $date: new Date(elements[e].value)
       };
     } else if (elements[e].id === "Longitude") {
-      window.data.Location.coordinates[0] = { $decimal128: elements[e].value };
+      window.data.Location.coordinates[0] = { $decimal: elements[e].value };
     } else if (elements[e].id === "Latitude") {
-      window.data.Location.coordinates[1] = { $decimal128: elements[e].value };
+      window.data.Location.coordinates[1] = { $decimal: elements[e].value };
     } else if (elements[e].id === "Altitude") {
-      window.data.Location.coordinates[2] = { $decimal128: elements[e].value };
+      window.data.Location.coordinates[2] = { $decimal: elements[e].value };
     } else if (elements[e].type == "checkbox") {
       window.data[elements[e].id] = elements[e].checked;
     } else if (
