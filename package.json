@@ -4,13 +4,18 @@
   "description": "Reporting for Kullaberg",
   "main": "index.html",
   "scripts": {
-    "test": "node ./rmDir.js && webpack --env=prod --profile",
-    "dev": "webpack-dev-server --host localhost --port 8080 --env=dev --inline --hot --profile --open",
-    "hotDebug": "webpack-dev-server --host localhost --port 8080 --env=dev --inline --hot --profile",
-    "debug": "webpack-dev-server --host localhost --port 8080 --env=dev --profile",
-    "net2": "webpack-dev-server --host 192.168.1.227 --port 80 --env=dev --profile --open",
+    // "test": "node ./rmDir.js && webpack --env=prod --profile",
+    "dev":
+      "webpack-dev-server --host localhost --port 8080 --env=dev --inline --hot --profile --open",
+    "hotDebug":
+      "webpack-dev-server --host localhost --port 8080 --env=dev --inline --hot --profile",
+    "debug":
+      "webpack-dev-server --host localhost --port 8080 --env=dev --profile",
+    "net2":
+      "webpack-dev-server --host 192.168.1.227 --port 80 --env=dev --profile --open",
     "watch": "webpack --progress --colors --env=dev --profile --watch",
-    "exportp": "node ./rmDir.js && webpack --env=prod --profile --progress --colors",
+    "exportp":
+      "node ./rmDir.js && webpack --env=prod --profile --progress --colors",
     "rm": "node ./rmDir.js",
     "clean": "node ./clean.js && npm i -D && npm up -D"
   },
@@ -24,10 +29,7 @@
     "url": "https://github.com/xtreemze/KullabergCitizenScience/issues"
   },
   "homepage": "https://github.com/xtreemze/KullabergCitizenScience#readme",
-  "browserslist": [
-    "> 1%",
-    "last 2 versions"
-  ],
+  "browserslist": ["> 1%", "last 2 versions"],
   "dependencies": {
     "reload-html-webpack-plugin": "^0.1.2"
   },
