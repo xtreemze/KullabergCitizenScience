@@ -104,7 +104,7 @@ trails = new Mission({
       </div>
       <div class="col s6 m4">
         <label for="Date">Date</label>
-        <input disabled id="Date" type="text" class="datepicker" value="${new Date().toDateString()}">
+        <input disabled id="Date" type="date" class="datepicker" value="${new Date()}">
       </div>
       <p class="col s12 m6 l4">
         <label>

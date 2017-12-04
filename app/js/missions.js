@@ -401,7 +401,7 @@ class Mission {
                 // container: ".datepicker",
                 setDefaultDate: true,
                 // format: "mmm-dd-yyyy",
-                defaultDate: new Date().toDateString(),
+                defaultDate: new Date(),
                 yearRange: 2
               });
             }
