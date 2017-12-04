@@ -4,6 +4,7 @@
 //init jquery
 
 var elem = document.querySelector('.carousel');
+<<<<<<< HEAD
 var instance = new M.Carousel(elem, {
     duration:40
 });
@@ -62,3 +63,15 @@ const getDelay = (i) =>{
 //4 = towel
 
 
+=======
+var instance = new M.Carousel(elem);
+
+function spin(){
+    instance.next(3);
+}
+
+window.onload = spin;
+
+//decide on prize
+//
+>>>>>>> f637676ccb97ac45cfbf4187e82067355c9d9162
