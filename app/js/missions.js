@@ -105,6 +105,8 @@ const updateDB = function(database = "", dataset = {}) {
   const storageVariable = `${database}OfflineData`;
   if (dataset !== {}) {
     datasetContent["owner_id"] = client.authedId();
+    datasetContent["timestamp"] = new Date().getTime();
+
     client
       .login()
       .then(() => db.collection(database).insertOne(datasetContent))
