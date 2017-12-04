@@ -137,38 +137,5 @@ trails = new Mission({
 <canvas class="fullScreenCeleb" id="confettiId"> </canvas>
 `;
     missions.innerHTML = content;
-    // const map = L.map("map", {
-    //   tapTolerance: 30,
-    //   zoomControl: false
-    // }).setView([window.Latitude.value, window.Longitude.value], 13);
-
-    // var OSMMapnik = L.tileLayer(
-    //   "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    //   {
-    //     maxZoom: 19,
-    //     attribution:
-    //       '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    //   }
-    // ).addTo(map);
-    // // L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(map);
-    // let circle = L.circle([window.Latitude.value, window.Longitude.value], {
-    //   color: "red",
-    //   fillColor: "#f03",
-    //   fillOpacity: 0.5,
-    //   radius: geoReference.accuracy
-    // })
-    //   .addTo(map)
-    //   .bindPopup("Your Location")
-    //   .openPopup();
-    // const geoJSONTrails = require("./trails.json");
-    // L.geoJSON(geoJSONTrails, {
-    //   style: function(feature) {
-    //     return {
-    //       color: feature.properties.stroke,
-    //       opacity: 0.6,
-    //       dashArray: [7, 5]
-    //     };
-    //   }
-    // }).addTo(map);
   }
 });
