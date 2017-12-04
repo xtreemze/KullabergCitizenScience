@@ -659,7 +659,7 @@ window.addEventListener("DOMContentLoaded", function() {
   window.scrollTo(0, 0);
   setTimeout(() => {
     loading.classList.add("fadeOut");
-  }, 10);
+  }, 290);
 });
 
 // Additional missions go in separate files and require this file. Add them to ./../entry.js
