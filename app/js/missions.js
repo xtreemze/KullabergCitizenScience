@@ -212,10 +212,11 @@ window.collectInputs = function(
     ) {
       // console.log("[Form1] Excluded: ", elements[e]);
     } else if (elements[e].value.id === "Date") {
-      window.data[elements[e].id] = {
-        $date: new Date()
-        // $date: new Date(elements[e].value)
-      };
+      window.data[elements[e].id] = new Date();
+      // {
+      //   $date: new Date()
+      //   // $date: new Date(elements[e].value)
+      // }
     } else if (elements[e].id === "Longitude") {
       window.data.Location.coordinates[0] = {
         $numberDecimal: elements[e].value
