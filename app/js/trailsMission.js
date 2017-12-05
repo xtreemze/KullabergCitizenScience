@@ -13,6 +13,30 @@ trails = new Mission({
     content += `<div class="row">
   <form class="" onsubmit="return false">
     <h3 class="col s12">${this.title}</h3>
+    <h5 class="col s12">Georeference</h5>
+    <div class="col s12">
+    <div id="map"></div>
+    </div>
+    <section class="hide">
+      <div class="input-field col s6 m3">
+        <input disabled id="Latitude" type="text" value="${
+          window.geoReference.lat
+        }">
+        <label for="Latitude">Latitude</label>
+      </div>
+      <div class="input-field col s6 m3">
+        <input disabled id="Longitude" type="text" value="${
+          window.geoReference.long
+        }">
+        <label for="Longitude">Longitude</label>
+      </div>
+      <p class="col s12 m6 l4">
+        <label>
+          <input id="Resolved" type="checkbox">
+          <span>Resolved</span>
+        </label>
+      </p>
+    </section>
     <h5 class="col s12">Select All that Apply</h5>
     <p class="col s12 m6 l4">
       <label>
@@ -85,31 +109,7 @@ trails = new Mission({
         <span class="helper-text">Example: Many people, conflicts betwen hikers, horses, bicycles.</span>
       </div>
     </div>
-    <section class="hide">
-      <h5 class="col s12">Georeference</h5>
-      <div class="col s12">
-        <div id="map"></div>
-      </div>
-      <div class="input-field col s6 m3">
-        <input disabled id="Latitude" type="text" value="${
-          window.geoReference.lat
-        }">
-        <label for="Latitude">Latitude</label>
-      </div>
-      <div class="input-field col s6 m3">
-        <input disabled id="Longitude" type="text" value="${
-          window.geoReference.long
-        }">
-        <label for="Longitude">Longitude</label>
-      </div>
 
-      <p class="col s12 m6 l4">
-        <label>
-          <input id="Resolved" type="checkbox">
-          <span>Resolved</span>
-        </label>
-      </p>
-    </section>
     <section class="col s12 m6">
       <div class="row">
         <canvas height="64" class="col s12" id="photoPreview"></canvas>
@@ -134,5 +134,50 @@ trails = new Mission({
 <canvas class="fullScreenCeleb" id="confettiId"> </canvas>
 `;
     missions.innerHTML = content;
+
+    const map = L.map("map", {
+      tapTolerance: 30,
+      zoomControl: false
+    }).setView([window.Latitude.value, window.Longitude.value], 13);
+
+    var OSMMapnik = L.tileLayer(
+      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      {
+        maxZoom: 19,
+        attribution:
+          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      }
+    ).addTo(map);
+
+    const geoJSONTrails = require("./trails.json");
+
+    window.mappedTrails = L.geoJSON(geoJSONTrails, {
+      style: function(feature) {
+        return {
+          color: feature.properties.stroke,
+          opacity: 0.6,
+          dashArray: [7, 5]
+        };
+      }
+    });
+    // map.fitBounds(window.mappedTrails.getBounds(), { padding: [82, 82] });
+    mappedTrails.addTo(map);
+    let circle = L.circle([window.Latitude.value, window.Longitude.value], {
+      color: "red",
+      fillColor: "#f03",
+      fillOpacity: 0.5,
+      radius: 5
+    })
+      .addTo(map)
+      .bindPopup("Your Location")
+      .openPopup();
+    let popup = L.popup();
+
+    window.radius = L.circle([window.Latitude.value, window.Longitude.value], {
+      color: "#0288d1",
+      fillColor: "#0d47a1",
+      fillOpacity: 0.5,
+      radius: geoReference.accuracy
+    }).addTo(map);
   }
 });

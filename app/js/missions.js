@@ -16,7 +16,7 @@ window.enableBox = function() {
 
 window.confetti = function() {
   window.confettiId = document.getElementById("confettiId");
-  console.log("[Confetti]", confettiId);
+  // console.log("[Confetti]", confettiId);
   confettiId.width = window.innerWidth;
   confettiId.height = window.innerHeight;
 
@@ -510,7 +510,7 @@ class Mission {
         }
         if (!queryDBResult[i].ObservationArea) {
           // Size of map marker for missions other than Tumalre
-          queryDBResult[i].Location.properties.radius = 16;
+          queryDBResult[i].Location.properties.radius = 14;
         } else {
           queryDBResult[i].Location.properties.quantity =
             queryDBResult[i].Quantity;
@@ -526,7 +526,7 @@ class Mission {
             popInfo += `${feature.properties.photo}`;
           }
           return new L.circleMarker(latlng, {
-            radius: 16,
+            radius: 14,
             fillColor: "#0d48a1",
             color: "#f5f5f5",
             weight: 3,
@@ -541,27 +541,27 @@ class Mission {
           if (!feature.properties.photo === false) {
             popInfo += `${feature.properties.photo}`;
           }
-          if (feature.properties.radius < 64) {
-            return new L.circleMarker(latlng, {
-              radius: 16,
-              fillColor: "#0d48a1",
-              color: "#f5f5f5",
-              weight: 3,
-              opacity: 1,
-              fillOpacity: 0.7
-            }).bindPopup(`${popInfo}`);
-          } else {
-            return new L.circle(latlng, {
-              // radius: 5,
-              fillColor: "#0d48a1",
-              color: "#f5f5f5",
-              weight: 3,
-              opacity: 1,
-              fillOpacity: 0.7,
-              radius: feature.properties.radius
-            }).bindPopup(`${popInfo}`);
-            // .on("click", window.enableBox());
-          }
+          // if (feature.properties.radius < 64) {
+          return new L.circleMarker(latlng, {
+            radius: 14,
+            fillColor: "#0d48a1",
+            color: "#f5f5f5",
+            weight: 3,
+            opacity: 1,
+            fillOpacity: 0.7
+          }).bindPopup(`${popInfo}`);
+          // } else {
+          //   return new L.circle(latlng, {
+          //     // radius: 5,
+          //     fillColor: "#0d48a1",
+          //     color: "#f5f5f5",
+          //     weight: 3,
+          //     opacity: 1,
+          //     fillOpacity: 0.7,
+          //     radius: feature.properties.radius
+          //   }).bindPopup(`${popInfo}`);
+          // .on("click", window.enableBox());
+          // }
         }
       };
       let options = {};
@@ -629,7 +629,7 @@ class Mission {
     <div class="card">
       <div class="card-image">
         <img src="${this.image}">
-        <span class="card-title">${this.title}</span>
+        <span class="card-title"><b>${this.title}</b></span>
       </div>
       <div class="card-content">
         <div>${this.description}</div>

@@ -151,3 +151,15 @@ main {
   margin: 0;
   padding: 0;
 }
+
+.card {
+  border-radius: 0.5rem;
+}
+
+.card .card-image img {
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.card .card-action {
+  background: none;
+}
