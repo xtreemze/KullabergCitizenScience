@@ -22,7 +22,7 @@ window.confetti = function() {
 
   let ctx = window.confettiId.getContext("2d");
   let confettiPieces = [];
-  let numberConfettiPieces = 90;
+  let numberConfettiPieces = 60;
   let lastUpdateTime = Date.now();
 
   function randomColor() {
@@ -80,8 +80,8 @@ window.confetti = function() {
   function ConfettiPieces(x, y) {
     this.x = x;
     this.y = y;
-    this.size = (Math.random() * 0.5 + 0.75) * 25;
-    this.gravity = (Math.random() * 0.5 + 0.75) * 1.4;
+    this.size = (Math.random() * 0.5 + 0.75) * 36;
+    this.gravity = (Math.random() * 0.5 + 0.75) * 2.5;
     this.rotation = Math.PI * 2 * Math.random();
     this.rotationSpeed = Math.PI * 2 * (Math.random() - 0.5) * 0.001;
     this.color = randomColor();
@@ -105,13 +105,13 @@ const updateDB = function(database = "", dataset = {}) {
   const storageVariable = `${database}OfflineData`;
   if (dataset !== {}) {
     datasetContent["owner_id"] = client.authedId();
-    datasetContent["timestamp"] = { $date: new Date().getTime() };
+    datasetContent["Date"] = new Date();
 
     client
       .login()
       .then(() => db.collection(database).insertOne(datasetContent))
       .then(result => {
-        console.log("[MongoDB Stitch] Updated: ", result, dataset);
+        console.log("[MongoDB Stitch] Updated:", result, dataset);
         M.toast({
           html: "Database Updated",
           displayLength: 1000,
@@ -156,11 +156,7 @@ const updateDB = function(database = "", dataset = {}) {
             .then(() => db.collection(database).insertMany(offlineData))
             .then(result => {
               window.localStorage.removeItem(storageVariable);
-              console.log(
-                "[MongoDB Stitch] Offline Updated: ",
-                result,
-                dataset
-              );
+              console.log("[MongoDB Stitch] Offline Updated:", result, dataset);
               M.toast({
                 html: "Offline Data Uploaded",
                 displayLength: 1000,
@@ -214,9 +210,10 @@ window.collectInputs = function(
     ) {
       // console.log("[Form1] Excluded: ", elements[e]);
     } else if (elements[e].value.id === "Date") {
+      // window.data[elements[e].id] = {
       window.data[elements[e].id] = {
-        // $date: new Date()
-        $date: new Date(elements[e].value)
+        $date: new Date().toISOString()
+        // $date: new Date(elements[e].value)
       };
     } else if (elements[e].id === "Longitude") {
       window.data.Location.coordinates[0] = {
@@ -237,17 +234,16 @@ window.collectInputs = function(
       elements[e].id == "Quantity" ||
       elements[e].id == "ObservationArea"
     ) {
-      window.data[elements[e].id] = {
-        $double: parseInt(elements[e].value, 10)
-      };
+      window.data[elements[e].id] = parseInt(elements[e].value, 10);
     } else if (elements[e].value.length > 0) {
       window.data[elements[e].id] = elements[e].value;
-    } else {
-      console.log("[Form2] Excluded: ", elements[e]);
     }
+    //  else {
+    //   console.log("[Form2] Excluded:", elements[e]);
+    // }
   }
 
-  window.showMissions(6000);
+  window.showMissions(4000);
   updateDB(databaseCollection, window.data);
   // Congratulatory Message
   M.toast({
@@ -332,7 +328,6 @@ class Mission {
         )
         .then(docs => {
           let queryDBResult = docs;
-          console.log("[MongoDB Stitch] Connected to Stitch");
           console.log("[MongoDB Stitch] Found: ", queryDBResult);
           M.toast({
             html: "Data Obtained",
@@ -343,7 +338,7 @@ class Mission {
           localStorage.setItem(database, JSON.stringify(queryDBResult));
           console.log("[LocalDB Updated]", queryDBResult);
           // Track time of last local DB update
-          window.lastUpdateLocalDB = Date().getTime();
+          window.lastUpdateLocalDB = new Date().getTime();
           window.localStorage.setItem("lastUpdateLocalDB", lastUpdateLocalDB);
           window.lastUpdateLocalDB = window.localStorage.getItem(
             "lastUpdateLocalDB"
@@ -415,18 +410,18 @@ class Mission {
               const newInstance = new M.Select(multiSelect[element]);
             }
           }
-          let datePicker = document.querySelectorAll(".datepicker");
-          for (const element in datePicker) {
-            if (datePicker.hasOwnProperty(element)) {
-              const datePickerInstance = new M.Datepicker(datePicker[element], {
-                // container: ".datepicker",
-                setDefaultDate: true,
-                // format: "mmm-dd-yyyy",
-                defaultDate: new Date(),
-                yearRange: 2
-              });
-            }
-          }
+          // let datePicker = document.querySelectorAll(".datepicker");
+          // for (const element in datePicker) {
+          //   if (datePicker.hasOwnProperty(element)) {
+          //     const datePickerInstance = new M.Datepicker(datePicker[element], {
+          //       // container: ".datepicker",
+          //       setDefaultDate: true,
+          //       // format: "mmm-dd-yyyy",
+          //       defaultDate: new Date(),
+          //       yearRange: 2
+          //     });
+          //   }
+          // }
           window.scrollTo(0, 0);
           // Resize, Load and Orient Photo
           document.getElementById("Photos").onchange = function(e) {
@@ -473,7 +468,7 @@ class Mission {
       const geoJSONPoints = [];
 
       for (let i = queryDBResult.length - 1; i > -1; i--) {
-        let dbResponse = `<span>${queryDBResult[i].Date}</span><br>`;
+        let dbResponse = `<span>${new Date(queryDBResult[i].Date)}</span><br>`;
 
         for (const key in queryDBResult[i]) {
           // For simplicity, do not show these database results:
@@ -486,6 +481,7 @@ class Mission {
             key === "photoFilePath" ||
             key === "Photos" ||
             key === "Status" ||
+            key === "timestamp" ||
             queryDBResult[i][key] === false ||
             queryDBResult[i][key] === "Low"
           ) {
@@ -576,7 +572,7 @@ class Mission {
       }
       // Passing all points to cluster marker with the above mission display options
       let reports = L.geoJSON(geoJSONPoints, options);
-      console.log("[Mapped Points]", geoJSONPoints);
+      console.log("[Leaflet] Mapped:", geoJSONPoints);
       var markers = L.markerClusterGroup({
         spiderLegPolylineOptions: {
           weight: 2.4,

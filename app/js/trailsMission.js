@@ -102,10 +102,7 @@ trails = new Mission({
         }">
         <label for="Longitude">Longitude</label>
       </div>
-      <div class="col s6 m4">
-        <label for="Date">Date</label>
-        <input disabled id="Date" type="text" class="datepicker" value="${new Date()}">
-      </div>
+
       <p class="col s12 m6 l4">
         <label>
           <input id="Resolved" type="checkbox">

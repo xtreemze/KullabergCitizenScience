@@ -50,10 +50,7 @@ tumlare = new Mission({
         }">
         <label for="Longitude">Longitude</label>
       </div>
-      <div class="input-field col s6 m4">
-        <label class="" for="Date">Date</label>
-        <input id="Date" type="text" class="datepicker" value="${new Date()}">
-      </div>
+
       </section>
       <p class="col s12">Locate the sighting on the map.</p>
       <div class="col s12">
