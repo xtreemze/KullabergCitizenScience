@@ -281,7 +281,6 @@ window.offlineUp = function(databaseCollection) {
       });
   }
 };
-offlineUp("TrailCondition", "TrailCondition");
 // Empty variable to gather and hold html for mission cards in memory
 let missionCardsHTML = ``;
 
@@ -413,6 +412,7 @@ class Mission {
       mappedTrails.addTo(map);
     };
     this.monitor = function() {
+      offlineUp(this.databaseCollection);
       navigator.geolocation.getCurrentPosition(
         position => {
           window.geoReference = {
