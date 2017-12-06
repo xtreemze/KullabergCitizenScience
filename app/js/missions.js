@@ -146,7 +146,7 @@ const updateDB = function(database = "", dataset = {}) {
           displayLength: 4000,
           classes: "yellow darken-2"
         });
-        offlineUp(this.databaseCollection);
+        offlineUp(database);
         // try to upload offline data to DB when online
         // if (window.localStorage[storageVariable] && navigator.onLine) {
         //   offlineData = JSON.parse(
