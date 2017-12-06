@@ -153,13 +153,13 @@ main {
 }
 
 .card {
-  border-radius: 0.5rem;
+  border-radius: 0.5rem !important;
 }
 
 .card .card-image img {
-  border-radius: 0.5rem 0.5rem 0 0;
+  border-radius: 0.5rem 0.5rem 0 0 !important;
 }
 
 .card .card-action {
-  background: none;
+  background: none !important;
 }
