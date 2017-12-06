@@ -427,7 +427,7 @@ class Mission {
           <a onclick="showMissions()" class="pointer breadcrumb">${
             this.title
           }</a>
-          <a class="pointer breadcrumb">Monitor</a>
+          <a class="pointer breadcrumb">Monitoring</a>
           `;
           M.updateTextFields();
           let multiSelect = document.querySelectorAll("select");
