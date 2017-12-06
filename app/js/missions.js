@@ -113,7 +113,7 @@ const updateDB = function(database = "", dataset = {}) {
       .then(result => {
         console.log("[MongoDB Stitch] Updated:", result, dataset);
         M.toast({
-          html: "Database Updated",
+          html: "Reports Added: 1",
           displayLength: 1000,
           classes: "green darken-2"
         });
@@ -158,7 +158,7 @@ const updateDB = function(database = "", dataset = {}) {
               window.localStorage.removeItem(storageVariable);
               console.log("[MongoDB Stitch] Offline Updated:", result, dataset);
               M.toast({
-                html: "Offline Data Uploaded",
+                html: "Reports Uploaded: " + offlineData.length,
                 displayLength: 1000,
                 classes: "green darken-2"
               });
