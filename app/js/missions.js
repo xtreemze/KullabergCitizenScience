@@ -101,7 +101,7 @@ window.confetti = function() {
     draw();
   }, 172);
 };
-confetti();
+// confetti();
 const updateDB = function(database = "", dataset = {}) {
   let datasetContent = dataset;
   const storageVariable = `${database}OfflineData`;
