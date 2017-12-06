@@ -307,7 +307,7 @@ class Mission {
 
       navigationBreadcrumbs.innerHTML = `
       <a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
-        <a class="pointer breadcrumb">Analyze</a>
+        <a class="pointer breadcrumb">Evaluation</a>
         `;
 
       window.scrollTo(0, 0);
@@ -635,8 +635,8 @@ class Mission {
         <div>${this.description}</div>
       </div>
       <div class="card-action">
-        <a class="pointer" onclick="${this.shortName}.monitor()">Monitor</a>
-        <a class="pointer" onclick="${this.shortName}.queryDB()">Analyze</a>
+        <a class="pointer" onclick="${this.shortName}.monitor()">Monitoring</a>
+        <a class="pointer" onclick="${this.shortName}.queryDB()">Evaluation</a>
         </div>
         </div>
         </div>
