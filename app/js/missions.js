@@ -216,17 +216,11 @@ window.collectInputs = function(
         // $date: new Date(elements[e].value)
       };
     } else if (elements[e].id === "Longitude") {
-      window.data.Location.coordinates[0] = {
-        $numberDecimal: elements[e].value
-      };
+      window.data.Location.coordinates[0] = parseFloat(elements[e].value, 10);
     } else if (elements[e].id === "Latitude") {
-      window.data.Location.coordinates[1] = {
-        $numberDecimal: elements[e].value
-      };
+      window.data.Location.coordinates[1] = parseFloat(elements[e].value, 10);
     } else if (elements[e].id === "Altitude") {
-      window.data.Location.coordinates[2] = {
-        $numberDecimal: elements[e].value
-      };
+      window.data.Location.coordinates[2] = parseFloat(elements[e].value, 10);
     } else if (elements[e].type == "checkbox") {
       window.data[elements[e].id] = elements[e].checked;
     } else if (
@@ -465,6 +459,14 @@ class Mission {
       );
     };
     this.analyze = function(queryDBResult) {
+      if (queryDBResult.length === 0) {
+        M.toast({
+          html: "Database Empty",
+          displayLength: 1000,
+          classes: "yellow darken-2"
+        });
+        return false;
+      }
       const geoJSONPoints = [];
 
       for (let i = queryDBResult.length - 1; i > -1; i--) {
