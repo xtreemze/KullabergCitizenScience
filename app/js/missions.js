@@ -22,7 +22,7 @@ window.confetti = function() {
 
   let ctx = window.confettiId.getContext("2d");
   let confettiPieces = [];
-  let numberConfettiPieces = 60;
+  let numberConfettiPieces = 52;
   let lastUpdateTime = Date.now();
 
   function randomColor() {
@@ -55,7 +55,8 @@ window.confetti = function() {
 
     lastUpdateTime = now;
 
-    setTimeout(update, 1);
+    // setTimeout(update, 2);
+    requestAnimationFrame(update);
   }
 
   function draw() {
@@ -80,10 +81,10 @@ window.confetti = function() {
   function ConfettiPieces(x, y) {
     this.x = x;
     this.y = y;
-    this.size = (Math.random() * 0.5 + 0.75) * 36;
-    this.gravity = (Math.random() * 0.5 + 0.75) * 2.5;
+    this.size = (Math.random() * 0.5 + 0.75) * 48;
+    this.gravity = (Math.random() * 0.5 + 0.75) * 10;
     this.rotation = Math.PI * 2 * Math.random();
-    this.rotationSpeed = Math.PI * 2 * (Math.random() - 0.5) * 0.001;
+    this.rotationSpeed = Math.PI * 2 * (Math.random() - 0.5) * 0.0015;
     this.color = randomColor();
   }
 
@@ -95,11 +96,12 @@ window.confetti = function() {
       )
     );
   }
-
-  update();
-  draw();
+  setTimeout(() => {
+    update();
+    draw();
+  }, 172);
 };
-
+confetti();
 const updateDB = function(database = "", dataset = {}) {
   let datasetContent = dataset;
   const storageVariable = `${database}OfflineData`;
@@ -238,7 +240,7 @@ window.collectInputs = function(
     // }
   }
 
-  window.showMissions(4000);
+  window.showMissions(3000);
   updateDB(databaseCollection, window.data);
   // Congratulatory Message
   M.toast({
@@ -331,7 +333,9 @@ class Mission {
       `;
 
       navigationBreadcrumbs.innerHTML = `
-      <a onclick="showMissions()" class="pointer breadcrumb">${this.title}</a>
+      <a onclick="showMissions(600)" class="pointer breadcrumb">${
+        this.title
+      }</a>
         <a class="pointer breadcrumb">Evaluation</a>
         `;
 
@@ -423,7 +427,7 @@ class Mission {
           this.monitorSuccess();
 
           navigationBreadcrumbs.innerHTML = `
-          <a onclick="showMissions()" class="pointer breadcrumb">${
+          <a onclick="showMissions(600)" class="pointer breadcrumb">${
             this.title
           }</a>
           <a class="pointer breadcrumb">Monitoring</a>
@@ -576,23 +580,40 @@ class Mission {
         }
         geoJSONPoints.push(queryDBResult[i].Location);
       }
-      let trails = {
-        pointToLayer: function(feature, latlng) {
-          let popInfo = `${feature.properties.description}<br>`;
-          if (!feature.properties.photo === false) {
-            popInfo += `${feature.properties.photo}`;
-          }
-          return new L.circleMarker(latlng, {
-            radius: 14,
-            fillColor: "#0d48a1",
-            color: "#f5f5f5",
-            weight: 3,
-            opacity: 1,
-            fillOpacity: 0.7
-          }).bindPopup(`${popInfo}`);
-        }
-      };
-      let tumlare = {
+      // let trails = {
+      //   pointToLayer: function(feature, latlng) {
+      //     let popInfo = `${feature.properties.description}<br>`;
+      //     if (!feature.properties.photo === false) {
+      //       popInfo += `${feature.properties.photo}`;
+      //     }
+      //     return new L.circleMarker(latlng, {
+      //       radius: 14,
+      //       fillColor: "#0d48a1",
+      //       color: "#f5f5f5",
+      //       weight: 3,
+      //       opacity: 1,
+      //       fillOpacity: 0.7
+      //     }).bindPopup(`${popInfo}`);
+      //   }
+      // };
+      // let tumlare = {
+      //   pointToLayer: function(feature, latlng) {
+      //     let popInfo = `${feature.properties.description}<br>`;
+      //     if (!feature.properties.photo === false) {
+      //       popInfo += `${feature.properties.photo}`;
+      //     }
+      //     // if (feature.properties.radius < 64) {
+      //     return new L.circleMarker(latlng, {
+      //       radius: 14,
+      //       fillColor: "#0d48a1",
+      //       color: "#f5f5f5",
+      //       weight: 3,
+      //       opacity: 1,
+      //       fillOpacity: 0.7
+      //     }).bindPopup(`${popInfo}`);
+      //   }
+      // };
+      let options = {
         pointToLayer: function(feature, latlng) {
           let popInfo = `${feature.properties.description}<br>`;
           if (!feature.properties.photo === false) {
@@ -609,14 +630,14 @@ class Mission {
           }).bindPopup(`${popInfo}`);
         }
       };
-      let options = {};
-      if (queryDBResult.length > 0) {
-        if (!queryDBResult[0].ObservationArea === false) {
-          options = tumlare;
-        } else {
-          options = trails;
-        }
-      }
+      // let options = {};
+      // if (queryDBResult.length > 0) {
+      //   if (!queryDBResult[0].ObservationArea === false) {
+      //     options = tumlare;
+      //   } else {
+      //     options = trails;
+      //   }
+      // }
       // Passing all points to cluster marker with the above mission display options
       let reports = L.geoJSON(geoJSONPoints, options);
       console.log("[Leaflet] Mapped:", geoJSONPoints);
@@ -627,25 +648,26 @@ class Mission {
           opacity: 1
         },
         // singleMarkerMode: true,
-        spiderfyDistanceMultiplier: 1.8,
+        spiderfyDistanceMultiplier: 1.6,
         maxClusterRadius: 92,
         showCoverageOnHover: false,
         iconCreateFunction: function(cluster) {
           var childCount = cluster.getChildCount();
           // different styles for the cluster depending on the area covered
           var c = " marker-cluster-";
-          if (childCount < 10) {
-            c += "small";
-          } else if (childCount < 20) {
-            c += "medium";
-          } else {
-            c += "large";
-          }
+          c += "small";
+          // if (childCount < 10) {
+          //   c += "small";
+          // } else if (childCount < 20) {
+          //   c += "medium";
+          // } else {
+          //   c += "large";
+          // }
 
           return new L.DivIcon({
             html: "<div><span>" + childCount + "</span></div>",
             className:
-              "marker-cluster" + c + " fadeIn scale-transition scale-out",
+              "marker-cluster" + c + " fadeIn",
             iconSize: new L.Point(36, 36)
           });
         }

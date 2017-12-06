@@ -97,7 +97,7 @@ main {
 }
 
 .fadeOut {
-  animation: fadeOut 0.3s ease-out forwards;
+  animation: fadeOut 0.5s ease-out forwards;
   opacity: 1;
   pointer-events: none;
 }
@@ -124,7 +124,7 @@ main {
 }
 
 .fadeIn {
-  animation: fadeIn 0.3s ease-in forwards !important;
+  animation: fadeIn 0.5s ease-in forwards !important;
   opacity: 0 !important;
 }
 
