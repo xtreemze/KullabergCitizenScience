@@ -113,7 +113,7 @@ const updateDB = function(database = "", dataset = {}) {
       .then(result => {
         console.log("[MongoDB Stitch] Updated:", result, dataset);
         M.toast({
-          html: "Reports Added: 1",
+          html: "Reports Uploaded: 1",
           displayLength: 1000,
           classes: "green darken-2"
         });
@@ -142,39 +142,40 @@ const updateDB = function(database = "", dataset = {}) {
           );
         }
         M.toast({
-          html: "Saved Offline",
+          html: "Reports Saved: " + offlineData.length,
           displayLength: 4000,
           classes: "yellow darken-2"
         });
+        offlineUp(this.databaseCollection);
         // try to upload offline data to DB when online
-        if (window.localStorage[storageVariable] && navigator.onLine) {
-          offlineData = JSON.parse(
-            window.localStorage.getItem(storageVariable)
-          );
-          client
-            .login()
-            .then(() => db.collection(database).insertMany(offlineData))
-            .then(result => {
-              window.localStorage.removeItem(storageVariable);
-              console.log("[MongoDB Stitch] Offline Updated:", result, dataset);
-              M.toast({
-                html: "Reports Uploaded: " + offlineData.length,
-                displayLength: 1000,
-                classes: "green darken-2"
-              });
-            })
-            .catch(error => {
-              console.error("[MongoDB Stitch] Error: ", error);
-              M.toast({
-                html: "Will Retry in 30 Seconds",
-                displayLength: 4000,
-                classes: "yellow darken-2"
-              });
-              window.offlineUploadAttempt = setTimeout(() => {
-                updateDB(database);
-              }, 30000);
-            });
-        }
+        // if (window.localStorage[storageVariable] && navigator.onLine) {
+        //   offlineData = JSON.parse(
+        //     window.localStorage.getItem(storageVariable)
+        //   );
+        //   client
+        //     .login()
+        //     .then(() => db.collection(database).insertMany(offlineData))
+        //     .then(result => {
+        //       window.localStorage.removeItem(storageVariable);
+        //       console.log("[MongoDB Stitch] Offline Updated:", result, dataset);
+        //       M.toast({
+        //         html: "Reports Uploaded: " + offlineData.length,
+        //         displayLength: 1000,
+        //         classes: "green darken-2"
+        //       });
+        //     })
+        //     .catch(error => {
+        //       console.error("[MongoDB Stitch] Error: ", error);
+        //       M.toast({
+        //         html: "Will Retry in 30 Seconds",
+        //         displayLength: 4000,
+        //         classes: "yellow darken-2"
+        //       });
+        //       window.offlineUploadAttempt = setTimeout(() => {
+        //         updateDB(database);
+        //       }, 30000);
+        //     });
+        // }
       });
   }
 };
@@ -250,6 +251,37 @@ window.collectInputs = function(
   window.confetti();
 };
 
+window.offlineUp = function(databaseCollection) {
+  let storageVariable = `${databaseCollection}OfflineData`;
+  // try to upload offline data to DB when online
+  if (window.localStorage[storageVariable] && navigator.onLine) {
+    offlineData = JSON.parse(window.localStorage.getItem(storageVariable));
+    client
+      .login()
+      .then(() => db.collection(databaseCollection).insertMany(offlineData))
+      .then(result => {
+        window.localStorage.removeItem(storageVariable);
+        console.log("[MongoDB Stitch] Offline Updated:", result, offlineData);
+        M.toast({
+          html: "Reports Uploaded: " + offlineData.length,
+          displayLength: 3000,
+          classes: "green darken-2"
+        });
+      })
+      .catch(error => {
+        console.error("[MongoDB Stitch] Error: ", error);
+        M.toast({
+          html: "Will Retry in 30 Seconds",
+          displayLength: 4000,
+          classes: "yellow darken-2"
+        });
+        window.offlineUploadAttempt = setTimeout(() => {
+          updateDB(database);
+        }, 30000);
+      });
+  }
+};
+offlineUp("TrailCondition", "TrailCondition");
 // Empty variable to gather and hold html for mission cards in memory
 let missionCardsHTML = ``;
 
@@ -324,7 +356,7 @@ class Mission {
           let queryDBResult = docs;
           console.log("[MongoDB Stitch] Found: ", queryDBResult);
           M.toast({
-            html: "Reports: " + queryDBResult.length,
+            html: "Reports Found: " + queryDBResult.length,
             displayLength: 1000,
             classes: "green darken-2"
           });
@@ -458,7 +490,27 @@ class Mission {
         }
       );
     };
-    this.analyze = function(queryDBResult) {
+    this.analyze = function(queryDBResultOriginal) {
+      console.log("[Analyze Init:]", queryDBResultOriginal);
+      let queryDBResult = [];
+      let storageVariable = `${this.databaseCollection}OfflineData`;
+      // Save offline if offline
+      // let datasetContent = dataset;
+      if (!window.localStorage[storageVariable] === false) {
+        let parsedOfflineStorage = JSON.parse(
+          window.localStorage.getItem(storageVariable)
+        );
+        console.log(
+          "[OfflineDB Init]",
+          queryDBResultOriginal,
+          parsedOfflineStorage
+        );
+        queryDBResult = queryDBResultOriginal.concat(parsedOfflineStorage);
+        console.log("[OfflineDB Eval] Combined:", queryDBResult);
+      } else {
+        queryDBResult = queryDBResultOriginal;
+        console.log("[OfflineDB Eval] Combined:", queryDBResult);
+      }
       if (queryDBResult.length === 0) {
         M.toast({
           html: "Database Empty",
@@ -467,6 +519,8 @@ class Mission {
         });
         return false;
       }
+
+      offlineUp(this.databaseCollection);
       const geoJSONPoints = [];
 
       for (let i = queryDBResult.length - 1; i > -1; i--) {
@@ -495,7 +549,9 @@ class Mission {
           }
         }
 
-        queryDBResult[i].Location.properties = { description: dbResponse };
+        queryDBResult[i]["Location"]["properties"] = {
+          description: dbResponse
+        };
 
         if (
           !queryDBResult[i].Photo === false &&
@@ -552,25 +608,15 @@ class Mission {
             opacity: 1,
             fillOpacity: 0.7
           }).bindPopup(`${popInfo}`);
-          // } else {
-          //   return new L.circle(latlng, {
-          //     // radius: 5,
-          //     fillColor: "#0d48a1",
-          //     color: "#f5f5f5",
-          //     weight: 3,
-          //     opacity: 1,
-          //     fillOpacity: 0.7,
-          //     radius: feature.properties.radius
-          //   }).bindPopup(`${popInfo}`);
-          // .on("click", window.enableBox());
-          // }
         }
       };
       let options = {};
-      if (!queryDBResult[0].ObservationArea === false) {
-        options = tumlare;
-      } else {
-        options = trails;
+      if (queryDBResult.length > 0) {
+        if (!queryDBResult[0].ObservationArea === false) {
+          options = tumlare;
+        } else {
+          options = trails;
+        }
       }
       // Passing all points to cluster marker with the above mission display options
       let reports = L.geoJSON(geoJSONPoints, options);
@@ -627,7 +673,7 @@ class Mission {
 
     // Displays on Front Page
     this.card = `<div class="cardContainer" id="${this.title}">
-  <div class="col s12 m6 l6">
+  <div class="col s12 m12 l6">
     <div class="card">
       <div class="card-image">
         <img src="${this.image}">
