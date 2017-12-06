@@ -324,7 +324,7 @@ class Mission {
           let queryDBResult = docs;
           console.log("[MongoDB Stitch] Found: ", queryDBResult);
           M.toast({
-            html: "Data Obtained",
+            html: "Reports: " + queryDBResult.length,
             displayLength: 1000,
             classes: "green darken-2"
           });
