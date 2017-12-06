@@ -81,7 +81,7 @@ window.confetti = function() {
   function ConfettiPieces(x, y) {
     this.x = x;
     this.y = y;
-    this.size = (Math.random() * 0.5 + 0.75) * 48;
+    this.size = (Math.random() * 0.5 + 0.75) * 36;
     this.gravity = (Math.random() * 0.5 + 0.75) * 10;
     this.rotation = Math.PI * 2 * Math.random();
     this.rotationSpeed = Math.PI * 2 * (Math.random() - 0.5) * 0.0015;
@@ -666,8 +666,7 @@ class Mission {
 
           return new L.DivIcon({
             html: "<div><span>" + childCount + "</span></div>",
-            className:
-              "marker-cluster" + c + " fadeIn",
+            className: "marker-cluster" + c + " fadeIn",
             iconSize: new L.Point(36, 36)
           });
         }
