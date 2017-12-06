@@ -412,7 +412,6 @@ class Mission {
       mappedTrails.addTo(map);
     };
     this.monitor = function() {
-      offlineUp(this.databaseCollection);
       navigator.geolocation.getCurrentPosition(
         position => {
           window.geoReference = {
