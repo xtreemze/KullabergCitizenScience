@@ -1,7 +1,7 @@
-window.addEventListener("DOMContentLoaded", function() {
+window.addEventListener("load", function() {
   // show footer
-  foot.classList.remove("hidden");
-  foot.classList.add("fadeIn");
+  foot.classList.add("footSlideUp");
+  // foot.classList.add("fadeIn");
 });
 
 // window.addEventListener("load", function test() {

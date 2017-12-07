@@ -163,3 +163,26 @@ main {
 .card .card-action {
   background: none !important;
 }
+
+.footSlideUp {
+  animation: slideUp 0.8s ease-in-out forwards !important;
+}
+
+@keyframes slideUp {
+  0% {
+    bottom: -4rem;
+    opacity: 0;
+  }
+}
+
+@keyframes slideUp {
+  100% {
+    bottom: 0rem;
+    opacity: 1;
+  }
+}
+
+footer.page-footer {
+  bottom: -4rem;
+  opacity: 0;
+}
