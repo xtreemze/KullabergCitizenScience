@@ -56,15 +56,16 @@
 }
 
 .marker-cluster div {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   /* margin-left: 3px; */
   /* margin-top: 3px; */
   text-align: center;
-  border-radius: 18px;
+  border-radius: 20px;
   font: 16px Roboto, Helvetica Neue, Arial, Helvetica, sans-serif;
   font-weight: 500;
-  border: 3px solid whitesmoke;
+  border: 5px solid whitesmoke;
+  letter-spacing: -1px;
 }
 
 .marker-cluster span {
