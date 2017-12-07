@@ -476,7 +476,7 @@ class Mission {
         },
         error => {
           M.toast({
-            html: "Position Unavailable",
+            html: error.message,
             displayLength: 4000,
             classes: "red darken-2"
           });
@@ -485,10 +485,12 @@ class Mission {
             long: "Longitude",
             alt: "Altitude"
           };
+          showMissions(600);
+          console.log("[GPS Denied]", error);
         },
         {
           enableHighAccuracy: true,
-          timeout: 5000,
+          // timeout: 5000,
           maximumAge: 30000
         }
       );
