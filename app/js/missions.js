@@ -650,7 +650,7 @@ class Mission {
           opacity: 1
         },
         // singleMarkerMode: true,
-        spiderfyDistanceMultiplier: 1.6,
+        spiderfyDistanceMultiplier: 1.3,
         maxClusterRadius: 92,
         showCoverageOnHover: false,
         iconCreateFunction: function(cluster) {
