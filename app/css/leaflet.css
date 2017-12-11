@@ -65,7 +65,7 @@
   font: 16px Roboto, Helvetica Neue, Arial, Helvetica, sans-serif;
   font-weight: 500;
   border: 5px solid whitesmoke;
-  letter-spacing: -1px;
+  /* letter-spacing: -1px; */
 }
 
 .marker-cluster span {

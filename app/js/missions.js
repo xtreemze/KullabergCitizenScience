@@ -370,7 +370,7 @@ class Mission {
 
       window.scrollTo(0, 0);
       window.map = L.map("map2", {
-        tapTolerance: 64,
+        tapTolerance: 128,
         zoomControl: false
       });
       // .fitWorld()
