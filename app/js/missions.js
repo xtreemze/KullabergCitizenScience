@@ -1,9 +1,10 @@
 "use strict";
-import M from "materialize-css";
-import L from "leaflet";
-
-// const stitch = require("mongodb-stitch");
-import stitch from "mongodb-stitch";
+// import M from "materialize-css";
+// import L from "leaflet";
+const M = require("materialize-css");
+const L = require("leaflet");
+const stitch = require("mongodb-stitch");
+// import * as stitch from "mongodb-stitch";
 
 const client = new stitch.StitchClient("citizensciencestitch-oakmw");
 const db = client
@@ -317,8 +318,6 @@ let missionCardsHTML = ``;
 window.geoReference = {};
 
 // The DOM element that holds the mission cards
-const missionsElement = document.getElementById("missions");
-module.exports = missionsElement;
 
 // Collecting all Missions in a Set
 let Missions = new Set();
@@ -806,3 +805,4 @@ window.addEventListener("DOMContentLoaded", function() {
 // Additional missions go in separate files and require this file. Add them to ./../entry.js
 // test = new Mission({});
 module.exports = Mission;
+// export default { Mission };

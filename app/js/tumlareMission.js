@@ -1,6 +1,8 @@
 "use strict";
 const Mission = require("./missions");
-import L from "leaflet";
+// const M = require("materialize-css");
+const L = require("leaflet");
+// import Mission from "./missions";
 
 const tumlare = new Mission({
   shortName: "tumlare",
