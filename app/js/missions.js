@@ -211,9 +211,8 @@ window.collectInputs = function(
     window.data.Photo = window.dataURL;
   }
 
-  const form = document.getElementById("form");
   // Processing Form data then Saving to Database
-  const elements = form.elements;
+  const elements = window.form.elements;
 
   for (let e = 0; e < elements.length; e++) {
     if (
@@ -444,7 +443,7 @@ class Mission {
         }
       });
 
-      window.map.fitBounds(window.mappedTrails.getBounds(), {
+      window.map.fitBounds(mappedTrails.getBounds(), {
         padding: [82, 82]
       });
       mappedTrails.addTo(window.map);
@@ -681,7 +680,7 @@ class Mission {
       // Passing all points to cluster marker with the above mission display options
       let reports = L.geoJSON(geoJSONPoints, options);
       console.log("[Leaflet] Mapped:", geoJSONPoints);
-      var markers = L.markerClusterGroup({
+      const markers = L.markerClusterGroup({
         spiderLegPolylineOptions: {
           weight: 2.4,
           color: "#f5f5f5",
