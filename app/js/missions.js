@@ -1,21 +1,29 @@
-const stitch = require("mongodb-stitch");
+"use strict";
+import M from "materialize-css";
+import L from "leaflet";
+
+// const stitch = require("mongodb-stitch");
+import stitch from "mongodb-stitch";
 
 const client = new stitch.StitchClient("citizensciencestitch-oakmw");
-const db = client.service("mongodb", "mongodb-atlas").db("citizenScience");
+const db = client
+  .service("mongodb", "mongodb-atlas")
+  .db("citizenScience");
 const loadImage = require("blueimp-load-image");
 
 window.storedDB;
 
 window.enableBox = function() {
   setTimeout(() => {
-    window.elem = document.querySelector(".materialboxed");
+    const elem = document.querySelector(".materialboxed");
     window.instance = new M.Materialbox(elem);
   }, 300);
   // instance.open();
 };
 
 window.confetti = function() {
-  window.confettiId = document.getElementById("confettiId");
+  const confettiId = document.getElementById("confettiId");
+  window.confettiId = confettiId;
   // console.log("[Confetti]", confettiId);
   confettiId.width = window.innerWidth;
   confettiId.height = window.innerHeight;
@@ -40,7 +48,7 @@ window.confetti = function() {
 
   function update() {
     let now = Date.now();
-    deltaTime = now - lastUpdateTime;
+    const deltaTime = now - lastUpdateTime;
 
     for (let i = confettiPieces.length - 1; i >= 0; i--) {
       let p = confettiPieces[i];
@@ -121,7 +129,7 @@ const updateDB = function(database = "", dataset = {}) {
         });
       })
       .catch(error => {
-        // console.error("[MongoDB Stitch] Error: ", error);
+        console.error("[MongoDB Stitch] Error: ", error);
         // Save offline if offline
         let offlineData = [dataset];
         let combinedData = [];
@@ -202,10 +210,11 @@ window.collectInputs = function(
     window.data.Photo = window.dataURL;
   }
 
+  const form = document.getElementById("form");
   // Processing Form data then Saving to Database
-  window.elements = form.elements;
+  const elements = form.elements;
 
-  for (e = 0; e < elements.length; e++) {
+  for (let e = 0; e < elements.length; e++) {
     if (
       elements[e].id === "Photos" ||
       elements[e].id === "photoFilePath" ||
@@ -219,11 +228,20 @@ window.collectInputs = function(
         // $date: new Date(elements[e].value)
       };
     } else if (elements[e].id === "Longitude") {
-      window.data.Location.coordinates[0] = parseFloat(elements[e].value, 10);
+      window.data.Location.coordinates[0] = parseFloat(
+        elements[e].value,
+        10
+      );
     } else if (elements[e].id === "Latitude") {
-      window.data.Location.coordinates[1] = parseFloat(elements[e].value, 10);
+      window.data.Location.coordinates[1] = parseFloat(
+        elements[e].value,
+        10
+      );
     } else if (elements[e].id === "Altitude") {
-      window.data.Location.coordinates[2] = parseFloat(elements[e].value, 10);
+      window.data.Location.coordinates[2] = parseFloat(
+        elements[e].value,
+        10
+      );
     } else if (elements[e].type == "checkbox") {
       window.data[elements[e].id] = elements[e].checked;
     } else if (
@@ -253,17 +271,25 @@ window.collectInputs = function(
   window.confetti();
 };
 
-window.offlineUp = function(databaseCollection) {
+const offlineUp = function(databaseCollection) {
   let storageVariable = `${databaseCollection}OfflineData`;
   // try to upload offline data to DB when online
   if (window.localStorage[storageVariable] && navigator.onLine) {
-    offlineData = JSON.parse(window.localStorage.getItem(storageVariable));
+    const offlineData = JSON.parse(
+      window.localStorage.getItem(storageVariable)
+    );
     client
       .login()
-      .then(() => db.collection(databaseCollection).insertMany(offlineData))
+      .then(() =>
+        db.collection(databaseCollection).insertMany(offlineData)
+      )
       .then(result => {
         window.localStorage.removeItem(storageVariable);
-        console.log("[MongoDB Stitch] Offline Updated:", result, offlineData);
+        console.log(
+          "[MongoDB Stitch] Offline Updated:",
+          result,
+          offlineData
+        );
         M.toast({
           html: "Reports Uploaded: " + offlineData.length,
           displayLength: 3000,
@@ -278,11 +304,12 @@ window.offlineUp = function(databaseCollection) {
           classes: "yellow darken-2"
         });
         window.offlineUploadAttempt = setTimeout(() => {
-          updateDB(database);
+          updateDB(databaseCollection);
         }, 30000);
       });
   }
 };
+window.offlineUp = offlineUp;
 // Empty variable to gather and hold html for mission cards in memory
 let missionCardsHTML = ``;
 
@@ -305,15 +332,19 @@ class Mission {
     databaseCollection = "mongoDbCollection",
     congratulatoryMessage = "Congratulations!",
     // Data for form submission
-    monitor = ``,
+    // monitor = ``,
     // Data retrieval and display
-    analyze = ``,
+    // analyze = ``,
     // Each mission should have a representative image
     image = require("../img/trail.jpg"),
     monitorSuccess,
-    analyzeSuccess,
-    queryDB
+    analyzeSuccess
+    // queryDB
   }) {
+    const missions = document.getElementById("missions");
+    const navigationBreadcrumbs = document.getElementById(
+      "navigationBreadcrumbs"
+    );
     this.shortName = shortName;
     this.title = title;
     this.description = description;
@@ -367,8 +398,12 @@ class Mission {
           localStorage.setItem(database, JSON.stringify(queryDBResult));
           console.log("[LocalDB Updated]", queryDBResult);
           // Track time of last local DB update
-          window.lastUpdateLocalDB = new Date().getTime();
-          window.localStorage.setItem("lastUpdateLocalDB", lastUpdateLocalDB);
+          let lastUpdateLocalDB = new Date().getTime();
+          window.lastUpdateLocalDB = lastUpdateLocalDB;
+          window.localStorage.setItem(
+            "lastUpdateLocalDB",
+            lastUpdateLocalDB
+          );
           window.lastUpdateLocalDB = window.localStorage.getItem(
             "lastUpdateLocalDB"
           );
@@ -392,18 +427,15 @@ class Mission {
             });
           }
         });
-      var OSMMapnik = L.tileLayer(
-        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-        {
-          maxZoom: 19,
-          attribution:
-            '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        }
-      ).addTo(map);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution:
+          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      }).addTo(window.map);
 
       const geoJSONTrails = require("./trails.json");
 
-      window.mappedTrails = L.geoJSON(geoJSONTrails, {
+      const mappedTrails = L.geoJSON(geoJSONTrails, {
         style: function(feature) {
           return {
             color: feature.properties.stroke,
@@ -412,8 +444,11 @@ class Mission {
           };
         }
       });
-      map.fitBounds(window.mappedTrails.getBounds(), { padding: [82, 82] });
-      mappedTrails.addTo(map);
+
+      window.map.fitBounds(window.mappedTrails.getBounds(), {
+        padding: [82, 82]
+      });
+      mappedTrails.addTo(window.map);
     };
     this.monitor = function() {
       navigator.geolocation.getCurrentPosition(
@@ -436,7 +471,7 @@ class Mission {
           let multiSelect = document.querySelectorAll("select");
           for (const element in multiSelect) {
             if (multiSelect.hasOwnProperty(element)) {
-              const newInstance = new M.Select(multiSelect[element]);
+              new M.Select(multiSelect[element]);
             }
           }
           // let datePicker = document.querySelectorAll(".datepicker");
@@ -485,7 +520,7 @@ class Mission {
             long: "Longitude",
             alt: "Altitude"
           };
-          showMissions(600);
+          window.showMissions(600);
           console.log("[GPS Denied]", error);
         },
         {
@@ -510,7 +545,9 @@ class Mission {
           queryDBResultOriginal,
           parsedOfflineStorage
         );
-        queryDBResult = queryDBResultOriginal.concat(parsedOfflineStorage);
+        queryDBResult = queryDBResultOriginal.concat(
+          parsedOfflineStorage
+        );
         console.log("[OfflineDB Eval] Combined:", queryDBResult);
       } else {
         queryDBResult = queryDBResultOriginal;
@@ -529,7 +566,9 @@ class Mission {
       const geoJSONPoints = [];
 
       for (let i = queryDBResult.length - 1; i > -1; i--) {
-        let dbResponse = `<span>${new Date(queryDBResult[i].Date)}</span><br>`;
+        let dbResponse = `<span>${new Date(
+          queryDBResult[i].Date
+        )}</span><br>`;
 
         for (const key in queryDBResult[i]) {
           // For simplicity, do not show these database results:
@@ -677,7 +716,7 @@ class Mission {
 
       markers.addLayer(reports);
 
-      map.addLayer(markers);
+      window.map.addLayer(markers);
       markers.on("spiderfied", function(a) {
         // console.log("cluster ", a);
         a.cluster._icon.classList.remove("fadeIn");
@@ -705,8 +744,12 @@ class Mission {
         <div>${this.description}</div>
       </div>
       <div class="card-action">
-        <a class="pointer" onclick="${this.shortName}.monitor()">Monitoring</a>
-        <a class="pointer" onclick="${this.shortName}.queryDB()">Evaluation</a>
+        <a class="pointer" onclick="${
+          this.shortName
+        }.monitor()">Monitoring</a>
+        <a class="pointer" onclick="${
+          this.shortName
+        }.queryDB()">Evaluation</a>
         </div>
         </div>
         </div>
@@ -720,7 +763,12 @@ class Mission {
 }
 
 // Show missinos in the front page
-window.showMissions = function(seconds = 290) {
+const showMissions = function(seconds = 290) {
+  const loading = document.getElementById("loading");
+  const missions = document.getElementById("missions");
+  const navigationBreadcrumbs = document.getElementById(
+    "navigationBreadcrumbs"
+  );
   loading.classList.remove("fadeOut");
   loading.classList.add("fadeIn");
   missions.innerHTML = "";
@@ -736,8 +784,14 @@ window.showMissions = function(seconds = 290) {
     }, 290);
   }, seconds);
 };
+window.showMissions = showMissions;
 
 window.addEventListener("DOMContentLoaded", function() {
+  const loading = document.getElementById("loading");
+  const missions = document.getElementById("missions");
+  const navigationBreadcrumbs = document.getElementById(
+    "navigationBreadcrumbs"
+  );
   // Add HTML Mission Cards to the DOM
   missions.innerHTML = missionCardsHTML;
   navigationBreadcrumbs.innerHTML = `

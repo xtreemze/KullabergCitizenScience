@@ -1,6 +1,8 @@
+"use strict";
 const Mission = require("./missions");
+import L from "leaflet";
 
-tumlare = new Mission({
+const tumlare = new Mission({
   shortName: "tumlare",
   title: "Porpoise Observation",
   databaseCollection: "Tumlare",
@@ -130,6 +132,7 @@ tumlare = new Mission({
   </div>
   <canvas class="fullScreenCeleb" id="confettiId"> </canvas>
 `;
+    const missions = document.getElementById("missions");
     missions.innerHTML = content;
 
     const map = L.map("map", {
@@ -137,18 +140,15 @@ tumlare = new Mission({
       zoomControl: false
     }).setView([window.Latitude.value, window.Longitude.value], 13);
 
-    var OSMMapnik = L.tileLayer(
-      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-      {
-        maxZoom: 19,
-        attribution:
-          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-      }
-    ).addTo(map);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution:
+        '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
 
     const geoJSONTrails = require("./trails.json");
 
-    window.mappedTrails = L.geoJSON(geoJSONTrails, {
+    const mappedTrails = L.geoJSON(geoJSONTrails, {
       style: function(feature) {
         return {
           color: feature.properties.stroke,
@@ -160,7 +160,7 @@ tumlare = new Mission({
 
     mappedTrails.addTo(map);
 
-    let circle = L.circle([window.Latitude.value, window.Longitude.value], {
+    L.circle([window.Latitude.value, window.Longitude.value], {
       color: "red",
       fillColor: "#f03",
       fillOpacity: 0.5,
@@ -171,17 +171,20 @@ tumlare = new Mission({
       .openPopup();
     let popup = L.popup();
 
-    window.radius = L.circle([window.Latitude.value, window.Longitude.value], {
-      color: "#0288d1",
-      fillColor: "#0d47a1",
-      fillOpacity: 0.5,
-      radius: geoReference.accuracy
-    }).addTo(map);
+    window.radius = L.circle(
+      [window.Latitude.value, window.Longitude.value],
+      {
+        color: "#0288d1",
+        fillColor: "#0d47a1",
+        fillOpacity: 0.5,
+        radius: window.geoReference.accuracy
+      }
+    ).addTo(map);
 
     function onMapClick(e) {
       window.Latitude.value = e.latlng.lat;
       window.Longitude.value = e.latlng.lng;
-      radius.setLatLng(e.latlng);
+      window.radius.setLatLng(e.latlng);
       popup
         .setLatLng(e.latlng)
         .setContent(window.Species.value)
@@ -189,12 +192,15 @@ tumlare = new Mission({
     }
 
     map.on("click", onMapClick);
-
+    const ObservationArea = document.getElementById("ObservationArea");
+    const ObservationAreaDisplay = document.getElementById(
+      "ObservationAreaDisplay"
+    );
     ObservationArea.addEventListener(
       "mousemove",
       function() {
         ObservationAreaDisplay.innerHTML = ObservationArea.value;
-        radius.setRadius(ObservationArea.value);
+        window.radius.setRadius(ObservationArea.value);
       },
       { passive: true }
     );
@@ -202,7 +208,7 @@ tumlare = new Mission({
       "touchmove",
       function() {
         ObservationAreaDisplay.innerHTML = ObservationArea.value;
-        radius.setRadius(ObservationArea.value);
+        window.radius.setRadius(ObservationArea.value);
       },
       { passive: true }
     );
@@ -210,7 +216,7 @@ tumlare = new Mission({
       "change",
       function() {
         ObservationAreaDisplay.innerHTML = ObservationArea.value;
-        radius.setRadius(ObservationArea.value);
+        window.radius.setRadius(ObservationArea.value);
       },
       { passive: true }
     );
@@ -239,3 +245,5 @@ tumlare = new Mission({
     );
   }
 });
+
+window.tumlare = tumlare;

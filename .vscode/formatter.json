@@ -5,7 +5,7 @@
     "indent_char": " ",
     "eol": "\n",
     "break_chained_methods": true,
-    "preserve_newlines": false,
+    "preserve_newlines": true,
     "max_preserve_newlines": 1,
     "space_in_paren": false,
     "space_in_empty_paren": false,
@@ -38,9 +38,9 @@
     "indent_char": " ",
     "indent_character": " ",
     "eol": "\n",
-    "preserve_newlines": false,
+    "preserve_newlines": true,
     "max_preserve_newlines": 1,
-    "wrap_line_length": 74,
+    "wrap_line_length": 68,
     "end_with_newline": true
   }
 }

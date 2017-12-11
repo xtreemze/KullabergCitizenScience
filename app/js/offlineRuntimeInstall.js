@@ -1,5 +1,6 @@
 import * as OfflinePluginRuntime from "offline-plugin/runtime";
-require("./../../node_modules/materialize-css/dist/js/materialize");
+import M from "materialize-css";
+// require("./../../node_modules/materialize-css/dist/js/materialize");
 
 OfflinePluginRuntime.install({
   onInstalled: function() {
@@ -19,6 +20,7 @@ OfflinePluginRuntime.install({
   },
 
   onUpdateReady: function() {
+    const foot = document.getElementById("foot");
     OfflinePluginRuntime.applyUpdate();
     foot.classList.add("fadeIn");
     M.toast({

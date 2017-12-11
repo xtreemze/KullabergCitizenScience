@@ -1,6 +1,8 @@
+"use strict";
 const Mission = require("./missions");
+import L from "leaflet";
 
-trails = new Mission({
+const trails = new Mission({
   shortName: "trails",
   title: "Trail Condition",
   databaseCollection: "TrailCondition",
@@ -133,6 +135,7 @@ trails = new Mission({
 </div>
 <canvas class="fullScreenCeleb" id="confettiId"> </canvas>
 `;
+    const missions = document.getElementById("missions");
     missions.innerHTML = content;
 
     const map = L.map("map", {
@@ -140,18 +143,15 @@ trails = new Mission({
       zoomControl: false
     }).setView([window.Latitude.value, window.Longitude.value], 13);
 
-    var OSMMapnik = L.tileLayer(
-      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-      {
-        maxZoom: 19,
-        attribution:
-          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-      }
-    ).addTo(map);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution:
+        '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
 
     const geoJSONTrails = require("./trails.json");
 
-    window.mappedTrails = L.geoJSON(geoJSONTrails, {
+    const mappedTrails = L.geoJSON(geoJSONTrails, {
       style: function(feature) {
         return {
           color: feature.properties.stroke,
@@ -160,9 +160,10 @@ trails = new Mission({
         };
       }
     });
+
     // map.fitBounds(window.mappedTrails.getBounds(), { padding: [82, 82] });
     mappedTrails.addTo(map);
-    let circle = L.circle([window.Latitude.value, window.Longitude.value], {
+    L.circle([window.Latitude.value, window.Longitude.value], {
       color: "red",
       fillColor: "#f03",
       fillOpacity: 0.5,
@@ -171,13 +172,18 @@ trails = new Mission({
       .addTo(map)
       .bindPopup("Your Location")
       .openPopup();
-    let popup = L.popup();
+    L.popup();
 
-    window.radius = L.circle([window.Latitude.value, window.Longitude.value], {
-      color: "#0288d1",
-      fillColor: "#0d47a1",
-      fillOpacity: 0.5,
-      radius: geoReference.accuracy
-    }).addTo(map);
+    window.radius = L.circle(
+      [window.Latitude.value, window.Longitude.value],
+      {
+        color: "#0288d1",
+        fillColor: "#0d47a1",
+        fillOpacity: 0.5,
+        radius: window.geoReference.accuracy
+      }
+    ).addTo(map);
   }
 });
+
+window.trails = trails;
