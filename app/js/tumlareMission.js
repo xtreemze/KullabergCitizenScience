@@ -116,16 +116,18 @@ const tumlare = new Mission({
         </section>
         <div class="file-field input-field col s12 m6">
           <div class="file-path-wrapper col s12">
-            <input id="photoFilePath" accept="image/*" class="file-path validate" type="text" placeholder="Observation Photos">
+            <input id="photoFilePath" accept="image/*" class="file-path validate"
+              type="text" placeholder="Observation Photos">
           </div>
           <div class="btn large col s12">
             <i class="material-icons large">add_a_photo</i>
             <input id="Photos" accept="image/*;capture=camera" type="file">
           </div>
         </div>
-        <button class="section col s12 btn btn-large waves-effect waves-light" type="submit" onclick="window.collectInputs('${
-          this.databaseCollection
-        }', '${this.congratulatoryMessage}')">Submit
+        <button class="section col s12 btn btn-large waves-effect waves-light"
+          type="submit" onclick="window.collectInputs('${
+            this.databaseCollection
+          }', '${this.congratulatoryMessage}')">Submit
           <i class="material-icons right">send</i>
         </button>
   </form>

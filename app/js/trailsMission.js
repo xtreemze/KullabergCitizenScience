@@ -17,7 +17,7 @@ const trails = new Mission({
     <h3 class="col s12">${this.title}</h3>
     <h5 class="col s12">Georeference</h5>
     <div class="col s12">
-    <div id="map"></div>
+      <div id="map"></div>
     </div>
     <section class="hide">
       <div class="input-field col s6 m3">
@@ -119,16 +119,18 @@ const trails = new Mission({
     </section>
     <div class="file-field input-field col s12 m6">
       <div class="file-path-wrapper col s12">
-        <input id="photoFilePath" accept="image/*" class="file-path validate" type="text" placeholder="Trail Photos">
+        <input id="photoFilePath" accept="image/*" class="file-path validate"
+          type="text" placeholder="Trail Photos">
       </div>
       <div class="btn large col s12">
         <i class="material-icons large">add_a_photo</i>
         <input id="Photos" accept="image/*;capture=camera" type="file">
       </div>
     </div>
-    <button class="col s12 btn btn-large waves-effect waves-light" type="submit" onclick="collectInputs('${
-      this.databaseCollection
-    }', '${this.congratulatoryMessage}')">Submit
+    <button class="col s12 btn btn-large waves-effect waves-light" type="submit"
+      onclick="collectInputs('${this.databaseCollection}', '${
+      this.congratulatoryMessage
+    }')">Submit
       <i class="material-icons right">send</i>
     </button>
   </form>
