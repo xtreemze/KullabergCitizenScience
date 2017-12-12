@@ -3,6 +3,7 @@
 // import L from "leaflet";
 const M = require("materialize-css");
 const L = require("leaflet");
+
 const stitch = require("mongodb-stitch");
 // import * as stitch from "mongodb-stitch";
 
@@ -10,6 +11,7 @@ const client = new stitch.StitchClient("citizensciencestitch-oakmw");
 const db = client
   .service("mongodb", "mongodb-atlas")
   .db("citizenScience");
+
 const loadImage = require("blueimp-load-image");
 
 window.storedDB;
@@ -111,7 +113,10 @@ window.confetti = function() {
   }, 172);
 };
 // confetti();
-const updateDB = function(database = "", dataset = {}) {
+const updateDB = function(
+  database = this.databaseCollection,
+  dataset = {}
+) {
   let datasetContent = dataset;
   const storageVariable = `${database}OfflineData`;
   if (dataset !== {}) {
@@ -135,7 +140,7 @@ const updateDB = function(database = "", dataset = {}) {
         let offlineData = [dataset];
         let combinedData = [];
         // let datasetContent = dataset;
-        if (!window.localStorage[storageVariable] === false) {
+        if (window.localStorage[storageVariable].length > 0) {
           let parsedOfflineStorage = JSON.parse(
             window.localStorage.getItem(storageVariable)
           );
@@ -158,35 +163,6 @@ const updateDB = function(database = "", dataset = {}) {
           classes: "yellow darken-2"
         });
         offlineUp(database);
-        // try to upload offline data to DB when online
-        // if (window.localStorage[storageVariable] && navigator.onLine) {
-        //   offlineData = JSON.parse(
-        //     window.localStorage.getItem(storageVariable)
-        //   );
-        //   client
-        //     .login()
-        //     .then(() => db.collection(database).insertMany(offlineData))
-        //     .then(result => {
-        //       window.localStorage.removeItem(storageVariable);
-        //       console.log("[MongoDB Stitch] Offline Updated:", result, dataset);
-        //       M.toast({
-        //         html: "Reports Uploaded: " + offlineData.length,
-        //         displayLength: 1000,
-        //         classes: "green darken-2"
-        //       });
-        //     })
-        //     .catch(error => {
-        //       console.error("[MongoDB Stitch] Error: ", error);
-        //       M.toast({
-        //         html: "Will Retry in 30 Seconds",
-        //         displayLength: 4000,
-        //         classes: "yellow darken-2"
-        //       });
-        //       window.offlineUploadAttempt = setTimeout(() => {
-        //         updateDB(database);
-        //       }, 30000);
-        //     });
-        // }
       });
   }
 };
@@ -360,7 +336,10 @@ class Mission {
     this.congratulatoryMessage = congratulatoryMessage;
     this.monitorSuccess = monitorSuccess;
     this.analyzeSuccess = analyzeSuccess;
-    this.queryDB = function(database = this.databaseCollection, query) {
+    this.queryDB = function(
+      databaseCollection = this.databaseCollection,
+      query
+    ) {
       M.toast({
         html: "Connecting...",
         displayLength: 1000,
@@ -382,27 +361,43 @@ class Mission {
         tapTolerance: 128,
         zoomControl: false
       });
-      // .fitWorld()
-      // .setZoom(2);
-
+      console.log("[Database]", db);
+      console.log("[Database Collection]", databaseCollection);
+      console.log("[Database Query]", query);
       // Get information from Database
+
       client
         .login()
-        .then(
-          () => db.collection(database).find(query)
-          // .limit(100)
-          // .execute()
+        .then(() =>
+          db
+            .collection(databaseCollection)
+            .find(query)
+            .limit(1000)
+            .execute()
         )
         .then(docs => {
           let queryDBResult = docs;
-          console.log("[MongoDB Stitch] Found: ", queryDBResult);
-          M.toast({
-            html: "Reports Found: " + queryDBResult.length,
-            displayLength: 1000,
-            classes: "green darken-2"
-          });
+          console.log("[MongoDB Stitch] Found: ", docs);
+
           this.analyze(queryDBResult);
-          localStorage.setItem(database, JSON.stringify(queryDBResult));
+
+          if (queryDBResult.length > 0) {
+            localStorage.setItem(
+              databaseCollection,
+              JSON.stringify(queryDBResult)
+            );
+            M.toast({
+              html: "Reports Found: " + queryDBResult.length,
+              displayLength: 1000,
+              classes: "green darken-2"
+            });
+          } else {
+            console.log(
+              "[QueryDB Query and Result]",
+              query,
+              queryDBResult
+            );
+          }
           console.log("[LocalDB Updated]", queryDBResult);
           // Track time of last local DB update
           let lastUpdateLocalDB = new Date().getTime();
@@ -417,9 +412,11 @@ class Mission {
         })
         .catch(err => {
           console.log("[Error]", err);
-          if (window.localStorage[database]) {
-            console.log("[LocalDB Exists]", database);
-            this.analyze(JSON.parse(localStorage.getItem(database)));
+          if (window.localStorage[databaseCollection]) {
+            console.log("[LocalDB Exists]", databaseCollection);
+            this.analyze(
+              JSON.parse(localStorage.getItem(databaseCollection))
+            );
             M.toast({
               html: "Using offline data",
               displayLength: 4000,
@@ -561,7 +558,7 @@ class Mission {
           displayLength: 1000,
           classes: "yellow darken-2"
         });
-        return false;
+        // return false;
       }
 
       offlineUp(this.databaseCollection);
@@ -750,7 +747,6 @@ const showMissions = function(seconds = 290) {
 window.showMissions = showMissions;
 
 window.addEventListener("DOMContentLoaded", function() {
-  const loading = document.getElementById("loading");
   const missions = document.getElementById("missions");
   const navigationBreadcrumbs = document.getElementById(
     "navigationBreadcrumbs"
@@ -761,9 +757,6 @@ window.addEventListener("DOMContentLoaded", function() {
   <a class="pointer breadcrumb">Missions</a>
   `;
   window.scrollTo(0, 0);
-  setTimeout(() => {
-    loading.classList.add("fadeOut");
-  }, 290);
 });
 
 // Additional missions go in separate files and require this file. Add them to ./../entry.js
