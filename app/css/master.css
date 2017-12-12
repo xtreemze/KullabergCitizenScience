@@ -168,6 +168,10 @@ main {
   animation: slideUp 0.8s ease-in-out forwards !important;
 }
 
+.noPadLeft {
+  padding-left: 0.5rem !important;
+}
+
 @keyframes slideUp {
   0% {
     bottom: -4rem;

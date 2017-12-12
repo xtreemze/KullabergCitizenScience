@@ -218,14 +218,18 @@ window.collectInputs = function(
     if (
       elements[e].id === "Photos" ||
       elements[e].id === "photoFilePath" ||
-      elements[e].id.length < 1
+      elements[e].id.length < 1 ||
+      elements[e].id === "Low"
     ) {
       // console.log("[Form1] Excluded: ", elements[e]);
+    } else if (
+      (elements[e].checked === false &&
+        elements[e].type === "checkbox") ||
+      (elements[e].type === "radio" && elements[e].checked === false)
+    ) {
     } else if (elements[e].value.id === "Date") {
-      // window.data[elements[e].id] = {
       window.data[elements[e].id] = {
         $date: new Date().toISOString()
-        // $date: new Date(elements[e].value)
       };
     } else if (elements[e].id === "Longitude") {
       window.data.Location.coordinates[0] = parseFloat(
@@ -242,12 +246,17 @@ window.collectInputs = function(
         elements[e].value,
         10
       );
-    } else if (elements[e].type == "checkbox") {
+    } else if (
+      elements[e].type === "radio" &&
+      elements[e].checked === true
+    ) {
+      window.data[elements[e].name] = elements[e].id;
+    } else if (elements[e].type === "checkbox") {
       window.data[elements[e].id] = elements[e].checked;
     } else if (
-      elements[e].type == "number" ||
-      elements[e].id == "Quantity" ||
-      elements[e].id == "ObservationArea"
+      elements[e].type === "number" ||
+      elements[e].id === "Quantity" ||
+      elements[e].id === "ObservationArea"
     ) {
       window.data[elements[e].id] = parseInt(elements[e].value, 10);
     } else if (elements[e].value.length > 0) {
@@ -452,10 +461,10 @@ class Mission {
       navigator.geolocation.getCurrentPosition(
         position => {
           window.geoReference = {
-            lat: position.coords.latitude || 0,
-            long: position.coords.longitude || 0,
-            alt: position.coords.altitude || 0,
-            accuracy: position.coords.accuracy || 0
+            lat: position.coords.latitude,
+            long: position.coords.longitude,
+            alt: position.coords.altitude,
+            accuracy: position.coords.accuracy
           };
           this.monitorSuccess();
 
@@ -513,11 +522,6 @@ class Mission {
             displayLength: 4000,
             classes: "red darken-2"
           });
-          window.geoReference = {
-            lat: "Latitude",
-            long: "Longitude",
-            alt: "Altitude"
-          };
           window.showMissions(600);
           console.log("[GPS Denied]", error);
         },
@@ -619,39 +623,7 @@ class Mission {
         }
         geoJSONPoints.push(queryDBResult[i].Location);
       }
-      // let trails = {
-      //   pointToLayer: function(feature, latlng) {
-      //     let popInfo = `${feature.properties.description}<br>`;
-      //     if (!feature.properties.photo === false) {
-      //       popInfo += `${feature.properties.photo}`;
-      //     }
-      //     return new L.circleMarker(latlng, {
-      //       radius: 14,
-      //       fillColor: "#0d48a1",
-      //       color: "#f5f5f5",
-      //       weight: 3,
-      //       opacity: 1,
-      //       fillOpacity: 0.7
-      //     }).bindPopup(`${popInfo}`);
-      //   }
-      // };
-      // let tumlare = {
-      //   pointToLayer: function(feature, latlng) {
-      //     let popInfo = `${feature.properties.description}<br>`;
-      //     if (!feature.properties.photo === false) {
-      //       popInfo += `${feature.properties.photo}`;
-      //     }
-      //     // if (feature.properties.radius < 64) {
-      //     return new L.circleMarker(latlng, {
-      //       radius: 14,
-      //       fillColor: "#0d48a1",
-      //       color: "#f5f5f5",
-      //       weight: 3,
-      //       opacity: 1,
-      //       fillOpacity: 0.7
-      //     }).bindPopup(`${popInfo}`);
-      //   }
-      // };
+
       let options = {
         pointToLayer: function(feature, latlng) {
           let popInfo = `${feature.properties.description}<br>`;
@@ -669,14 +641,7 @@ class Mission {
           }).bindPopup(`${popInfo}`);
         }
       };
-      // let options = {};
-      // if (queryDBResult.length > 0) {
-      //   if (!queryDBResult[0].ObservationArea === false) {
-      //     options = tumlare;
-      //   } else {
-      //     options = trails;
-      //   }
-      // }
+
       // Passing all points to cluster marker with the above mission display options
       let reports = L.geoJSON(geoJSONPoints, options);
       console.log("[Leaflet] Mapped:", geoJSONPoints);

@@ -16,9 +16,9 @@ const trails = new Mission({
     let content = ``;
     content += `<div class="row">
   <form class="" onsubmit="return false">
-    <h3 class="col s12">${this.title}</h3>
-    <h5 class="col s12">Georeference</h5>
+    <h3 class="">${this.title}</h3>
     <div class="col s12">
+    <h5 class="">Georeference</h5>
       <div id="map"></div>
     </div>
     <section class="hide">
@@ -41,66 +41,83 @@ const trails = new Mission({
         </label>
       </p>
     </section>
-    <h5 class="col s12">Select All that Apply</h5>
-    <p class="col s12 m6 l4">
-      <label>
-        <input id="RootsExposed" type="checkbox">
-        <span>Roots Exposed</span>
-      </label>
-    </p>
-    <p class="col s12 m6 l4">
-      <label>
-        <input id="Flooded" type="checkbox">
-        <span>Flooded</span>
-      </label>
-    </p>
-    <p class="col s12 m6 l4">
-      <label>
-        <input id="Bifurcation" type="checkbox">
-        <span>Bifurcation - Widening</span>
-      </label>
-    </p>
-    <p class="col s12 m6 l4">
-      <label>
-        <input id="FallenTrees" type="checkbox">
-        <span>Fallen Trees on Trail</span>
-      </label>
-    </p>
-    <p class="col s12 m6 l4">
-      <label>
-        <input id="Slippery" type="checkbox">
-        <span>Slippery</span>
-      </label>
-    </p>
-    <p class="col s12 m6 l4">
-      <label>
-        <input id="SharpStones" type="checkbox">
-        <span>Sharp Stones</span>
-      </label>
-    </p>
-    <p class="col s12 m6 l4">
-      <label>
-        <input id="Thorns" type="checkbox">
-        <span>Thorny Vegetation on the Edge</span>
-      </label>
-    </p>
-    <p class="col s12 m6 l4">
-      <label>
-        <input id="Risk" type="checkbox">
-        <span>Risk From Fallen Trees or Branches</span>
-      </label>
-    </p>
-    <div class="input-field col s12 m6 l4">
-      <select id="Erosion">
-        <option value="Low">Low</option>
-        <option value="Medium">Medium</option>
-        <option value="High">High</option>
-      </select>
-      <label for="Erosion">Erosion</label>
-    </div>
+    <section class="col s12 m4">
+      <h5 class="">Erosion</h5>
+      <p>
+        <label>
+          <input checked type="radio" name="Erosion" id="Low">
+          <span>Low</span>
+        </label>
+      </p>
+      <p>
+        <label>
+          <input type="radio" name="Erosion" id="Medium">
+          <span>Medium</span>
+        </label>
+      </p>
+      <p>
+        <label>
+          <input type="radio" name="Erosion" id="High">
+          <span>High</span>
+        </label>
+      </p>
+    </section>
+    <h5 class="col m8">Select All that Apply</h5>
+    <section class="col s12 m4">
+      <p>
+        <label>
+          <input id="RootsExposed" type="checkbox">
+          <span>Roots Exposed</span>
+        </label>
+      </p>
+      <p>
+        <label>
+          <input id="Flooded" type="checkbox">
+          <span>Flooded</span>
+        </label>
+      </p>
+      <p>
+        <label>
+          <input id="Bifurcation" type="checkbox">
+          <span>Bifurcation - Widening</span>
+        </label>
+      </p>
+      <p>
+        <label>
+          <input id="FallenTrees" type="checkbox">
+          <span>Fallen Trees on Trail</span>
+        </label>
+      </p>
+    </section>
+    <section class="col m4">
+      <p class="offset-m12">
+        <label>
+          <input id="Slippery" type="checkbox">
+          <span>Slippery</span>
+        </label>
+      </p>
+      <p>
+        <label>
+          <input id="SharpStones" type="checkbox">
+          <span>Sharp Stones</span>
+        </label>
+      </p>
+      <p>
+        <label>
+          <input id="Thorns" type="checkbox">
+          <span>Thorny Vegetation on the Edge</span>
+        </label>
+      </p>
+      <p>
+        <label>
+          <input id="Risk" type="checkbox">
+          <span>Risk From Fallen Trees or Branches</span>
+        </label>
+      </p>
+    </section>
+    <br>
     <h5 class="col s12">Please Describe</h5>
-    <div class="divider"></div>
-    <div class="section">
+    <div class="row">
       <div class="input-field col s12 m6">
         <textarea id="SupportInfrastructure" class="materialize-textarea"></textarea>
         <label for="SupportInfrastructure">Support Infrastructure</label>
