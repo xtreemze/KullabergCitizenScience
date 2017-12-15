@@ -524,8 +524,8 @@ class Mission {
         },
         {
           enableHighAccuracy: true,
-          // timeout: 5000,
-          maximumAge: 30000
+          timeout: 15000,
+          maximumAge: 0
         }
       );
     };
