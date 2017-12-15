@@ -524,7 +524,7 @@ class Mission {
         },
         {
           enableHighAccuracy: true,
-          timeout: 15000,
+          // timeout: 15000,
           maximumAge: 0
         }
       );
