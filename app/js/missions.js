@@ -12,11 +12,14 @@ const db = client
   .service("mongodb", "mongodb-atlas")
   .db("citizenScience");
 
+
+// testing CI
+
 const loadImage = require("blueimp-load-image");
 
 window.storedDB;
 
-window.enableBox = function() {
+window.enableBox = function () {
   setTimeout(() => {
     const elem = document.querySelector(".materialboxed");
     window.instance = new M.Materialbox(elem);
@@ -24,7 +27,7 @@ window.enableBox = function() {
   // instance.open();
 };
 
-window.confetti = function() {
+window.confetti = function () {
   const confettiId = document.getElementById("confettiId");
   window.confettiId = confettiId;
   // console.log("[Confetti]", confettiId);
@@ -73,7 +76,7 @@ window.confetti = function() {
   function draw() {
     ctx.clearRect(0, 0, confettiId.width, confettiId.height);
 
-    confettiPieces.forEach(function(p) {
+    confettiPieces.forEach(function (p) {
       ctx.save();
 
       ctx.fillStyle = p.color;
@@ -113,7 +116,7 @@ window.confetti = function() {
   }, 172);
 };
 // confetti();
-const updateDB = function(
+const updateDB = function (
   database = this.databaseCollection,
   dataset = {}
 ) {
@@ -172,7 +175,7 @@ const updateDB = function(
  * @param {any} Database Collection
  * @param {string} A Congratulatory Message
  */
-window.collectInputs = function(
+window.collectInputs = function (
   databaseCollection = {},
   congratulatoryMessage = ""
 ) {
@@ -256,7 +259,7 @@ window.collectInputs = function(
   window.confetti();
 };
 
-const offlineUp = function(databaseCollection) {
+const offlineUp = function (databaseCollection) {
   let storageVariable = `${databaseCollection}OfflineData`;
   // try to upload offline data to DB when online
   if (window.localStorage[storageVariable] && navigator.onLine) {
@@ -336,7 +339,7 @@ class Mission {
     this.congratulatoryMessage = congratulatoryMessage;
     this.monitorSuccess = monitorSuccess;
     this.analyzeSuccess = analyzeSuccess;
-    this.queryDB = function(
+    this.queryDB = function (
       databaseCollection = this.databaseCollection,
       query
     ) {
@@ -352,7 +355,7 @@ class Mission {
       navigationBreadcrumbs.innerHTML = `
       <a onclick="showMissions(600)" class="pointer breadcrumb">${
         this.title
-      }</a>
+        }</a>
         <a class="pointer breadcrumb">Evaluation</a>
         `;
 
@@ -440,7 +443,7 @@ class Mission {
       const geoJSONTrails = require("./trails.json");
 
       const mappedTrails = L.geoJSON(geoJSONTrails, {
-        style: function(feature) {
+        style: function (feature) {
           return {
             color: feature.properties.stroke,
             opacity: 0.6,
@@ -454,7 +457,7 @@ class Mission {
       });
       mappedTrails.addTo(window.map);
     };
-    this.monitor = function() {
+    this.monitor = function () {
       navigator.geolocation.getCurrentPosition(
         position => {
           window.geoReference = {
@@ -468,7 +471,7 @@ class Mission {
           navigationBreadcrumbs.innerHTML = `
           <a onclick="showMissions(600)" class="pointer breadcrumb">${
             this.title
-          }</a>
+            }</a>
           <a class="pointer breadcrumb">Monitoring</a>
           `;
           M.updateTextFields();
@@ -492,11 +495,11 @@ class Mission {
           // }
           window.scrollTo(0, 0);
           // Resize, Load and Orient Photo
-          document.getElementById("Photos").onchange = function(e) {
+          document.getElementById("Photos").onchange = function (e) {
             console.log("[Image Loaded]", e.target.files[0]);
             loadImage(
               e.target.files[0],
-              function(img) {
+              function (img) {
                 // let canvas = document.createElement("canvas");
                 let canvas = document.getElementById("photoPreview");
                 var ctx = canvas.getContext("2d");
@@ -529,7 +532,7 @@ class Mission {
         }
       );
     };
-    this.analyze = function(queryDBResultOriginal) {
+    this.analyze = function (queryDBResultOriginal) {
       console.log("[Analyze Init:]", queryDBResultOriginal);
       let queryDBResult = [];
       let storageVariable = `${this.databaseCollection}OfflineData`;
@@ -588,7 +591,7 @@ class Mission {
             // Format for displaying information in map popups
             dbResponse += `<span class="strong">${key}: </span><span>${
               queryDBResult[i][key]
-            }</span><br>`;
+              }</span><br>`;
           }
         }
 
@@ -604,7 +607,7 @@ class Mission {
             i
           ].Location.properties.photo = `<img class="responsive-img materialboxed" data-caption="${
             queryDBResult[i].Date
-          }"
+            }"
              onload="enableBox()" onclick="enableBox()"
             
            src="${queryDBResult[i].Photo}">`;
@@ -622,7 +625,7 @@ class Mission {
       }
 
       let options = {
-        pointToLayer: function(feature, latlng) {
+        pointToLayer: function (feature, latlng) {
           let popInfo = `${feature.properties.description}<br>`;
           if (!feature.properties.photo === false) {
             popInfo += `${feature.properties.photo}`;
@@ -652,7 +655,7 @@ class Mission {
         spiderfyDistanceMultiplier: 1.3,
         maxClusterRadius: 92,
         showCoverageOnHover: false,
-        iconCreateFunction: function(cluster) {
+        iconCreateFunction: function (cluster) {
           var childCount = cluster.getChildCount();
           // different styles for the cluster depending on the area covered
           var c = " marker-cluster-";
@@ -677,12 +680,12 @@ class Mission {
       markers.addLayer(reports);
 
       window.map.addLayer(markers);
-      markers.on("spiderfied", function(a) {
+      markers.on("spiderfied", function (a) {
         // console.log("cluster ", a);
         a.cluster._icon.classList.remove("fadeIn");
         a.cluster._icon.classList.add("fadeOut");
       });
-      markers.on("unspiderfied", function(a) {
+      markers.on("unspiderfied", function (a) {
         // console.log("cluster ", a);
         a.cluster._icon.classList.remove("fadeOut");
         a.cluster._icon.classList.add("fadeIn");
@@ -705,11 +708,11 @@ class Mission {
       </div>
       <div class="card-action">
         <a class="pointer" onclick="${
-          this.shortName
-        }.monitor()">Monitoring</a>
+      this.shortName
+      }.monitor()">Monitoring</a>
         <a class="pointer" onclick="${
-          this.shortName
-        }.queryDB()">Evaluation</a>
+      this.shortName
+      }.queryDB()">Evaluation</a>
         </div>
         </div>
         </div>
@@ -723,7 +726,7 @@ class Mission {
 }
 
 // Show missinos in the front page
-const showMissions = function(seconds = 290) {
+const showMissions = function (seconds = 290) {
   const loading = document.getElementById("loading");
   const missions = document.getElementById("missions");
   const navigationBreadcrumbs = document.getElementById(
@@ -746,7 +749,7 @@ const showMissions = function(seconds = 290) {
 };
 window.showMissions = showMissions;
 
-window.addEventListener("DOMContentLoaded", function() {
+window.addEventListener("DOMContentLoaded", function () {
   const missions = document.getElementById("missions");
   const navigationBreadcrumbs = document.getElementById(
     "navigationBreadcrumbs"
